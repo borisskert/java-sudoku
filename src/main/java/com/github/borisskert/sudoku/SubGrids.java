@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SubGrids {
+class SubGrids {
 
     private final List<SubGrid> subGrids = new ArrayList<>();
     private final int sizeX;
@@ -20,8 +20,8 @@ public class SubGrids {
     }
 
     private void initSubGrids() {
-        for (int x = 0; x < sizeX; x++) {
-            for (int y = 0; y < sizeY; y++) {
+        for (int x = 0; x < sizeY; x++) {
+            for (int y = 0; y < sizeX; y++) {
                 subGrids.add(new SubGrid(x, y, sizeX, sizeY));
             }
         }
