@@ -1,22 +1,27 @@
 package com.github.borisskert.sudoku;
 
-import com.github.borisskert.observableproperties.*;
+import com.github.borisskert.observableproperties.ChangeListener;
+import com.github.borisskert.observableproperties.OptionalProperty;
+import com.github.borisskert.observableproperties.ReadonlyProperty;
+import com.github.borisskert.observableproperties.SimpleOptionalProperty;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 public class Field implements ChangeListener<FieldValue> {
 
     private final OptionalProperty<FieldValue> valueProperty = new SimpleOptionalProperty<>();
+
     private final int x;
     private final int y;
-    private final List<FieldValue> candidates;
 
-    public Field(int x, int y, List<FieldValue> candidates) {
+    private final Set<FieldValue> candidates;
+
+    public Field(int x, int y, Set<FieldValue> candidates) {
         this.x = x;
         this.y = y;
-        this.candidates = new ArrayList<>(candidates);
+        this.candidates = new HashSet<>(candidates);
     }
 
     public int getX() {
@@ -27,7 +32,7 @@ public class Field implements ChangeListener<FieldValue> {
         return y;
     }
 
-    public List<FieldValue> getCandidates() {
+    public Set<FieldValue> getCandidates() {
         return candidates;
     }
 
@@ -50,8 +55,8 @@ public class Field implements ChangeListener<FieldValue> {
     public void onChange(ReadonlyProperty<FieldValue> property, FieldValue oldValue, FieldValue newValue) {
         candidates.remove(newValue);
 
-        if(candidates.size() == 1) {
-            setValue(candidates.get(0));
+        if (candidates.size() == 1) {
+            setValue(candidates.iterator().next());
         }
     }
 
@@ -62,7 +67,7 @@ public class Field implements ChangeListener<FieldValue> {
     private void throwIfAlreadySet() {
         Optional<FieldValue> maybeValue = valueProperty.asOptional();
 
-        if(maybeValue.isPresent()) {
+        if (maybeValue.isPresent()) {
             FieldValue fieldValue = maybeValue.get();
             throw new IllegalStateException("Already contains the value '" + fieldValue.getValue() + "'");
         }

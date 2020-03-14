@@ -1,20 +1,20 @@
 package com.github.borisskert.sudoku;
 
-import java.util.List;
+import java.util.Set;
 
 public class Sudoku {
 
     private final SubGrids subGrids;
 
-    public Sudoku() {
-        subGrids = new SubGrids();
+    public Sudoku(int sizeX, int sizeY) {
+        subGrids = new SubGrids(sizeX, sizeY);
     }
 
-    public static Sudoku create(int size) {
-        return new Sudoku();
+    public static Sudoku create(int sizeX, int sizeY) {
+        return new Sudoku(sizeX, sizeY);
     }
 
-    public List<FieldValue> getCandidates(int x, int y) {
+    public Set<FieldValue> getCandidates(int x, int y) {
         Field field = subGrids.getField(x, y);
         return field.getCandidates();
     }

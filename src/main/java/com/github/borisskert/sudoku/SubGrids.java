@@ -7,16 +7,21 @@ import java.util.stream.Collectors;
 public class SubGrids {
 
     private final List<SubGrid> subGrids = new ArrayList<>();
+    private final int sizeX;
+    private final int sizeY;
 
-    public SubGrids() {
+    public SubGrids(int sizeX, int sizeY) {
+        this.sizeX = sizeX;
+        this.sizeY = sizeY;
+
         initSubGrids();
         bindNeighborSubGrids();
     }
 
     private void initSubGrids() {
-        for (int x = 0; x < 2; x++) {
-            for (int y = 0; y < 2; y++) {
-                subGrids.add(new SubGrid(x, y));
+        for (int x = 0; x < sizeX; x++) {
+            for (int y = 0; y < sizeY; y++) {
+                subGrids.add(new SubGrid(x, y, sizeX, sizeY));
             }
         }
     }
@@ -24,8 +29,8 @@ public class SubGrids {
     public Field getField(int x, int y) {
         SubGrid currentSubGrid = getSubGrid(x, y);
 
-        int relativeX = x % 2;
-        int relativeY = y % 2;
+        int relativeX = x % sizeX;
+        int relativeY = y % sizeY;
 
         return currentSubGrid.get(relativeX, relativeY);
     }
@@ -35,8 +40,8 @@ public class SubGrids {
     }
 
     private SubGrid getSubGrid(int x, int y) {
-        int fieldX = x / 2;
-        int fieldY = y / 2;
+        int fieldX = x / sizeX;
+        int fieldY = y / sizeY;
 
         return subGrids.stream()
                 .filter(subGrid -> subGrid.getX() == fieldX)

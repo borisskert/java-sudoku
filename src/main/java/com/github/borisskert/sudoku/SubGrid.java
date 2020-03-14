@@ -2,28 +2,41 @@ package com.github.borisskert.sudoku;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class SubGrid {
 
-    private static final List<FieldValue> defaultCandidates = List.of(
-            FieldValue.of(1),
-            FieldValue.of(2),
-            FieldValue.of(3),
-            FieldValue.of(4)
-    );
+    private final Set<FieldValue> defaultCandidates;
 
     private final List<Field> fields = new ArrayList<>();
 
     private final int x;
     private final int y;
 
-    public SubGrid(int x, int y) {
+    private final int sizeX;
+    private final int sizeY;
+
+    public SubGrid(int x, int y, int sizeX, int sizeY) {
         this.x = x;
         this.y = y;
 
+        this.sizeX = sizeX;
+        this.sizeY = sizeY;
+
+        defaultCandidates = createDefaultCandidates();
+
         fillWithFields();
         bindAllFields();
+    }
+
+    private Set<FieldValue> createDefaultCandidates() {
+        int candidates = sizeX * sizeX;
+
+        return IntStream.range(1, candidates + 1)
+                .mapToObj(FieldValue::of)
+                .collect(Collectors.toSet());
     }
 
     public int getX() {
@@ -46,8 +59,8 @@ public class SubGrid {
     }
 
     private void fillWithFields() {
-        for (int x = 0; x < 2; x++) {
-            for (int y = 0; y < 2; y++) {
+        for (int x = 0; x < sizeX; x++) {
+            for (int y = 0; y < sizeY; y++) {
                 Field field = new Field(x, y, defaultCandidates);
                 fields.add(field);
             }
