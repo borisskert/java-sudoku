@@ -4,6 +4,7 @@ import com.github.borisskert.observableproperties.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Field implements ChangeListener<FieldValue> {
 
@@ -35,6 +36,8 @@ public class Field implements ChangeListener<FieldValue> {
     }
 
     public void setValue(FieldValue value) {
+        throwIfAlreadySet();
+
         candidates.clear();
         valueProperty.set(value);
     }
@@ -49,6 +52,15 @@ public class Field implements ChangeListener<FieldValue> {
 
         if(candidates.size() == 1) {
             setValue(candidates.get(0));
+        }
+    }
+
+    private void throwIfAlreadySet() {
+        Optional<FieldValue> maybeValue = valueProperty.asOptional();
+
+        if(maybeValue.isPresent()) {
+            FieldValue fieldValue = maybeValue.get();
+            throw new IllegalStateException("Already contains the value '" + fieldValue.getValue() + "'");
         }
     }
 }
