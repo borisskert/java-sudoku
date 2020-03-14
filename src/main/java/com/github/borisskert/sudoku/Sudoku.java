@@ -1,15 +1,16 @@
 package com.github.borisskert.sudoku;
 
-import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Set;
 
 public class Sudoku {
 
     private final SubGrids subGrids;
+    private final Formatter formatter;
 
     public Sudoku(int sizeX, int sizeY) {
         subGrids = new SubGrids(sizeX, sizeY);
+        formatter = new Formatter(sizeX, sizeY, subGrids);
     }
 
     public static Sudoku create(int sizeX, int sizeY) {
@@ -40,45 +41,6 @@ public class Sudoku {
 
     @Override
     public String toString() {
-        return "╔═╤═╦═╤═╗\n" +
-                MessageFormat.format(
-                        "║{0}│{1}║{2}│{3}║\n",
-                        getFormattedValue(0, 0),
-                        getFormattedValue(1, 0),
-                        getFormattedValue(2, 0),
-                        getFormattedValue(3, 0)
-                ) +
-                "╟─┼─╫─┼─╢\n" +
-                MessageFormat.format(
-                        "║{0}│{1}║{2}│{3}║\n",
-                        getFormattedValue(0, 1),
-                        getFormattedValue(1, 1),
-                        getFormattedValue(2, 1),
-                        getFormattedValue(3, 1)
-                ) +
-                "╠═╪═╬═╪═╣\n" +
-                MessageFormat.format(
-                        "║{0}│{1}║{2}│{3}║\n",
-                        getFormattedValue(0, 2),
-                        getFormattedValue(1, 2),
-                        getFormattedValue(2, 2),
-                        getFormattedValue(3, 2)
-                ) +
-                "╟─┼─╫─┼─╢\n" +
-                MessageFormat.format(
-                        "║{0}│{1}║{2}│{3}║\n",
-                        getFormattedValue(0, 3),
-                        getFormattedValue(1, 3),
-                        getFormattedValue(2, 3),
-                        getFormattedValue(3, 3)
-                ) +
-                "╚═╧═╩═╧═╝\n";
-    }
-
-    private String getFormattedValue(int x, int y) {
-        Field field = subGrids.getField(x, y);
-        FieldValue fieldValue = field.getValue().get();
-
-        return fieldValue != null ? String.valueOf(fieldValue.getValue()) : " ";
+        return formatter.format();
     }
 }

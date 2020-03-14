@@ -35,6 +35,32 @@ class SudokuThreeThreeTest {
         assertThat(sudoku.getUnresolvedFields().size(), is(equalTo(81)));
     }
 
+    @Test
+    public void shouldPrintFields() throws Exception {
+        String expected =
+                "╔═╤═╤═╦═╤═╤═╦═╤═╤═╗\n" +
+                "║ │ │ ║ │ │ ║ │ │ ║\n" +
+                "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                "║ │ │ ║ │ │ ║ │ │ ║\n" +
+                "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                "║ │ │ ║ │ │ ║ │ │ ║\n" +
+                "╠═╪═╪═╬═╪═╪═╬═╪═╪═╣\n" +
+                "║ │ │ ║ │ │ ║ │ │ ║\n" +
+                "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                "║ │ │ ║ │ │ ║ │ │ ║\n" +
+                "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                "║ │ │ ║ │ │ ║ │ │ ║\n" +
+                "╠═╪═╪═╬═╪═╪═╬═╪═╪═╣\n" +
+                "║ │ │ ║ │ │ ║ │ │ ║\n" +
+                "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                "║ │ │ ║ │ │ ║ │ │ ║\n" +
+                "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                "║ │ │ ║ │ │ ║ │ │ ║\n" +
+                "╚═╧═╧═╩═╧═╧═╩═╧═╧═╝\n";
+
+        assertThat(sudoku.toString(), is(equalTo(expected)));
+    }
+
     @DisplayName("setup middle subgrid")
     @Nested
     class SetMiddleSubGridExampleNumbers {
@@ -44,6 +70,32 @@ class SudokuThreeThreeTest {
             sudoku.set(3, 4, 8);
             sudoku.set(5, 4, 3);
             sudoku.set(4, 5, 2);
+        }
+
+        @Test
+        public void shouldPrintFields() throws Exception {
+            String expected =
+                    "╔═╤═╤═╦═╤═╤═╦═╤═╤═╗\n" +
+                    "║ │ │ ║ │ │ ║ │ │ ║\n" +
+                    "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                    "║ │ │ ║ │ │ ║ │ │ ║\n" +
+                    "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                    "║ │ │ ║ │ │ ║ │ │ ║\n" +
+                    "╠═╪═╪═╬═╪═╪═╬═╪═╪═╣\n" +
+                    "║ │ │ ║ │6│ ║ │ │ ║\n" +
+                    "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                    "║ │ │ ║8│ │3║ │ │ ║\n" +
+                    "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                    "║ │ │ ║ │2│ ║ │ │ ║\n" +
+                    "╠═╪═╪═╬═╪═╪═╬═╪═╪═╣\n" +
+                    "║ │ │ ║ │ │ ║ │ │ ║\n" +
+                    "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                    "║ │ │ ║ │ │ ║ │ │ ║\n" +
+                    "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                    "║ │ │ ║ │ │ ║ │ │ ║\n" +
+                    "╚═╧═╧═╩═╧═╧═╩═╧═╧═╝\n";
+
+            assertThat(sudoku.toString(), is(equalTo(expected)));
         }
 
         @Test
@@ -108,6 +160,32 @@ class SudokuThreeThreeTest {
             }
 
             @Test
+            public void shouldPrintFields() throws Exception {
+                String expected =
+                        "╔═╤═╤═╦═╤═╤═╦═╤═╤═╗\n" +
+                        "║ │ │ ║ │ │ ║ │ │ ║\n" +
+                        "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                        "║ │ │ ║ │ │ ║ │ │ ║\n" +
+                        "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                        "║ │ │ ║ │ │ ║ │ │ ║\n" +
+                        "╠═╪═╪═╬═╪═╪═╬═╪═╪═╣\n" +
+                        "║ │ │ ║ │6│ ║ │ │3║\n" +
+                        "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                        "║ │ │ ║8│ │3║ │ │1║\n" +
+                        "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                        "║ │ │ ║ │2│ ║ │ │6║\n" +
+                        "╠═╪═╪═╬═╪═╪═╬═╪═╪═╣\n" +
+                        "║ │ │ ║ │ │ ║ │ │ ║\n" +
+                        "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                        "║ │ │ ║ │ │ ║ │ │ ║\n" +
+                        "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                        "║ │ │ ║ │ │ ║ │ │ ║\n" +
+                        "╚═╧═╧═╩═╧═╧═╩═╧═╧═╝\n";
+
+                assertThat(sudoku.toString(), is(equalTo(expected)));
+            }
+
+            @Test
             public void shouldUpdateCandidatesInRandomFields() throws Exception {
                 assertField(1, 1, allCandidates(), null);
                 assertField(1, 4, Set.of(
@@ -163,6 +241,32 @@ class SudokuThreeThreeTest {
                     sudoku.set(4, 7, 1);
                     sudoku.set(5, 7, 9);
                     sudoku.set(4, 8, 8);
+                }
+
+                @Test
+                public void shouldPrintFields() throws Exception {
+                    String expected =
+                            "╔═╤═╤═╦═╤═╤═╦═╤═╤═╗\n" +
+                            "║ │ │ ║ │ │ ║ │ │ ║\n" +
+                            "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                            "║ │ │ ║ │ │ ║ │ │ ║\n" +
+                            "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                            "║ │ │ ║ │ │ ║ │ │ ║\n" +
+                            "╠═╪═╪═╬═╪═╪═╬═╪═╪═╣\n" +
+                            "║ │ │ ║ │6│ ║ │ │3║\n" +
+                            "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                            "║ │ │ ║8│ │3║ │ │1║\n" +
+                            "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                            "║ │ │ ║ │2│ ║ │ │6║\n" +
+                            "╠═╪═╪═╬═╪═╪═╬═╪═╪═╣\n" +
+                            "║ │ │ ║ │ │ ║ │ │ ║\n" +
+                            "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                            "║ │ │ ║4│1│9║ │ │ ║\n" +
+                            "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                            "║ │ │ ║ │8│ ║ │ │ ║\n" +
+                            "╚═╧═╧═╩═╧═╧═╩═╧═╧═╝\n";
+
+                    assertThat(sudoku.toString(), is(equalTo(expected)));
                 }
 
                 @Test
@@ -226,6 +330,32 @@ class SudokuThreeThreeTest {
                         sudoku.set(0, 1, 6);
                         sudoku.set(1, 2, 9);
                         sudoku.set(2, 2, 8);
+                    }
+
+                    @Test
+                    public void shouldPrintFields() throws Exception {
+                        String expected =
+                                "╔═╤═╤═╦═╤═╤═╦═╤═╤═╗\n" +
+                                "║5│3│ ║ │ │ ║ │ │ ║\n" +
+                                "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                                "║6│ │ ║ │ │ ║ │ │ ║\n" +
+                                "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                                "║ │9│8║ │ │ ║ │ │ ║\n" +
+                                "╠═╪═╪═╬═╪═╪═╬═╪═╪═╣\n" +
+                                "║ │ │ ║ │6│ ║ │ │3║\n" +
+                                "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                                "║ │ │ ║8│ │3║ │ │1║\n" +
+                                "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                                "║ │ │ ║ │2│ ║ │ │6║\n" +
+                                "╠═╪═╪═╬═╪═╪═╬═╪═╪═╣\n" +
+                                "║ │ │ ║ │ │ ║ │ │ ║\n" +
+                                "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                                "║ │ │ ║4│1│9║ │ │ ║\n" +
+                                "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                                "║ │ │ ║ │8│ ║ │ │ ║\n" +
+                                "╚═╧═╧═╩═╧═╧═╩═╧═╧═╝\n";
+
+                        assertThat(sudoku.toString(), is(equalTo(expected)));
                     }
 
                     @Test
@@ -300,6 +430,32 @@ class SudokuThreeThreeTest {
                         }
 
                         @Test
+                        public void shouldPrintFields() throws Exception {
+                            String expected =
+                                    "╔═╤═╤═╦═╤═╤═╦═╤═╤═╗\n" +
+                                    "║5│3│ ║ │ │ ║ │ │ ║\n" +
+                                    "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                                    "║6│ │ ║ │ │ ║ │ │ ║\n" +
+                                    "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                                    "║ │9│8║ │ │ ║ │6│ ║\n" +
+                                    "╠═╪═╪═╬═╪═╪═╬═╪═╪═╣\n" +
+                                    "║ │ │ ║ │6│ ║ │ │3║\n" +
+                                    "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                                    "║ │ │ ║8│ │3║ │ │1║\n" +
+                                    "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                                    "║ │ │ ║ │2│ ║ │ │6║\n" +
+                                    "╠═╪═╪═╬═╪═╪═╬═╪═╪═╣\n" +
+                                    "║ │ │ ║ │ │ ║ │ │ ║\n" +
+                                    "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                                    "║ │ │ ║4│1│9║ │ │ ║\n" +
+                                    "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                                    "║ │ │ ║ │8│ ║ │ │ ║\n" +
+                                    "╚═╧═╧═╩═╧═╧═╩═╧═╧═╝\n";
+
+                            assertThat(sudoku.toString(), is(equalTo(expected)));
+                        }
+
+                        @Test
                         public void shouldUpdateCandidatesInRandomFields() throws Exception {
                             assertField(1, 1, Set.of(
                                     FieldValue.of(1),
@@ -367,6 +523,32 @@ class SudokuThreeThreeTest {
                             @BeforeEach
                             public void setup() throws Exception {
                                 sudoku.set(1, 6, 6);
+                            }
+
+                            @Test
+                            public void shouldPrintFields() throws Exception {
+                                String expected =
+                                        "╔═╤═╤═╦═╤═╤═╦═╤═╤═╗\n" +
+                                        "║5│3│ ║ │ │ ║ │ │ ║\n" +
+                                        "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                                        "║6│ │ ║ │ │ ║ │ │ ║\n" +
+                                        "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                                        "║ │9│8║ │ │ ║ │6│ ║\n" +
+                                        "╠═╪═╪═╬═╪═╪═╬═╪═╪═╣\n" +
+                                        "║ │ │ ║ │6│ ║ │ │3║\n" +
+                                        "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                                        "║ │ │ ║8│ │3║ │ │1║\n" +
+                                        "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                                        "║ │ │ ║ │2│ ║ │ │6║\n" +
+                                        "╠═╪═╪═╬═╪═╪═╬═╪═╪═╣\n" +
+                                        "║ │6│ ║ │ │ ║ │ │ ║\n" +
+                                        "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                                        "║ │ │ ║4│1│9║ │ │ ║\n" +
+                                        "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                                        "║ │ │ ║ │8│ ║ │ │ ║\n" +
+                                        "╚═╧═╧═╩═╧═╧═╩═╧═╧═╝\n";
+
+                                assertThat(sudoku.toString(), is(equalTo(expected)));
                             }
 
                             @Test
@@ -441,6 +623,32 @@ class SudokuThreeThreeTest {
                                 }
 
                                 @Test
+                                public void shouldPrintFields() throws Exception {
+                                    String expected =
+                                            "╔═╤═╤═╦═╤═╤═╦═╤═╤═╗\n" +
+                                            "║5│3│ ║ │7│ ║ │ │ ║\n" +
+                                            "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                                            "║6│ │ ║1│9│5║ │ │ ║\n" +
+                                            "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                                            "║ │9│8║ │ │ ║ │6│ ║\n" +
+                                            "╠═╪═╪═╬═╪═╪═╬═╪═╪═╣\n" +
+                                            "║ │ │ ║ │6│ ║ │ │3║\n" +
+                                            "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                                            "║ │ │ ║8│ │3║ │ │1║\n" +
+                                            "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                                            "║ │ │ ║ │2│ ║ │ │6║\n" +
+                                            "╠═╪═╪═╬═╪═╪═╬═╪═╪═╣\n" +
+                                            "║ │6│ ║ │ │ ║ │ │ ║\n" +
+                                            "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                                            "║ │ │ ║4│1│9║ │ │ ║\n" +
+                                            "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                                            "║ │ │ ║ │8│ ║ │ │ ║\n" +
+                                            "╚═╧═╧═╩═╧═╧═╩═╧═╧═╝\n";
+
+                                    assertThat(sudoku.toString(), is(equalTo(expected)));
+                                }
+
+                                @Test
                                 public void shouldUpdateCandidatesInRandomFields() throws Exception {
                                     assertField(1, 1, Set.of(
                                             FieldValue.of(2),
@@ -499,6 +707,32 @@ class SudokuThreeThreeTest {
                                     }
 
                                     @Test
+                                    public void shouldPrintFields() throws Exception {
+                                        String expected =
+                                                "╔═╤═╤═╦═╤═╤═╦═╤═╤═╗\n" +
+                                                "║5│3│ ║6│7│8║ │ │ ║\n" +
+                                                "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                                                "║6│ │ ║1│9│5║ │ │ ║\n" +
+                                                "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                                                "║1│9│8║3│4│2║ │6│ ║\n" +
+                                                "╠═╪═╪═╬═╪═╪═╬═╪═╪═╣\n" +
+                                                "║8│ │ ║7│6│ ║ │ │3║\n" +
+                                                "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                                                "║4│2│ ║8│5│3║ │ │1║\n" +
+                                                "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                                                "║7│ │ ║9│2│ ║ │ │6║\n" +
+                                                "╠═╪═╪═╬═╪═╪═╬═╪═╪═╣\n" +
+                                                "║ │6│ ║ │3│7║ │ │ ║\n" +
+                                                "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                                                "║ │ │ ║4│1│9║ │ │ ║\n" +
+                                                "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                                                "║ │ │ ║ │8│6║ │ │ ║\n" +
+                                                "╚═╧═╧═╩═╧═╧═╩═╧═╧═╝\n";
+
+                                        assertThat(sudoku.toString(), is(equalTo(expected)));
+                                    }
+
+                                    @Test
                                     public void shouldUpdateCandidatesInRandomFields() throws Exception {
                                         assertField(1, 1, Set.of(
                                                 FieldValue.of(4),
@@ -535,12 +769,38 @@ class SudokuThreeThreeTest {
 
                                     @DisplayName("Setup 1st part of buttom right subgrid")
                                     @Nested
-                                    class SetupFirstPartBottomRightSubGrid {
+                                    class SetupBottomRightSubGrid {
                                         @BeforeEach
                                         public void setup() throws Exception {
                                             sudoku.set(6, 6, 2);
                                             sudoku.set(7, 6, 8);
                                             sudoku.set(7, 8, 7);
+                                        }
+
+                                        @Test
+                                        public void shouldPrintFields() throws Exception {
+                                            String expected =
+                                                    "╔═╤═╤═╦═╤═╤═╦═╤═╤═╗\n" +
+                                                    "║5│3│4║6│7│8║9│1│2║\n" +
+                                                    "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                                                    "║6│7│2║1│9│5║3│4│8║\n" +
+                                                    "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                                                    "║1│9│8║3│4│2║5│6│7║\n" +
+                                                    "╠═╪═╪═╬═╪═╪═╬═╪═╪═╣\n" +
+                                                    "║8│5│9║7│6│1║4│2│3║\n" +
+                                                    "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                                                    "║4│2│6║8│5│3║7│9│1║\n" +
+                                                    "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                                                    "║7│1│3║9│2│4║8│5│6║\n" +
+                                                    "╠═╪═╪═╬═╪═╪═╬═╪═╪═╣\n" +
+                                                    "║9│6│1║5│3│7║2│8│4║\n" +
+                                                    "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                                                    "║2│8│7║4│1│9║6│3│5║\n" +
+                                                    "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
+                                                    "║3│4│5║2│8│6║1│7│9║\n" +
+                                                    "╚═╧═╧═╩═╧═╧═╩═╧═╧═╝\n";
+
+                                            assertThat(sudoku.toString(), is(equalTo(expected)));
                                         }
 
                                         @Test

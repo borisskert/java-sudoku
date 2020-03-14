@@ -28,7 +28,7 @@ public class SubGrids {
     }
 
     public Field getField(int x, int y) {
-        SubGrid currentSubGrid = getSubGrid(x, y);
+        SubGrid currentSubGrid = getSubGrid(x / sizeX, y / sizeY);
 
         int relativeX = x % sizeX;
         int relativeY = y % sizeY;
@@ -40,13 +40,10 @@ public class SubGrids {
         return subGrids.stream().noneMatch(SubGrid::isNotSolved);
     }
 
-    private SubGrid getSubGrid(int x, int y) {
-        int fieldX = x / sizeX;
-        int fieldY = y / sizeY;
-
+    final SubGrid getSubGrid(int x, int y) {
         return subGrids.stream()
-                .filter(subGrid -> subGrid.getX() == fieldX)
-                .filter(subGrid -> subGrid.getY() == fieldY)
+                .filter(subGrid -> subGrid.getX() == x)
+                .filter(subGrid -> subGrid.getY() == y)
                 .findFirst().get();
     }
 
