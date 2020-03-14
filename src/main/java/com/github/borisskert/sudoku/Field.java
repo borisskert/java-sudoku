@@ -46,5 +46,9 @@ public class Field implements ChangeListener<FieldValue> {
     @Override
     public void onChange(ReadonlyProperty<FieldValue> property, FieldValue oldValue, FieldValue newValue) {
         candidates.remove(newValue);
+
+        if(candidates.size() == 1) {
+            setValue(candidates.get(0));
+        }
     }
 }

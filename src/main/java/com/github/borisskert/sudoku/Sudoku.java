@@ -19,6 +19,11 @@ public class Sudoku {
         return field.getCandidates();
     }
 
+    public FieldValue get(int x, int y) {
+        Field field = subGrids.getField(x, y);
+        return field.getValue().get();
+    }
+
     public void set(int x, int y, int value) {
         subGrids.getField(x, y).setValue(FieldValue.of(value));
     }

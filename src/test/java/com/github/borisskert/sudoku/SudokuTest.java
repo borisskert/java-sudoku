@@ -314,11 +314,10 @@ class SudokuTest {
                 }
 
                 @Test
-                @DisplayName("(1,1) == [4]")
+                @DisplayName("(1,1) == <4>[]")
                 public void shouldRemovePotentialCandidatesFromFieldOneOne() throws Exception {
-                    List<FieldValue> candidates = sudoku.getCandidates(1, 1);
-
-                    assertThat(candidates, is(equalTo(List.of(FieldValue.of(4)))));
+                    assertThat(sudoku.getCandidates(1, 1), is(equalTo(List.of())));
+                    assertThat(sudoku.get(1, 1), is(equalTo(FieldValue.of(4))));
                 }
 
                 @Test
@@ -338,19 +337,19 @@ class SudokuTest {
                 }
 
                 @Test
-                @DisplayName("(2,1) == [1,2,4]")
+                @DisplayName("(2,1) == [1,2]")
                 public void shouldRemovePotentialCandidatesFromFieldTwoOne() throws Exception {
                     List<FieldValue> candidates = sudoku.getCandidates(2, 1);
 
-                    assertThat(candidates, is(equalTo(List.of(FieldValue.of(1), FieldValue.of(2), FieldValue.of(4)))));
+                    assertThat(candidates, is(equalTo(List.of(FieldValue.of(1), FieldValue.of(2)))));
                 }
 
                 @Test
-                @DisplayName("(3,1) == [1,2,4]")
+                @DisplayName("(3,1) == [1,2]")
                 public void shouldRemovePotentialCandidatesFromFieldThreeOne() throws Exception {
                     List<FieldValue> candidates = sudoku.getCandidates(3, 1);
 
-                    assertThat(candidates, is(equalTo(List.of(FieldValue.of(1), FieldValue.of(2), FieldValue.of(4)))));
+                    assertThat(candidates, is(equalTo(List.of(FieldValue.of(1), FieldValue.of(2)))));
                 }
 
                 @Test
@@ -370,19 +369,19 @@ class SudokuTest {
                 }
 
                 @Test
-                @DisplayName("(1,2) == [1,3,4]")
+                @DisplayName("(1,2) == [1,3]")
                 public void shouldRemovePotentialCandidatesFromFieldOneTwo() throws Exception {
                     List<FieldValue> candidates = sudoku.getCandidates(1, 2);
 
-                    assertThat(candidates, is(equalTo(List.of(FieldValue.of(1), FieldValue.of(3), FieldValue.of(4)))));
+                    assertThat(candidates, is(equalTo(List.of(FieldValue.of(1), FieldValue.of(3)))));
                 }
 
                 @Test
-                @DisplayName("(1,3) == [1,3,4]")
+                @DisplayName("(1,3) == [1,3]")
                 public void shouldRemovePotentialCandidatesFromFieldOneThree() throws Exception {
                     List<FieldValue> candidates = sudoku.getCandidates(1, 3);
 
-                    assertThat(candidates, is(equalTo(List.of(FieldValue.of(1), FieldValue.of(3), FieldValue.of(4)))));
+                    assertThat(candidates, is(equalTo(List.of(FieldValue.of(1), FieldValue.of(3)))));
                 }
 
                 @Test
@@ -417,37 +416,28 @@ class SudokuTest {
                     assertThat(candidates, is(equalTo(List.of(FieldValue.of(1), FieldValue.of(2), FieldValue.of(3), FieldValue.of(4)))));
                 }
 
+
                 @Nested
-                @DisplayName("(1,1) -> 4")
-                class SetOneOneToFour {
+                @DisplayName("(2,0) -> 3")
+                class SetTwoZeroToThree {
                     @BeforeEach
                     public void setup() throws Exception {
-                        sudoku.set(1, 1, 4);
+                        sudoku.set(2, 0, 3);
                     }
 
                     @Test
-                    @DisplayName("(1,1) == []")
-                    public void shouldRemoveLastPotentialCandidatesFromFieldOneOne() throws Exception {
-                        List<FieldValue> candidates = sudoku.getCandidates(1, 1);
+                    @DisplayName("(2,0) == []")
+                    public void shouldRemovePotentialCandidatesFromFieldTwoZero() throws Exception {
+                        List<FieldValue> candidates = sudoku.getCandidates(2, 0);
 
                         assertThat(candidates, is(equalTo(List.of())));
                     }
 
-
                     @Test
-                    @DisplayName("(2,0) == [3,4]")
-                    public void shouldRemovePotentialCandidatesFromFieldTwoZero() throws Exception {
-                        List<FieldValue> candidates = sudoku.getCandidates(2, 0);
-
-                        assertThat(candidates, is(equalTo(List.of(FieldValue.of(3), FieldValue.of(4)))));
-                    }
-
-                    @Test
-                    @DisplayName("(3,0) == [3,4]")
+                    @DisplayName("(3,0) == <4>[]")
                     public void shouldRemovePotentialCandidatesFromFieldThreeZero() throws Exception {
-                        List<FieldValue> candidates = sudoku.getCandidates(3, 0);
-
-                        assertThat(candidates, is(equalTo(List.of(FieldValue.of(3), FieldValue.of(4)))));
+                        assertThat(sudoku.getCandidates(3, 0), is(equalTo(List.of())));
+                        assertThat(sudoku.get(3, 0), is(equalTo(FieldValue.of(4))));
                     }
 
                     @Test
@@ -499,140 +489,35 @@ class SudokuTest {
                     }
 
                     @Test
-                    @DisplayName("(2,2) == [1,2,3,4]")
+                    @DisplayName("(2,2) == [1,2,4]")
                     public void shouldRemovePotentialCandidatesFromFieldTwoTwo() throws Exception {
                         List<FieldValue> candidates = sudoku.getCandidates(2, 2);
 
-                        assertThat(candidates, is(equalTo(List.of(FieldValue.of(1), FieldValue.of(2), FieldValue.of(3), FieldValue.of(4)))));
+                        assertThat(candidates, is(equalTo(List.of(FieldValue.of(1), FieldValue.of(2), FieldValue.of(4)))));
                     }
 
                     @Test
-                    @DisplayName("(2,3) == [1,2,3,4]")
+                    @DisplayName("(2,3) == [1,2,4]")
                     public void shouldRemovePotentialCandidatesFromFieldTwoThree() throws Exception {
                         List<FieldValue> candidates = sudoku.getCandidates(2, 3);
 
-                        assertThat(candidates, is(equalTo(List.of(FieldValue.of(1), FieldValue.of(2), FieldValue.of(3), FieldValue.of(4)))));
+                        assertThat(candidates, is(equalTo(List.of(FieldValue.of(1), FieldValue.of(2), FieldValue.of(4)))));
                     }
 
                     @Test
-                    @DisplayName("(3,2) == [1,2,3,4]")
+                    @DisplayName("(3,2) == [1,2]")
                     public void shouldRemovePotentialCandidatesFromFieldThreeTwo() throws Exception {
                         List<FieldValue> candidates = sudoku.getCandidates(3, 2);
 
-                        assertThat(candidates, is(equalTo(List.of(FieldValue.of(1), FieldValue.of(2), FieldValue.of(3), FieldValue.of(4)))));
+                        assertThat(candidates, is(equalTo(List.of(FieldValue.of(1), FieldValue.of(2), FieldValue.of(3)))));
                     }
 
                     @Test
-                    @DisplayName("(3,3) == [1,2,3,4]")
+                    @DisplayName("(3,3) == [1,2,3]")
                     public void shouldRemovePotentialCandidatesFromFieldThreeThree() throws Exception {
                         List<FieldValue> candidates = sudoku.getCandidates(3, 3);
 
-                        assertThat(candidates, is(equalTo(List.of(FieldValue.of(1), FieldValue.of(2), FieldValue.of(3), FieldValue.of(4)))));
-                    }
-
-                    @Nested
-                    @DisplayName("(2,0) -> 3")
-                    class SetTwoZeroToThree {
-                        @BeforeEach
-                        public void setup() throws Exception {
-                            sudoku.set(2, 0, 3);
-                        }
-
-                        @Test
-                        @DisplayName("(2,0) == []")
-                        public void shouldRemovePotentialCandidatesFromFieldTwoZero() throws Exception {
-                            List<FieldValue> candidates = sudoku.getCandidates(2, 0);
-
-                            assertThat(candidates, is(equalTo(List.of())));
-                        }
-
-                        @Test
-                        @DisplayName("(3,0) == [4]")
-                        public void shouldRemovePotentialCandidatesFromFieldThreeZero() throws Exception {
-                            List<FieldValue> candidates = sudoku.getCandidates(3, 0);
-
-                            assertThat(candidates, is(equalTo(List.of(FieldValue.of(4)))));
-                        }
-
-                        @Test
-                        @DisplayName("(2,1) == [1,2]")
-                        public void shouldRemovePotentialCandidatesFromFieldTwoOne() throws Exception {
-                            List<FieldValue> candidates = sudoku.getCandidates(2, 1);
-
-                            assertThat(candidates, is(equalTo(List.of(FieldValue.of(1), FieldValue.of(2)))));
-                        }
-
-                        @Test
-                        @DisplayName("(3,1) == [1,2]")
-                        public void shouldRemovePotentialCandidatesFromFieldThreeOne() throws Exception {
-                            List<FieldValue> candidates = sudoku.getCandidates(3, 1);
-
-                            assertThat(candidates, is(equalTo(List.of(FieldValue.of(1), FieldValue.of(2)))));
-                        }
-
-                        @Test
-                        @DisplayName("(0,2) == [2,4]")
-                        public void shouldRemovePotentialCandidatesFromFieldZeroTwo() throws Exception {
-                            List<FieldValue> candidates = sudoku.getCandidates(0, 2);
-
-                            assertThat(candidates, is(equalTo(List.of(FieldValue.of(2), FieldValue.of(4)))));
-                        }
-
-                        @Test
-                        @DisplayName("(0,3) == [2,4]")
-                        public void shouldRemovePotentialCandidatesFromFieldZeroThree() throws Exception {
-                            List<FieldValue> candidates = sudoku.getCandidates(0, 3);
-
-                            assertThat(candidates, is(equalTo(List.of(FieldValue.of(2), FieldValue.of(4)))));
-                        }
-
-                        @Test
-                        @DisplayName("(1,2) == [1,3]")
-                        public void shouldRemovePotentialCandidatesFromFieldOneTwo() throws Exception {
-                            List<FieldValue> candidates = sudoku.getCandidates(1, 2);
-
-                            assertThat(candidates, is(equalTo(List.of(FieldValue.of(1), FieldValue.of(3)))));
-                        }
-
-                        @Test
-                        @DisplayName("(1,3) == [1,3]")
-                        public void shouldRemovePotentialCandidatesFromFieldOneThree() throws Exception {
-                            List<FieldValue> candidates = sudoku.getCandidates(1, 3);
-
-                            assertThat(candidates, is(equalTo(List.of(FieldValue.of(1), FieldValue.of(3)))));
-                        }
-
-                        @Test
-                        @DisplayName("(2,2) == [1,2,4]")
-                        public void shouldRemovePotentialCandidatesFromFieldTwoTwo() throws Exception {
-                            List<FieldValue> candidates = sudoku.getCandidates(2, 2);
-
-                            assertThat(candidates, is(equalTo(List.of(FieldValue.of(1), FieldValue.of(2), FieldValue.of(4)))));
-                        }
-
-                        @Test
-                        @DisplayName("(2,3) == [1,2,4]")
-                        public void shouldRemovePotentialCandidatesFromFieldTwoThree() throws Exception {
-                            List<FieldValue> candidates = sudoku.getCandidates(2, 3);
-
-                            assertThat(candidates, is(equalTo(List.of(FieldValue.of(1), FieldValue.of(2), FieldValue.of(4)))));
-                        }
-
-                        @Test
-                        @DisplayName("(3,2) == [1,2,4]")
-                        public void shouldRemovePotentialCandidatesFromFieldThreeTwo() throws Exception {
-                            List<FieldValue> candidates = sudoku.getCandidates(3, 2);
-
-                            assertThat(candidates, is(equalTo(List.of(FieldValue.of(1), FieldValue.of(2), FieldValue.of(3), FieldValue.of(4)))));
-                        }
-
-                        @Test
-                        @DisplayName("(3,3) == [1,2,3,4]")
-                        public void shouldRemovePotentialCandidatesFromFieldThreeThree() throws Exception {
-                            List<FieldValue> candidates = sudoku.getCandidates(3, 3);
-
-                            assertThat(candidates, is(equalTo(List.of(FieldValue.of(1), FieldValue.of(2), FieldValue.of(3), FieldValue.of(4)))));
-                        }
+                        assertThat(candidates, is(equalTo(List.of(FieldValue.of(1), FieldValue.of(2), FieldValue.of(3)))));
                     }
                 }
             }
