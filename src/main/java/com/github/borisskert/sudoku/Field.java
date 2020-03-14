@@ -40,7 +40,7 @@ public class Field implements ChangeListener<FieldValue> {
         return valueProperty;
     }
 
-    public void setValue(FieldValue value) {
+    void setValue(FieldValue value) {
         throwIfAlreadySet();
         throwIfNotInCandidates(value);
 
@@ -48,7 +48,7 @@ public class Field implements ChangeListener<FieldValue> {
         valueProperty.set(value);
     }
 
-    public void register(Field otherField) {
+    void register(Field otherField) {
         otherField.getValue().addListener(this);
     }
 
@@ -76,7 +76,7 @@ public class Field implements ChangeListener<FieldValue> {
 
     private void throwIfNotInCandidates(FieldValue value) {
         if (!candidates.contains(value)) {
-            throw new IllegalArgumentException("Value '" + value + "' not in candidates");
+            throw new IllegalArgumentException("Value '" + value.getValue() + "' not in candidates");
         }
     }
 }

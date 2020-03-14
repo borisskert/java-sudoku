@@ -1,6 +1,7 @@
 package com.github.borisskert.sudoku;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -107,5 +108,11 @@ public class SubGrid {
         return fields.stream()
                 .filter(field -> field.getY() == y)
                 .collect(Collectors.toList());
+    }
+
+    public Collection<Field> getUnresolvedFields() {
+        return fields.stream()
+                .filter(Field::isEmpty)
+                .collect(Collectors.toUnmodifiableList());
     }
 }

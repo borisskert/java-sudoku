@@ -55,6 +55,27 @@ class SudokuTwoTwoTest {
     public void shouldNotBeSolved() throws Exception {
         assertThat(sudoku.isSolved(), is(equalTo(false)));
     }
+    
+    @Test
+    public void shouldHaveUnresolvedFields() throws Exception {
+        assertThat(sudoku.getUnresolvedFields().size(), is(equalTo(16)));
+    }
+
+    @Test
+    public void shouldPrintFields() throws Exception {
+        String expected =
+                "╔═╤═╦═╤═╗\n" +
+                "║ │ ║ │ ║\n" +
+                "╟─┼─╫─┼─╢\n" +
+                "║ │ ║ │ ║\n" +
+                "╠═╪═╬═╪═╣\n" +
+                "║ │ ║ │ ║\n" +
+                "╟─┼─╫─┼─╢\n" +
+                "║ │ ║ │ ║\n" +
+                "╚═╧═╩═╧═╝\n";
+
+        assertThat(sudoku.toString(), is(equalTo(expected)));
+    }
 
     @Nested
     @DisplayName("(0,0) -> 1")
@@ -218,6 +239,22 @@ class SudokuTwoTwoTest {
             assertThat(sudoku.isSolved(), is(equalTo(false)));
         }
 
+        @Test
+        public void shouldPrintFields() throws Exception {
+            String expected =
+                    "╔═╤═╦═╤═╗\n" +
+                    "║1│ ║ │ ║\n" +
+                    "╟─┼─╫─┼─╢\n" +
+                    "║ │ ║ │ ║\n" +
+                    "╠═╪═╬═╪═╣\n" +
+                    "║ │ ║ │ ║\n" +
+                    "╟─┼─╫─┼─╢\n" +
+                    "║ │ ║ │ ║\n" +
+                    "╚═╧═╩═╧═╝\n";
+
+            assertThat(sudoku.toString(), is(equalTo(expected)));
+        }
+
         @Nested
         @DisplayName("(1,0) -> 2")
         class SetOneZeroToTwo {
@@ -343,6 +380,22 @@ class SudokuTwoTwoTest {
                 assertThat(sudoku.isSolved(), is(equalTo(false)));
             }
 
+            @Test
+            public void shouldPrintFields() throws Exception {
+                String expected =
+                        "╔═╤═╦═╤═╗\n" +
+                        "║1│2║ │ ║\n" +
+                        "╟─┼─╫─┼─╢\n" +
+                        "║ │ ║ │ ║\n" +
+                        "╠═╪═╬═╪═╣\n" +
+                        "║ │ ║ │ ║\n" +
+                        "╟─┼─╫─┼─╢\n" +
+                        "║ │ ║ │ ║\n" +
+                        "╚═╧═╩═╧═╝\n";
+
+                assertThat(sudoku.toString(), is(equalTo(expected)));
+            }
+
             @Nested
             @DisplayName("(0,1) -> 3")
             class SetZeroOneToThree {
@@ -459,6 +512,22 @@ class SudokuTwoTwoTest {
                     assertThat(sudoku.isSolved(), is(equalTo(false)));
                 }
 
+                @Test
+                public void shouldPrintFields() throws Exception {
+                    String expected =
+                            "╔═╤═╦═╤═╗\n" +
+                            "║1│2║ │ ║\n" +
+                            "╟─┼─╫─┼─╢\n" +
+                            "║3│4║ │ ║\n" +
+                            "╠═╪═╬═╪═╣\n" +
+                            "║ │ ║ │ ║\n" +
+                            "╟─┼─╫─┼─╢\n" +
+                            "║ │ ║ │ ║\n" +
+                            "╚═╧═╩═╧═╝\n";
+
+                    assertThat(sudoku.toString(), is(equalTo(expected)));
+                }
+
                 @Nested
                 @DisplayName("(2,0) -> 3")
                 class SetTwoZeroToThree {
@@ -567,6 +636,22 @@ class SudokuTwoTwoTest {
                         assertThat(sudoku.isSolved(), is(equalTo(false)));
                     }
 
+                    @Test
+                    public void shouldPrintFields() throws Exception {
+                        String expected =
+                                "╔═╤═╦═╤═╗\n" +
+                                "║1│2║3│4║\n" +
+                                "╟─┼─╫─┼─╢\n" +
+                                "║3│4║ │ ║\n" +
+                                "╠═╪═╬═╪═╣\n" +
+                                "║ │ ║ │ ║\n" +
+                                "╟─┼─╫─┼─╢\n" +
+                                "║ │ ║ │ ║\n" +
+                                "╚═╧═╩═╧═╝\n";
+
+                        assertThat(sudoku.toString(), is(equalTo(expected)));
+                    }
+
                     @Nested
                     @DisplayName("(2,1) -> 2")
                     class SetTwoOneToTwo {
@@ -659,6 +744,27 @@ class SudokuTwoTwoTest {
                             assertThat(sudoku.isSolved(), is(equalTo(false)));
                         }
 
+                        @Test
+                        public void shouldHaveUnresolvedFields() throws Exception {
+                            assertThat(sudoku.getUnresolvedFields().size(), is(equalTo(8)));
+                        }
+
+                        @Test
+                        public void shouldPrintFields() throws Exception {
+                            String expected =
+                                    "╔═╤═╦═╤═╗\n" +
+                                    "║1│2║3│4║\n" +
+                                    "╟─┼─╫─┼─╢\n" +
+                                    "║3│4║2│1║\n" +
+                                    "╠═╪═╬═╪═╣\n" +
+                                    "║ │ ║ │ ║\n" +
+                                    "╟─┼─╫─┼─╢\n" +
+                                    "║ │ ║ │ ║\n" +
+                                    "╚═╧═╩═╧═╝\n";
+
+                            assertThat(sudoku.toString(), is(equalTo(expected)));
+                        }
+
                         @Nested
                         @DisplayName("(3,3) -> 3")
                         class SetThreeThreeToThree {
@@ -726,6 +832,27 @@ class SudokuTwoTwoTest {
                             @Test
                             public void shouldBeSolved() throws Exception {
                                 assertThat(sudoku.isSolved(), is(equalTo(true)));
+                            }
+
+                            @Test
+                            public void shouldNotHaveUnresolvedFields() throws Exception {
+                                assertThat(sudoku.getUnresolvedFields().size(), is(equalTo(0)));
+                            }
+
+                            @Test
+                            public void shouldPrintFields() throws Exception {
+                                String expected =
+                                        "╔═╤═╦═╤═╗\n" +
+                                        "║1│2║3│4║\n" +
+                                        "╟─┼─╫─┼─╢\n" +
+                                        "║3│4║2│1║\n" +
+                                        "╠═╪═╬═╪═╣\n" +
+                                        "║4│3║1│2║\n" +
+                                        "╟─┼─╫─┼─╢\n" +
+                                        "║2│1║4│3║\n" +
+                                        "╚═╧═╩═╧═╝\n";
+
+                                assertThat(sudoku.toString(), is(equalTo(expected)));
                             }
                         }
                     }

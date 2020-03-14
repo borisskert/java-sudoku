@@ -30,6 +30,11 @@ class SudokuThreeThreeTest {
         assertField(5, 4, allCandidates(), null);
     }
 
+    @Test
+    public void shouldHaveUnresolvedFields() throws Exception {
+        assertThat(sudoku.getUnresolvedFields().size(), is(equalTo(81)));
+    }
+
     @DisplayName("setup middle subgrid")
     @Nested
     class SetMiddleSubGridExampleNumbers {
@@ -481,6 +486,86 @@ class SudokuThreeThreeTest {
                                             FieldValue.of(7),
                                             FieldValue.of(8)
                                     ), null);
+                                }
+
+                                @DisplayName("Setup left center subgrid")
+                                @Nested
+                                class SetupLeftCenterSubGrid {
+                                    @BeforeEach
+                                    public void setup() throws Exception {
+                                        sudoku.set(0, 3, 8);
+                                        sudoku.set(0, 4, 4);
+                                        sudoku.set(0, 5, 7);
+                                    }
+
+                                    @Test
+                                    public void shouldUpdateCandidatesInRandomFields() throws Exception {
+                                        assertField(1, 1, Set.of(
+                                                FieldValue.of(4),
+                                                FieldValue.of(7)
+                                        ), null);
+                                        assertField(1, 4, Set.of(), FieldValue.of(2));
+                                        assertField(1, 7, Set.of(
+                                                FieldValue.of(5),
+                                                FieldValue.of(7),
+                                                FieldValue.of(8)
+                                        ), null);
+                                        assertField(4, 1, Set.of(), FieldValue.of(9));
+                                        assertField(4, 4, Set.of(), FieldValue.of(5));
+                                        assertField(4, 7, Set.of(), FieldValue.of(1));
+                                        assertField(7, 1, Set.of(
+                                                FieldValue.of(2),
+                                                FieldValue.of(3),
+                                                FieldValue.of(4),
+                                                FieldValue.of(7),
+                                                FieldValue.of(8)
+                                        ), null);
+                                        assertField(7, 4, Set.of(
+                                                FieldValue.of(7),
+                                                FieldValue.of(9)
+                                        ), null);
+                                        assertField(7, 7, Set.of(
+                                                FieldValue.of(2),
+                                                FieldValue.of(3),
+                                                FieldValue.of(5),
+                                                FieldValue.of(7),
+                                                FieldValue.of(8)
+                                        ), null);
+                                    }
+
+                                    @DisplayName("Setup 1st part of buttom right subgrid")
+                                    @Nested
+                                    class SetupFirstPartBottomRightSubGrid {
+                                        @BeforeEach
+                                        public void setup() throws Exception {
+                                            sudoku.set(6, 6, 2);
+                                            sudoku.set(7, 6, 8);
+                                            sudoku.set(7, 8, 7);
+                                        }
+
+                                        @Test
+                                        public void shouldUpdateCandidatesInRandomFields() throws Exception {
+                                            assertField(1, 1, Set.of(), FieldValue.of(7));
+                                            assertField(1, 4, Set.of(), FieldValue.of(2));
+                                            assertField(1, 7, Set.of(), FieldValue.of(8));
+                                            assertField(4, 1, Set.of(), FieldValue.of(9));
+                                            assertField(4, 4, Set.of(), FieldValue.of(5));
+                                            assertField(4, 7, Set.of(), FieldValue.of(1));
+                                            assertField(7, 1, Set.of(), FieldValue.of(4));
+                                            assertField(7, 4, Set.of(), FieldValue.of(9));
+                                            assertField(7, 7, Set.of(), FieldValue.of(3));
+                                        }
+
+                                        @Test
+                                        public void shouldBeSolved() throws Exception {
+                                            assertThat(sudoku.isSolved(), is(equalTo(true)));
+                                        }
+
+                                        @Test
+                                        public void shouldNotHaveUnresolvedFields() throws Exception {
+                                            assertThat(sudoku.getUnresolvedFields().size(), is(equalTo(0)));
+                                        }
+                                    }
                                 }
                             }
                         }
