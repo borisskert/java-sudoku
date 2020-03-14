@@ -76,6 +76,16 @@ class SudokuTwoTwoTest {
         }
 
         @Test
+        public void shouldThrowWhenTryToSetValueNotInCandidates() throws Exception {
+            try {
+                sudoku.set(1, 0, 1);
+                fail("Should throw IllegalArgumentException");
+            } catch (IllegalArgumentException e) {
+                assertThat(e.getMessage(), Is.is(equalTo("Value '1' not in candidates")));
+            }
+        }
+
+        @Test
         @DisplayName("candidates of (0,0) == []")
         public void shouldRemoveAllPotentialCandidatesFromFieldZeroZero() throws Exception {
             Set<FieldValue> candidates = sudoku.getCandidates(0, 0);

@@ -42,6 +42,7 @@ public class Field implements ChangeListener<FieldValue> {
 
     public void setValue(FieldValue value) {
         throwIfAlreadySet();
+        throwIfNotInCandidates(value);
 
         candidates.clear();
         valueProperty.set(value);
@@ -70,6 +71,12 @@ public class Field implements ChangeListener<FieldValue> {
         if (maybeValue.isPresent()) {
             FieldValue fieldValue = maybeValue.get();
             throw new IllegalStateException("Already contains the value '" + fieldValue.getValue() + "'");
+        }
+    }
+
+    private void throwIfNotInCandidates(FieldValue value) {
+        if (!candidates.contains(value)) {
+            throw new IllegalArgumentException("Value '" + value + "' not in candidates");
         }
     }
 }
