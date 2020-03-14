@@ -27,4 +27,8 @@ public class Sudoku {
     public void set(int x, int y, int value) {
         subGrids.getField(x, y).setValue(FieldValue.of(value));
     }
+
+    public boolean isSolved() {
+        return subGrids.areSolved();
+    }
 }

@@ -55,6 +55,10 @@ public class Field implements ChangeListener<FieldValue> {
         }
     }
 
+    public boolean isEmpty() {
+        return valueProperty.asOptional().isEmpty();
+    }
+
     private void throwIfAlreadySet() {
         Optional<FieldValue> maybeValue = valueProperty.asOptional();
 

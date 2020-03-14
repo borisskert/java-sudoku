@@ -30,6 +30,10 @@ public class SubGrids {
         return currentSubGrid.get(relativeX, relativeY);
     }
 
+    public boolean areSolved() {
+        return subGrids.stream().noneMatch(SubGrid::isNotSolved);
+    }
+
     private SubGrid getSubGrid(int x, int y) {
         int fieldX = x / 2;
         int fieldY = y / 2;

@@ -51,6 +51,11 @@ class SudokuTest {
         assertThat(candidates, is(equalTo(List.of(FieldValue.of(1), FieldValue.of(2), FieldValue.of(3), FieldValue.of(4)))));
     }
 
+    @Test
+    public void shouldNotBeSolved() throws Exception {
+        assertThat(sudoku.isSolved(), is(equalTo(false)));
+    }
+
     @Nested
     @DisplayName("(0,0) -> 1")
     class SetZeroZeroToOne {
@@ -198,6 +203,11 @@ class SudokuTest {
             assertThat(candidates, is(equalTo(List.of(FieldValue.of(1), FieldValue.of(2), FieldValue.of(3), FieldValue.of(4)))));
         }
 
+        @Test
+        public void shouldNotBeSolved() throws Exception {
+            assertThat(sudoku.isSolved(), is(equalTo(false)));
+        }
+
         @Nested
         @DisplayName("(1,0) -> 2")
         class SetOneZeroToTwo {
@@ -318,6 +328,11 @@ class SudokuTest {
                 assertThat(candidates, is(equalTo(List.of(FieldValue.of(1), FieldValue.of(2), FieldValue.of(3), FieldValue.of(4)))));
             }
 
+            @Test
+            public void shouldNotBeSolved() throws Exception {
+                assertThat(sudoku.isSolved(), is(equalTo(false)));
+            }
+
             @Nested
             @DisplayName("(0,1) -> 3")
             class SetZeroOneToThree {
@@ -429,6 +444,10 @@ class SudokuTest {
                     assertThat(candidates, is(equalTo(List.of(FieldValue.of(1), FieldValue.of(2), FieldValue.of(3), FieldValue.of(4)))));
                 }
 
+                @Test
+                public void shouldNotBeSolved() throws Exception {
+                    assertThat(sudoku.isSolved(), is(equalTo(false)));
+                }
 
                 @Nested
                 @DisplayName("(2,0) -> 3")
@@ -533,6 +552,11 @@ class SudokuTest {
                         assertThat(candidates, is(equalTo(List.of(FieldValue.of(1), FieldValue.of(2), FieldValue.of(3)))));
                     }
 
+                    @Test
+                    public void shouldNotBeSolved() throws Exception {
+                        assertThat(sudoku.isSolved(), is(equalTo(false)));
+                    }
+
                     @Nested
                     @DisplayName("(2,1) -> 2")
                     class SetTwoOneToTwo {
@@ -620,6 +644,11 @@ class SudokuTest {
                             assertThat(candidates, is(equalTo(List.of(FieldValue.of(2), FieldValue.of(3)))));
                         }
 
+                        @Test
+                        public void shouldNotBeSolved() throws Exception {
+                            assertThat(sudoku.isSolved(), is(equalTo(false)));
+                        }
+
                         @Nested
                         @DisplayName("(3,3) -> 3")
                         class SetThreeThreeToThree {
@@ -682,6 +711,11 @@ class SudokuTest {
                             public void shouldRemovePotentialCandidatesFromFieldOneThree() throws Exception {
                                 assertThat(sudoku.getCandidates(1, 3), is(equalTo(List.of())));
                                 assertThat(sudoku.get(1, 3), is(equalTo(FieldValue.of(1))));
+                            }
+
+                            @Test
+                            public void shouldBeSolved() throws Exception {
+                                assertThat(sudoku.isSolved(), is(equalTo(true)));
                             }
                         }
                     }
