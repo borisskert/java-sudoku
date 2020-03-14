@@ -4,10 +4,10 @@ import java.util.List;
 
 public class Sudoku {
 
-    private final Fields fields;
+    private final SubGrids subGrids;
 
     public Sudoku() {
-        fields = new Fields();
+        subGrids = new SubGrids();
     }
 
     public static Sudoku create(int size) {
@@ -15,10 +15,11 @@ public class Sudoku {
     }
 
     public List<FieldValue> getCandidates(int x, int y) {
-        return fields.get(x, y).getCandidates();
+        Field field = subGrids.getField(x, y);
+        return field.getCandidates();
     }
 
     public void set(int x, int y, int value) {
-        fields.get(x, y).setValue(FieldValue.of(value));
+        subGrids.getField(x, y).setValue(FieldValue.of(value));
     }
 }

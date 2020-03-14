@@ -18,6 +18,14 @@ public class Field implements ChangeListener<FieldValue> {
         this.candidates = new ArrayList<>(candidates);
     }
 
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
     public List<FieldValue> getCandidates() {
         return candidates;
     }
