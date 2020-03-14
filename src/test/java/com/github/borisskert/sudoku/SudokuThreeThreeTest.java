@@ -15,7 +15,7 @@ import static org.hamcrest.Matchers.is;
  * Use this example for tests
  * https://commons.wikimedia.org/wiki/File:Sudoku_Puzzle_by_L2G-20050714_standardized_layout.svg#/media/File:Sudoku_Puzzle_by_L2G-20050714_standardized_layout.svg
  */
-@DisplayName("Sudoku (2/2)")
+@DisplayName("Sudoku (3/3)")
 class SudokuThreeThreeTest {
 
     private Sudoku sudoku;
@@ -364,7 +364,6 @@ class SudokuThreeThreeTest {
                                 sudoku.set(1, 6, 6);
                             }
 
-
                             @Test
                             public void shouldUpdateCandidatesInRandomFields() throws Exception {
                                 assertField(1, 1, Set.of(
@@ -423,6 +422,66 @@ class SudokuThreeThreeTest {
                                         FieldValue.of(7),
                                         FieldValue.of(8)
                                 ), null);
+                            }
+
+                            @DisplayName("Setup top (middle) subgrid")
+                            @Nested
+                            class SetupTopSubGrid {
+                                @BeforeEach
+                                public void setup() throws Exception {
+                                    sudoku.set(4, 0, 7);
+                                    sudoku.set(3, 1, 1);
+                                    sudoku.set(4, 1, 9);
+                                    sudoku.set(5, 1, 5);
+                                }
+
+                                @Test
+                                public void shouldUpdateCandidatesInRandomFields() throws Exception {
+                                    assertField(1, 1, Set.of(
+                                            FieldValue.of(2),
+                                            FieldValue.of(4),
+                                            FieldValue.of(7)
+                                    ), null);
+                                    assertField(1, 4, Set.of(
+                                            FieldValue.of(2),
+                                            FieldValue.of(4),
+                                            FieldValue.of(5),
+                                            FieldValue.of(7)
+                                    ), null);
+                                    assertField(1, 7, Set.of(
+                                            FieldValue.of(2),
+                                            FieldValue.of(5),
+                                            FieldValue.of(7),
+                                            FieldValue.of(8)
+                                    ), null);
+                                    assertField(4, 1, Set.of(), FieldValue.of(9));
+                                    assertField(4, 4, Set.of(
+                                            FieldValue.of(4),
+                                            FieldValue.of(5)
+                                    ), null);
+                                    assertField(4, 7, Set.of(), FieldValue.of(1));
+                                    assertField(7, 1, Set.of(
+                                            FieldValue.of(2),
+                                            FieldValue.of(3),
+                                            FieldValue.of(4),
+                                            FieldValue.of(7),
+                                            FieldValue.of(8)
+                                    ), null);
+                                    assertField(7, 4, Set.of(
+                                            FieldValue.of(2),
+                                            FieldValue.of(4),
+                                            FieldValue.of(5),
+                                            FieldValue.of(7),
+                                            FieldValue.of(9)
+                                    ), null);
+                                    assertField(7, 7, Set.of(
+                                            FieldValue.of(2),
+                                            FieldValue.of(3),
+                                            FieldValue.of(5),
+                                            FieldValue.of(7),
+                                            FieldValue.of(8)
+                                    ), null);
+                                }
                             }
                         }
                     }
