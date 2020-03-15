@@ -1,9 +1,7 @@
 package com.github.borisskert.sudoku;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -33,7 +31,7 @@ class SubGrid {
     }
 
     private Set<FieldValue> createDefaultCandidates() {
-        int candidates = sizeX * sizeX;
+        int candidates = sizeX * sizeY;
 
         return IntStream.range(1, candidates + 1)
                 .mapToObj(FieldValue::of)
@@ -48,10 +46,11 @@ class SubGrid {
         return y;
     }
 
-    public Field get(int x, int y) {
+    public FieldWithAbsoluteCoordinates get(int x, int y) {
         return fields.stream()
                 .filter(field -> field.getX() == x)
                 .filter(field -> field.getY() == y)
+                .map(absoluteCoordinates())
                 .findFirst().get();
     }
 
@@ -62,7 +61,7 @@ class SubGrid {
     private void fillWithFields() {
         for (int x = 0; x < sizeX; x++) {
             for (int y = 0; y < sizeY; y++) {
-                Field field = new Field(x, y, defaultCandidates);
+                Field field = new Field(new Coordinates(x, y), new HashSet<>(defaultCandidates));
                 fields.add(field);
             }
         }
@@ -110,9 +109,43 @@ class SubGrid {
                 .collect(Collectors.toList());
     }
 
-    public Collection<Field> getUnresolvedFields() {
+    Collection<FieldWithAbsoluteCoordinates> getUnresolvedFields() {
         return fields.stream()
                 .filter(Field::isEmpty)
+                .filter(field -> field.getCandidates().size() > 0)
+                .map(absoluteCoordinates())
                 .collect(Collectors.toUnmodifiableList());
+    }
+
+    private Function<Field, FieldWithAbsoluteCoordinates> absoluteCoordinates() {
+        return field -> field.withinSubGrid(
+                x * sizeX,
+                y * sizeY
+        );
+    }
+
+    FieldsWithAbsoluteCoordinates getFields() {
+        return fields.stream()
+                .map(absoluteCoordinates())
+                .collect(FieldsWithAbsoluteCoordinates.collect());
+    }
+
+    Collection<FieldWithAbsoluteCoordinates> getFieldsToBeSolved() {
+        return fields.stream()
+                .filter(field -> field.getCandidates().size() == 1)
+                .map(absoluteCoordinates())
+                .collect(Collectors.toUnmodifiableList());
+    }
+
+    @Override
+    public String toString() {
+        return "SubGrid{" +
+                "defaultCandidates=" + defaultCandidates +
+                ", fields=" + fields +
+                ", x=" + x +
+                ", y=" + y +
+                ", sizeX=" + sizeX +
+                ", sizeY=" + sizeY +
+                '}';
     }
 }

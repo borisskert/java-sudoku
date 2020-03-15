@@ -55,14 +55,10 @@ class SudokuTwoTwoTest {
     public void shouldNotBeSolved() throws Exception {
         assertThat(sudoku.isSolved(), is(equalTo(false)));
     }
-    
-    @Test
-    public void shouldHaveUnresolvedFields() throws Exception {
-        assertThat(sudoku.getUnresolvedFields().size(), is(equalTo(16)));
-    }
 
     @Test
     public void shouldPrintFields() throws Exception {
+        // @formatter:off
         String expected =
                 "╔═╤═╦═╤═╗\n" +
                 "║ │ ║ │ ║\n" +
@@ -73,7 +69,7 @@ class SudokuTwoTwoTest {
                 "╟─┼─╫─┼─╢\n" +
                 "║ │ ║ │ ║\n" +
                 "╚═╧═╩═╧═╝\n";
-
+        // @formatter:on
         assertThat(sudoku.toString(), is(equalTo(expected)));
     }
 
@@ -241,6 +237,7 @@ class SudokuTwoTwoTest {
 
         @Test
         public void shouldPrintFields() throws Exception {
+            // @formatter:off
             String expected =
                     "╔═╤═╦═╤═╗\n" +
                     "║1│ ║ │ ║\n" +
@@ -251,7 +248,7 @@ class SudokuTwoTwoTest {
                     "╟─┼─╫─┼─╢\n" +
                     "║ │ ║ │ ║\n" +
                     "╚═╧═╩═╧═╝\n";
-
+            // @formatter:on
             assertThat(sudoku.toString(), is(equalTo(expected)));
         }
 
@@ -382,6 +379,7 @@ class SudokuTwoTwoTest {
 
             @Test
             public void shouldPrintFields() throws Exception {
+                // @formatter:off
                 String expected =
                         "╔═╤═╦═╤═╗\n" +
                         "║1│2║ │ ║\n" +
@@ -392,7 +390,7 @@ class SudokuTwoTwoTest {
                         "╟─┼─╫─┼─╢\n" +
                         "║ │ ║ │ ║\n" +
                         "╚═╧═╩═╧═╝\n";
-
+                // @formatter:on
                 assertThat(sudoku.toString(), is(equalTo(expected)));
             }
 
@@ -402,6 +400,7 @@ class SudokuTwoTwoTest {
                 @BeforeEach
                 public void setup() throws Exception {
                     sudoku.set(0, 1, 3);
+                    sudoku.detectChanges();
                 }
 
                 @Test
@@ -514,6 +513,7 @@ class SudokuTwoTwoTest {
 
                 @Test
                 public void shouldPrintFields() throws Exception {
+                    // @formatter:off
                     String expected =
                             "╔═╤═╦═╤═╗\n" +
                             "║1│2║ │ ║\n" +
@@ -524,7 +524,7 @@ class SudokuTwoTwoTest {
                             "╟─┼─╫─┼─╢\n" +
                             "║ │ ║ │ ║\n" +
                             "╚═╧═╩═╧═╝\n";
-
+                    // @formatter:on
                     assertThat(sudoku.toString(), is(equalTo(expected)));
                 }
 
@@ -534,6 +534,7 @@ class SudokuTwoTwoTest {
                     @BeforeEach
                     public void setup() throws Exception {
                         sudoku.set(2, 0, 3);
+                        sudoku.detectChanges();
                     }
 
                     @Test
@@ -638,6 +639,7 @@ class SudokuTwoTwoTest {
 
                     @Test
                     public void shouldPrintFields() throws Exception {
+                        // @formatter:off
                         String expected =
                                 "╔═╤═╦═╤═╗\n" +
                                 "║1│2║3│4║\n" +
@@ -648,7 +650,7 @@ class SudokuTwoTwoTest {
                                 "╟─┼─╫─┼─╢\n" +
                                 "║ │ ║ │ ║\n" +
                                 "╚═╧═╩═╧═╝\n";
-
+                        // @formatter:on
                         assertThat(sudoku.toString(), is(equalTo(expected)));
                     }
 
@@ -658,6 +660,7 @@ class SudokuTwoTwoTest {
                         @BeforeEach
                         public void setup() throws Exception {
                             sudoku.set(2, 1, 2);
+                            sudoku.detectChanges();
                         }
 
                         @Test
@@ -745,12 +748,8 @@ class SudokuTwoTwoTest {
                         }
 
                         @Test
-                        public void shouldHaveUnresolvedFields() throws Exception {
-                            assertThat(sudoku.getUnresolvedFields().size(), is(equalTo(8)));
-                        }
-
-                        @Test
                         public void shouldPrintFields() throws Exception {
+                            // @formatter:off
                             String expected =
                                     "╔═╤═╦═╤═╗\n" +
                                     "║1│2║3│4║\n" +
@@ -761,7 +760,7 @@ class SudokuTwoTwoTest {
                                     "╟─┼─╫─┼─╢\n" +
                                     "║ │ ║ │ ║\n" +
                                     "╚═╧═╩═╧═╝\n";
-
+                            // @formatter:on
                             assertThat(sudoku.toString(), is(equalTo(expected)));
                         }
 
@@ -771,6 +770,7 @@ class SudokuTwoTwoTest {
                             @BeforeEach
                             public void setup() throws Exception {
                                 sudoku.set(3, 3, 3);
+                                sudoku.detectChanges();
                             }
 
                             @Test
@@ -835,12 +835,8 @@ class SudokuTwoTwoTest {
                             }
 
                             @Test
-                            public void shouldNotHaveUnresolvedFields() throws Exception {
-                                assertThat(sudoku.getUnresolvedFields().size(), is(equalTo(0)));
-                            }
-
-                            @Test
                             public void shouldPrintFields() throws Exception {
+                                // @formatter:off
                                 String expected =
                                         "╔═╤═╦═╤═╗\n" +
                                         "║1│2║3│4║\n" +
@@ -851,7 +847,7 @@ class SudokuTwoTwoTest {
                                         "╟─┼─╫─┼─╢\n" +
                                         "║2│1║4│3║\n" +
                                         "╚═╧═╩═╧═╝\n";
-
+                                // @formatter:on
                                 assertThat(sudoku.toString(), is(equalTo(expected)));
                             }
                         }

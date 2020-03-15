@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 class SubGrids {
 
@@ -19,6 +20,14 @@ class SubGrids {
         bindNeighborSubGrids();
     }
 
+    public int getSizeX() {
+        return sizeX;
+    }
+
+    public int getSizeY() {
+        return sizeY;
+    }
+
     private void initSubGrids() {
         for (int x = 0; x < sizeY; x++) {
             for (int y = 0; y < sizeX; y++) {
@@ -27,13 +36,29 @@ class SubGrids {
         }
     }
 
-    public Field getField(int x, int y) {
+    public FieldWithAbsoluteCoordinates getField(int x, int y) {
         SubGrid currentSubGrid = getSubGrid(x / sizeX, y / sizeY);
 
         int relativeX = x % sizeX;
         int relativeY = y % sizeY;
 
         return currentSubGrid.get(relativeX, relativeY);
+    }
+
+    private FieldsWithAbsoluteCoordinates getColumn(int x) {
+        return subGrids.stream()
+                .map(SubGrid::getFields)
+                .flatMap(fields -> fields.getFields().stream())
+                .filter(field -> field.getAbsoluteX() == x)
+                .collect(FieldsWithAbsoluteCoordinates.collect());
+    }
+
+    private FieldsWithAbsoluteCoordinates getLine(int y) {
+        return subGrids.stream()
+                .map(SubGrid::getFields)
+                .flatMap(fields -> fields.getFields().stream())
+                .filter(field -> field.getAbsoluteY() == y)
+                .collect(FieldsWithAbsoluteCoordinates.collect());
     }
 
     public boolean areSolved() {
@@ -82,9 +107,48 @@ class SubGrids {
                 .collect(Collectors.toList());
     }
 
-    public Collection<Field> getUnresolvedFields() {
+    Collection<FieldWithAbsoluteCoordinates> getUnresolvedFields() {
         return subGrids.stream()
                 .flatMap(subGrid -> subGrid.getUnresolvedFields().stream())
                 .collect(Collectors.toUnmodifiableList());
+    }
+
+    Collection<FieldsWithAbsoluteCoordinates> getSubGridFields() {
+        return subGrids.stream()
+                .map(SubGrid::getFields)
+                .collect(Collectors.toUnmodifiableList());
+    }
+
+    Collection<FieldsWithAbsoluteCoordinates> getLines() {
+        return IntStream.range(0, sizeX * sizeY)
+                .mapToObj(this::getLine)
+                .collect(Collectors.toUnmodifiableList());
+    }
+
+    Collection<FieldsWithAbsoluteCoordinates> getColumns() {
+        return IntStream.range(0, sizeX * sizeY)
+                .mapToObj(this::getColumn)
+                .collect(Collectors.toUnmodifiableList());
+    }
+
+    Collection<FieldWithAbsoluteCoordinates> findDefiniteFields() {
+        return subGrids.stream()
+                .flatMap(subGrid -> subGrid.getFieldsToBeSolved().stream())
+                .collect(Collectors.toUnmodifiableList());
+    }
+
+    Collection<FieldWithAbsoluteCoordinates> getFields() {
+        return subGrids.stream()
+                .flatMap(subGrid -> subGrid.getFields().getFields().stream())
+                .collect(Collectors.toUnmodifiableList());
+    }
+
+    @Override
+    public String toString() {
+        return "SubGrids{" +
+                "subGrids=" + subGrids +
+                ", sizeX=" + sizeX +
+                ", sizeY=" + sizeY +
+                '}';
     }
 }

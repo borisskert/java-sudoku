@@ -5,35 +5,48 @@ import com.github.borisskert.observableproperties.OptionalProperty;
 import com.github.borisskert.observableproperties.ReadonlyProperty;
 import com.github.borisskert.observableproperties.SimpleOptionalProperty;
 
-import java.util.HashSet;
+import java.util.Comparator;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
 public class Field implements ChangeListener<FieldValue> {
+    static final Comparator<Field> COMPARATOR = new FieldComparator();
 
-    private final OptionalProperty<FieldValue> valueProperty = new SimpleOptionalProperty<>();
-
-    private final int x;
-    private final int y;
-
+    private final OptionalProperty<FieldValue> valueProperty;
+    private final Coordinates coordinates;
     private final Set<FieldValue> candidates;
 
-    public Field(int x, int y, Set<FieldValue> candidates) {
-        this.x = x;
-        this.y = y;
-        this.candidates = new HashSet<>(candidates);
+    public Field(Coordinates coordinates, Set<FieldValue> candidates) {
+        this.coordinates = coordinates;
+        this.candidates = candidates;
+        this.valueProperty = new SimpleOptionalProperty<>();
+    }
+
+    protected Field(Coordinates coordinates, Set<FieldValue> candidates, OptionalProperty<FieldValue> valueProperty) {
+        this.coordinates = coordinates;
+        this.candidates = candidates;
+        this.valueProperty = valueProperty;
     }
 
     public int getX() {
-        return x;
+        return this.coordinates.getX();
     }
 
     public int getY() {
-        return y;
+        return this.coordinates.getY();
     }
 
     public Set<FieldValue> getCandidates() {
         return candidates;
+    }
+
+    public FieldValue lastCandidate() {
+        if(candidates.size() > 1) {
+            throw new IllegalStateException("More than one candidate");
+        }
+
+        return candidates.iterator().next();
     }
 
     public ReadonlyProperty<FieldValue> getValue() {
@@ -54,10 +67,20 @@ public class Field implements ChangeListener<FieldValue> {
 
     @Override
     public void onChange(ReadonlyProperty<FieldValue> property, FieldValue oldValue, FieldValue newValue) {
-        candidates.remove(newValue);
+        failIfValueAlreadyOccupied(newValue);
 
-        if (candidates.size() == 1) {
-            setValue(candidates.iterator().next());
+        candidates.remove(newValue);
+    }
+
+    private void failIfValueAlreadyOccupied(FieldValue newValue) {
+        Optional<FieldValue> maybeValue = valueProperty.asOptional();
+
+        if (maybeValue.isPresent()) {
+            FieldValue fieldValue = maybeValue.get();
+
+            if (fieldValue.equals(newValue)) {
+                throw new IllegalStateException("Value '" + newValue + "' already occupied");
+            }
         }
     }
 
@@ -78,5 +101,62 @@ public class Field implements ChangeListener<FieldValue> {
         if (!candidates.contains(value)) {
             throw new IllegalArgumentException("Value '" + value.getValue() + "' not in candidates");
         }
+    }
+
+    private static class FieldComparator implements Comparator<Field> {
+        @Override
+        public int compare(Field o1, Field o2) {
+            if (o1.isEmpty() == o2.isEmpty()) {
+                if (o1.getCandidates().size() == o2.getCandidates().size()) {
+                    if (o1.getX() == o2.getX()) {
+                        return Objects.compare(
+                                o1.getY(),
+                                o2.getY(),
+                                Integer::compareTo
+                        );
+                    } else {
+                        return Objects.compare(
+                                o1.getX(),
+                                o2.getX(),
+                                Integer::compareTo
+                        );
+                    }
+                } else {
+                    return Objects.compare(
+                            o1.getCandidates().size(),
+                            o2.getCandidates().size(),
+                            Integer::compareTo
+                    );
+                }
+            } else {
+                return Objects.compare(
+                        !o1.isEmpty(),
+                        !o2.isEmpty(),
+                        Boolean::compareTo
+                );
+            }
+        }
+    }
+
+    FieldWithAbsoluteCoordinates withinSubGrid(int offsetX, int offsetY) {
+        int x = this.coordinates.getX();
+        int y = this.coordinates.getY();
+
+        return new FieldWithAbsoluteCoordinates(
+                this.coordinates,
+                this.candidates,
+                this.valueProperty,
+                new Coordinates(x + offsetX, y + offsetY)
+        );
+    }
+
+    @Override
+    public String toString() {
+        return "Field{" +
+                "valueProperty=" + valueProperty +
+                ", x=" + this.coordinates.getX() +
+                ", y=" + this.coordinates.getY() +
+                ", candidates=" + candidates +
+                '}';
     }
 }

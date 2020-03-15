@@ -20,11 +20,6 @@ public class SudokuFourThreeTest {
     }
 
     @Test
-    public void shouldHaveUnresolvedFields() throws Exception {
-        assertThat(sudoku.getUnresolvedFields().size(), is(equalTo(144)));
-    }
-
-    @Test
     public void shouldPrintFields() throws Exception {
         // @formatter:off
         String expected =
@@ -568,6 +563,8 @@ public class SudokuFourThreeTest {
                                                         sudoku.set(1, 7, 5);
                                                         sudoku.set(2, 7, 11);
                                                         sudoku.set(3, 7, 2);
+
+                                                        sudoku.detectChanges();
                                                     }
 
                                                     @Test
@@ -577,7 +574,7 @@ public class SudokuFourThreeTest {
                                                                 "╔══╤══╤══╤══╦══╤══╤══╤══╦══╤══╤══╤══╗\n" +
                                                                 "║  │  │  │ 7║  │  │12│  ║  │  │  │  ║\n" +
                                                                 "╟──┼──┼──┼──╫──┼──┼──┼──╫──┼──┼──┼──╢\n" +
-                                                                "║  │  │  │  ║10│  │  │ 1║11│  │ 9│12║\n" +
+                                                                "║  │ 8│  │  ║10│  │  │ 1║11│  │ 9│12║\n" +
                                                                 "╟──┼──┼──┼──╫──┼──┼──┼──╫──┼──┼──┼──╢\n" +
                                                                 "║ 4│  │  │ 9║ 7│  │ 5│11║  │  │ 1│ 3║\n" +
                                                                 "╠══╪══╪══╪══╬══╪══╪══╪══╬══╪══╪══╪══╣\n" +
@@ -603,6 +600,109 @@ public class SudokuFourThreeTest {
 
                                                         assertThat(sudoku.toString(), is(equalTo(expected)));
                                                     }
+
+                                                    @DisplayName("Resolve sudoku")
+                                                    @Nested
+                                                    class Resolve {
+                                                        @BeforeEach
+                                                        public void setup() throws Exception {
+                                                            sudoku.solve();
+                                                        }
+
+                                                        @Test
+                                                        public void shouldPrintFields() throws Exception {
+                                                            // @formatter:off
+                                                            String expected =
+                                                                    "╔══╤══╤══╤══╦══╤══╤══╤══╦══╤══╤══╤══╗\n" +
+                                                                    "║10│11│ 1│ 7║ 9│ 3│12│ 8║ 6│ 4│ 2│ 5║\n" +
+                                                                    "╟──┼──┼──┼──╫──┼──┼──┼──╫──┼──┼──┼──╢\n" +
+                                                                    "║ 3│ 8│ 2│ 5║10│ 4│ 6│ 1║11│ 7│ 9│12║\n" +
+                                                                    "╟──┼──┼──┼──╫──┼──┼──┼──╫──┼──┼──┼──╢\n" +
+                                                                    "║ 4│12│ 6│ 9║ 7│ 2│ 5│11║ 8│10│ 1│ 3║\n" +
+                                                                    "╠══╪══╪══╪══╬══╪══╪══╪══╬══╪══╪══╪══╣\n" +
+                                                                    "║ 7│ 4│ 8│ 6║12│11│ 3│ 5║ 9│ 1│10│ 2║\n" +
+                                                                    "╟──┼──┼──┼──╫──┼──┼──┼──╫──┼──┼──┼──╢\n" +
+                                                                    "║ 5│ 9│10│12║ 1│ 7│ 2│ 6║ 3│11│ 8│ 4║\n" +
+                                                                    "╟──┼──┼──┼──╫──┼──┼──┼──╫──┼──┼──┼──╢\n" +
+                                                                    "║ 1│ 2│ 3│11║ 8│10│ 4│ 9║ 5│12│ 6│ 7║\n" +
+                                                                    "╠══╪══╪══╪══╬══╪══╪══╪══╬══╪══╪══╪══╣\n" +
+                                                                    "║ 9│ 7│ 4│ 3║ 5│ 6│11│ 2║ 1│ 8│12│10║\n" +
+                                                                    "╟──┼──┼──┼──╫──┼──┼──┼──╫──┼──┼──┼──╢\n" +
+                                                                    "║ 8│ 5│11│ 2║ 3│12│ 1│10║ 4│ 9│ 7│ 6║\n" +
+                                                                    "╟──┼──┼──┼──╫──┼──┼──┼──╫──┼──┼──┼──╢\n" +
+                                                                    "║ 6│10│12│ 1║ 4│ 8│ 9│ 7║ 2│ 3│ 5│11║\n" +
+                                                                    "╠══╪══╪══╪══╬══╪══╪══╪══╬══╪══╪══╪══╣\n" +
+                                                                    "║12│ 3│ 5│ 8║ 2│ 9│ 7│ 4║10│ 6│11│ 1║\n" +
+                                                                    "╟──┼──┼──┼──╫──┼──┼──┼──╫──┼──┼──┼──╢\n" +
+                                                                    "║ 2│ 6│ 7│10║11│ 1│ 8│ 3║12│ 5│ 4│ 9║\n" +
+                                                                    "╟──┼──┼──┼──╫──┼──┼──┼──╫──┼──┼──┼──╢\n" +
+                                                                    "║11│ 1│ 9│ 4║ 6│ 5│10│12║ 7│ 2│ 3│ 8║\n" +
+                                                                    "╚══╧══╧══╧══╩══╧══╧══╧══╩══╧══╧══╧══╝\n";
+                                                            // @formatter:on
+
+                                                            assertThat(sudoku.toString(), is(equalTo(expected)));
+                                                        }
+                                                    }
+//
+//                                                    @DisplayName("set suggested field value (1/2) -> 10")
+//                                                    @Nested
+//                                                    class S {
+//                                                        @BeforeEach
+//                                                        public void setup() throws Exception {
+//                                                            sudoku.set(1, 2, 10);
+//                                                            sudoku.set(1, 0, 1);
+//                                                            sudoku.set(1, 6, 7);
+//                                                            sudoku.set(1, 3, 9);
+//                                                            sudoku.set(0, 11, 8);
+//                                                            sudoku.set(0, 1, 5);
+//                                                            sudoku.set(0, 0, 11);
+//                                                            sudoku.set(0, 5, 3);
+//                                                        }
+//
+//                                                        @Test
+//                                                        public void shouldPrintFields() throws Exception {
+//                                                            // @formatter:off
+//                                                            String expected =
+//                                                                    "╔══╤══╤══╤══╦══╤══╤══╤══╦══╤══╤══╤══╗\n" +
+//                                                                    "║11│ 1│  │ 7║  │  │12│  ║  │  │  │  ║\n" +
+//                                                                    "╟──┼──┼──┼──╫──┼──┼──┼──╫──┼──┼──┼──╢\n" +
+//                                                                    "║ 5│ 8│  │ 6║10│  │  │ 1║11│  │ 9│12║\n" +
+//                                                                    "╟──┼──┼──┼──╫──┼──┼──┼──╫──┼──┼──┼──╢\n" +
+//                                                                    "║ 4│10│  │ 9║ 7│  │ 5│11║  │  │ 1│ 3║\n" +
+//                                                                    "╠══╪══╪══╪══╬══╪══╪══╪══╬══╪══╪══╪══╣\n" +
+//                                                                    "║  │ 9│ 8│ 1║12│  │  │ 5║  │  │  │  ║\n" +
+//                                                                    "╟──┼──┼──┼──╫──┼──┼──┼──╫──┼──┼──┼──╢\n" +
+//                                                                    "║  │ 4│  │12║  │  │  │  ║ 3│11│ 8│  ║\n" +
+//                                                                    "╟──┼──┼──┼──╫──┼──┼──┼──╫──┼──┼──┼──╢\n" +
+//                                                                    "║ 3│ 2│  │11║ 8│10│  │  ║ 5│  │  │ 7║\n" +
+//                                                                    "╠══╪══╪══╪══╬══╪══╪══╪══╬══╪══╪══╪══╣\n" +
+//                                                                    "║ 9│ 7│  │ 3║  │  │11│ 2║ 1│  │12│  ║\n" +
+//                                                                    "╟──┼──┼──┼──╫──┼──┼──┼──╫──┼──┼──┼──╢\n" +
+//                                                                    "║  │ 5│11│ 2║  │  │  │  ║ 4│  │  │  ║\n" +
+//                                                                    "╟──┼──┼──┼──╫──┼──┼──┼──╫──┼──┼──┼──╢\n" +
+//                                                                    "║  │12│  │ 8║ 4│  │  │ 7║  │ 3│  │  ║\n" +
+//                                                                    "╠══╪══╪══╪══╬══╪══╪══╪══╬══╪══╪══╪══╣\n" +
+//                                                                    "║12│ 3│ 7│ 5║ 2│ 9│  │ 4║10│  │  │ 1║\n" +
+//                                                                    "╟──┼──┼──┼──╫──┼──┼──┼──╫──┼──┼──┼──╢\n" +
+//                                                                    "║ 2│ 6│  │10║11│  │  │ 3║  │  │  │  ║\n" +
+//                                                                    "╟──┼──┼──┼──╫──┼──┼──┼──╫──┼──┼──┼──╢\n" +
+//                                                                    "║ 8│11│  │ 4║  │ 5│  │  ║ 7│  │  │  ║\n" +
+//                                                                    "╚══╧══╧══╧══╩══╧══╧══╧══╩══╧══╧══╧══╝\n";
+//                                                            // @formatter:on
+//
+//                                                            assertThat(sudoku.toString(), is(equalTo(expected)));
+//                                                        }
+//
+//                                                        @Test
+//                                                        public void shouldSuggestNextField() throws Exception {
+//                                                            Field suggested = sudoku.suggestField().get();
+//                                                            assertThat(suggested.getX(), is(equalTo(0)));
+//                                                            assertThat(suggested.getY(), is(equalTo(5)));
+//                                                            assertThat(suggested.getCandidates().size(), is(equalTo(2)));
+//
+//                                                            System.out.println(suggested.getCandidates());
+//                                                        }
+//                                                    }
                                                 }
                                             }
                                         }

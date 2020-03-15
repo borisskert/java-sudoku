@@ -1,16 +1,19 @@
 package com.github.borisskert.sudoku;
 
-import java.util.Collection;
 import java.util.Set;
 
 public class Sudoku {
 
     private final SubGrids subGrids;
     private final Formatter formatter;
+    private final ChangeDetection changeDetection;
+    private final ChangeHistory changeHistory;
 
     public Sudoku(int sizeX, int sizeY) {
         subGrids = new SubGrids(sizeX, sizeY);
-        formatter = new Formatter(sizeX, sizeY, subGrids);
+        formatter = new Formatter(subGrids);
+        changeHistory = new ChangeHistory(subGrids);
+        changeDetection = new ChangeDetection(subGrids, changeHistory);
     }
 
     public static Sudoku create(int sizeX, int sizeY) {
@@ -28,15 +31,20 @@ public class Sudoku {
     }
 
     public void set(int x, int y, int value) {
-        subGrids.getField(x, y).setValue(FieldValue.of(value));
+        changeHistory.performSetup(x, y, value);
+    }
+
+    public void detectChanges() {
+        changeDetection.detectChanges();
     }
 
     public boolean isSolved() {
         return subGrids.areSolved();
     }
 
-    public Collection<Field> getUnresolvedFields() {
-        return subGrids.getUnresolvedFields();
+    public void solve() {
+        Solver solver = new Solver(changeDetection, changeHistory, subGrids);
+        solver.solve();
     }
 
     @Override

@@ -31,12 +31,8 @@ class SudokuThreeThreeTest {
     }
 
     @Test
-    public void shouldHaveUnresolvedFields() throws Exception {
-        assertThat(sudoku.getUnresolvedFields().size(), is(equalTo(81)));
-    }
-
-    @Test
     public void shouldPrintFields() throws Exception {
+        // @formatter:off
         String expected =
                 "╔═╤═╤═╦═╤═╤═╦═╤═╤═╗\n" +
                 "║ │ │ ║ │ │ ║ │ │ ║\n" +
@@ -57,7 +53,7 @@ class SudokuThreeThreeTest {
                 "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
                 "║ │ │ ║ │ │ ║ │ │ ║\n" +
                 "╚═╧═╧═╩═╧═╧═╩═╧═╧═╝\n";
-
+        // @formatter:on
         assertThat(sudoku.toString(), is(equalTo(expected)));
     }
 
@@ -74,6 +70,7 @@ class SudokuThreeThreeTest {
 
         @Test
         public void shouldPrintFields() throws Exception {
+            // @formatter:off
             String expected =
                     "╔═╤═╤═╦═╤═╤═╦═╤═╤═╗\n" +
                     "║ │ │ ║ │ │ ║ │ │ ║\n" +
@@ -94,7 +91,7 @@ class SudokuThreeThreeTest {
                     "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
                     "║ │ │ ║ │ │ ║ │ │ ║\n" +
                     "╚═╧═╧═╩═╧═╧═╩═╧═╧═╝\n";
-
+            // @formatter:on
             assertThat(sudoku.toString(), is(equalTo(expected)));
         }
 
@@ -161,6 +158,7 @@ class SudokuThreeThreeTest {
 
             @Test
             public void shouldPrintFields() throws Exception {
+                // @formatter:off
                 String expected =
                         "╔═╤═╤═╦═╤═╤═╦═╤═╤═╗\n" +
                         "║ │ │ ║ │ │ ║ │ │ ║\n" +
@@ -181,7 +179,7 @@ class SudokuThreeThreeTest {
                         "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
                         "║ │ │ ║ │ │ ║ │ │ ║\n" +
                         "╚═╧═╧═╩═╧═╧═╩═╧═╧═╝\n";
-
+                // @formatter:on
                 assertThat(sudoku.toString(), is(equalTo(expected)));
             }
 
@@ -245,6 +243,7 @@ class SudokuThreeThreeTest {
 
                 @Test
                 public void shouldPrintFields() throws Exception {
+                    // @formatter:off
                     String expected =
                             "╔═╤═╤═╦═╤═╤═╦═╤═╤═╗\n" +
                             "║ │ │ ║ │ │ ║ │ │ ║\n" +
@@ -265,7 +264,7 @@ class SudokuThreeThreeTest {
                             "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
                             "║ │ │ ║ │8│ ║ │ │ ║\n" +
                             "╚═╧═╧═╩═╧═╧═╩═╧═╧═╝\n";
-
+                    // @formatter:on
                     assertThat(sudoku.toString(), is(equalTo(expected)));
                 }
 
@@ -334,6 +333,7 @@ class SudokuThreeThreeTest {
 
                     @Test
                     public void shouldPrintFields() throws Exception {
+                        // @formatter:off
                         String expected =
                                 "╔═╤═╤═╦═╤═╤═╦═╤═╤═╗\n" +
                                 "║5│3│ ║ │ │ ║ │ │ ║\n" +
@@ -354,7 +354,7 @@ class SudokuThreeThreeTest {
                                 "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
                                 "║ │ │ ║ │8│ ║ │ │ ║\n" +
                                 "╚═╧═╧═╩═╧═╧═╩═╧═╧═╝\n";
-
+                        // @formatter:on
                         assertThat(sudoku.toString(), is(equalTo(expected)));
                     }
 
@@ -431,6 +431,7 @@ class SudokuThreeThreeTest {
 
                         @Test
                         public void shouldPrintFields() throws Exception {
+                            // @formatter:off
                             String expected =
                                     "╔═╤═╤═╦═╤═╤═╦═╤═╤═╗\n" +
                                     "║5│3│ ║ │ │ ║ │ │ ║\n" +
@@ -451,7 +452,7 @@ class SudokuThreeThreeTest {
                                     "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
                                     "║ │ │ ║ │8│ ║ │ │ ║\n" +
                                     "╚═╧═╧═╩═╧═╧═╩═╧═╧═╝\n";
-
+                            // @formatter:on
                             assertThat(sudoku.toString(), is(equalTo(expected)));
                         }
 
@@ -527,6 +528,7 @@ class SudokuThreeThreeTest {
 
                             @Test
                             public void shouldPrintFields() throws Exception {
+                                // @formatter:off
                                 String expected =
                                         "╔═╤═╤═╦═╤═╤═╦═╤═╤═╗\n" +
                                         "║5│3│ ║ │ │ ║ │ │ ║\n" +
@@ -547,7 +549,7 @@ class SudokuThreeThreeTest {
                                         "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
                                         "║ │ │ ║ │8│ ║ │ │ ║\n" +
                                         "╚═╧═╧═╩═╧═╧═╩═╧═╧═╝\n";
-
+                                // @formatter:on
                                 assertThat(sudoku.toString(), is(equalTo(expected)));
                             }
 
@@ -624,6 +626,7 @@ class SudokuThreeThreeTest {
 
                                 @Test
                                 public void shouldPrintFields() throws Exception {
+                                    // @formatter:off
                                     String expected =
                                             "╔═╤═╤═╦═╤═╤═╦═╤═╤═╗\n" +
                                             "║5│3│ ║ │7│ ║ │ │ ║\n" +
@@ -644,7 +647,7 @@ class SudokuThreeThreeTest {
                                             "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
                                             "║ │ │ ║ │8│ ║ │ │ ║\n" +
                                             "╚═╧═╧═╩═╧═╧═╩═╧═╧═╝\n";
-
+                                    // @formatter:on
                                     assertThat(sudoku.toString(), is(equalTo(expected)));
                                 }
 
@@ -704,10 +707,12 @@ class SudokuThreeThreeTest {
                                         sudoku.set(0, 3, 8);
                                         sudoku.set(0, 4, 4);
                                         sudoku.set(0, 5, 7);
+                                        sudoku.detectChanges();
                                     }
 
                                     @Test
                                     public void shouldPrintFields() throws Exception {
+                                        // @formatter:off
                                         String expected =
                                                 "╔═╤═╤═╦═╤═╤═╦═╤═╤═╗\n" +
                                                 "║5│3│ ║6│7│8║ │ │ ║\n" +
@@ -728,7 +733,7 @@ class SudokuThreeThreeTest {
                                                 "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
                                                 "║ │ │ ║ │8│6║ │ │ ║\n" +
                                                 "╚═╧═╧═╩═╧═╧═╩═╧═╧═╝\n";
-
+                                        // @formatter:on
                                         assertThat(sudoku.toString(), is(equalTo(expected)));
                                     }
 
@@ -775,10 +780,13 @@ class SudokuThreeThreeTest {
                                             sudoku.set(6, 6, 2);
                                             sudoku.set(7, 6, 8);
                                             sudoku.set(7, 8, 7);
+
+                                            sudoku.detectChanges();
                                         }
 
                                         @Test
                                         public void shouldPrintFields() throws Exception {
+                                            // @formatter:off
                                             String expected =
                                                     "╔═╤═╤═╦═╤═╤═╦═╤═╤═╗\n" +
                                                     "║5│3│4║6│7│8║9│1│2║\n" +
@@ -799,7 +807,7 @@ class SudokuThreeThreeTest {
                                                     "╟─┼─┼─╫─┼─┼─╫─┼─┼─╢\n" +
                                                     "║3│4│5║2│8│6║1│7│9║\n" +
                                                     "╚═╧═╧═╩═╧═╧═╩═╧═╧═╝\n";
-
+                                            // @formatter:on
                                             assertThat(sudoku.toString(), is(equalTo(expected)));
                                         }
 
@@ -819,11 +827,6 @@ class SudokuThreeThreeTest {
                                         @Test
                                         public void shouldBeSolved() throws Exception {
                                             assertThat(sudoku.isSolved(), is(equalTo(true)));
-                                        }
-
-                                        @Test
-                                        public void shouldNotHaveUnresolvedFields() throws Exception {
-                                            assertThat(sudoku.getUnresolvedFields().size(), is(equalTo(0)));
                                         }
                                     }
                                 }

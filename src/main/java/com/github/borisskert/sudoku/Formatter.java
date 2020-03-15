@@ -7,19 +7,15 @@ import java.util.stream.IntStream;
 
 class Formatter {
 
-    private final int sizeX;
-    private final int sizeY;
     private final int maxValueLength;
     private final Function<FieldValue, String> valueFormatter;
     private final String emptyValuePlaceholder;
     private final SubGrids subGrids;
 
-    public Formatter(int sizeX, int sizeY, SubGrids subGrids) {
-        this.sizeX = sizeX;
-        this.sizeY = sizeY;
+    public Formatter(SubGrids subGrids) {
         this.subGrids = subGrids;
 
-        this.maxValueLength = getMaxValueLength(sizeX, sizeY);
+        this.maxValueLength = getMaxValueLength();
         this.emptyValuePlaceholder = getEmptyValuePlaceholder();
         this.valueFormatter = getValueFormatter();
     }
@@ -28,7 +24,7 @@ class Formatter {
         StringBuilder builder = new StringBuilder(formatHeader());
 
         StringJoiner lineJoiner = new StringJoiner(doubleVerticalDelimiter());
-        for (int y = 0; y < sizeX; y++) {
+        for (int y = 0; y < subGrids.getSizeX(); y++) {
             String subGridLine = formatSubGridLine(y);
 
             lineJoiner.add(subGridLine);
@@ -44,10 +40,10 @@ class Formatter {
         StringBuilder header = new StringBuilder("╔");
 
         StringJoiner joiner = new StringJoiner("╦");
-        IntStream.range(0, sizeY)
+        IntStream.range(0, subGrids.getSizeY())
                 .mapToObj(x -> new StringJoiner("╤"))
                 .forEach(innerJoiner -> {
-                    IntStream.range(0, sizeX).forEach(i -> innerJoiner.add(formatDoubleBar()));
+                    IntStream.range(0, subGrids.getSizeX()).forEach(i -> innerJoiner.add(formatDoubleBar()));
                     joiner.add(innerJoiner.toString());
                 });
 
@@ -61,10 +57,10 @@ class Formatter {
         StringBuilder footer = new StringBuilder("╚");
 
         StringJoiner joiner = new StringJoiner("╩");
-        IntStream.range(0, sizeY)
+        IntStream.range(0, subGrids.getSizeY())
                 .mapToObj(x -> new StringJoiner("╧"))
                 .forEach(innerJoiner -> {
-                    IntStream.range(0, sizeX).forEach(i -> innerJoiner.add(formatDoubleBar()));
+                    IntStream.range(0, subGrids.getSizeX()).forEach(i -> innerJoiner.add(formatDoubleBar()));
                     joiner.add(innerJoiner.toString());
                 });
 
@@ -90,7 +86,7 @@ class Formatter {
         StringBuilder builder = new StringBuilder();
 
         StringJoiner subGridLineJoiner = new StringJoiner(verticalSingleDelimiter());
-        for (int y = 0; y < sizeY; y++) {
+        for (int y = 0; y < subGrids.getSizeY(); y++) {
             String subGrids = formatSubGrids(subGridY, y);
 
             subGridLineJoiner.add(subGrids);
@@ -106,7 +102,7 @@ class Formatter {
 
         StringJoiner subGridJoiner = new StringJoiner("║");
 
-        for (int x = 0; x < sizeY; x++) {
+        for (int x = 0; x < subGrids.getSizeY(); x++) {
             SubGrid subGrid = subGrids.getSubGrid(x, subGridY);
 
             String formattedSubGrid = formatSubGrid(subGrid, y);
@@ -124,10 +120,10 @@ class Formatter {
         StringBuilder delimiter = new StringBuilder("╟");
 
         StringJoiner joiner = new StringJoiner("╫");
-        IntStream.range(0, sizeY)
+        IntStream.range(0, subGrids.getSizeY())
                 .mapToObj(x -> new StringJoiner("┼"))
                 .forEach(innerJoiner -> {
-                    IntStream.range(0, sizeX).forEach(i -> innerJoiner.add(formatSingleBar()));
+                    IntStream.range(0, subGrids.getSizeX()).forEach(i -> innerJoiner.add(formatSingleBar()));
                     joiner.add(innerJoiner.toString());
                 });
 
@@ -141,10 +137,10 @@ class Formatter {
         StringBuilder delimiter = new StringBuilder("╠");
 
         StringJoiner joiner = new StringJoiner("╬");
-        IntStream.range(0, sizeY)
+        IntStream.range(0, subGrids.getSizeY())
                 .mapToObj(x -> new StringJoiner("╪"))
                 .forEach(innerJoiner -> {
-                    IntStream.range(0, sizeX).forEach(i -> innerJoiner.add(formatDoubleBar()));
+                    IntStream.range(0, subGrids.getSizeX()).forEach(i -> innerJoiner.add(formatDoubleBar()));
                     joiner.add(innerJoiner.toString());
                 });
 
@@ -157,15 +153,15 @@ class Formatter {
     private String formatSubGrid(SubGrid subGrid, int y) {
         StringJoiner joiner = new StringJoiner("│");
 
-        for (int x = 0; x < sizeX; x++) {
-            Field field = subGrid.get(x, y);
+        for (int x = 0; x < subGrids.getSizeX(); x++) {
+            FieldWithAbsoluteCoordinates field = subGrid.get(x, y);
             joiner.add(getFormattedField(field));
         }
 
         return joiner.toString();
     }
 
-    private String getFormattedField(Field field) {
+    private String getFormattedField(FieldWithAbsoluteCoordinates field) {
         FieldValue fieldValue = field.getValue().get();
         return fieldValue != null ? getFormattedValue(fieldValue) : emptyValuePlaceholder;
     }
@@ -174,8 +170,8 @@ class Formatter {
         return valueFormatter.apply(fieldValue);
     }
 
-    private int getMaxValueLength(int sizeX, int sizeY) {
-        final int maxValue = sizeX * sizeY;
+    private int getMaxValueLength() {
+        final int maxValue = subGrids.getSizeX() * subGrids.getSizeY();
         final String maxValueAsText = String.valueOf(maxValue);
 
         return maxValueAsText.length();
