@@ -1,162 +1,169 @@
 package com.github.borisskert.sudoku;
 
-import com.github.borisskert.observableproperties.ChangeListener;
-import com.github.borisskert.observableproperties.OptionalProperty;
-import com.github.borisskert.observableproperties.ReadonlyProperty;
-import com.github.borisskert.observableproperties.SimpleOptionalProperty;
-
-import java.util.Comparator;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 
-public class Field implements ChangeListener<FieldValue> {
-    static final Comparator<Field> COMPARATOR = new FieldComparator();
+class Field {
 
-    private final OptionalProperty<FieldValue> valueProperty;
-    private final Coordinates coordinates;
-    private final Set<FieldValue> candidates;
+    /* *****************************************************************************************************************
+     * Private fields
+     **************************************************************************************************************** */
 
-    public Field(Coordinates coordinates, Set<FieldValue> candidates) {
+    private final Size size;
+    private final AbsoluteCoordinates coordinates;
+    private final Candidates candidates;
+    private final FieldValue fieldValue;
+
+    /* *****************************************************************************************************************
+     * Constructors
+     **************************************************************************************************************** */
+
+    private Field(Size size, AbsoluteCoordinates coordinates, Candidates candidates) {
+        this.size = size;
         this.coordinates = coordinates;
         this.candidates = candidates;
-        this.valueProperty = new SimpleOptionalProperty<>();
+        this.fieldValue = null;
     }
 
-    protected Field(Coordinates coordinates, Set<FieldValue> candidates, OptionalProperty<FieldValue> valueProperty) {
+    private Field(Size size, AbsoluteCoordinates coordinates, FieldValue value) {
+        this.size = size;
+        this.coordinates = coordinates;
+        this.fieldValue = value;
+        candidates = Candidates.empty();
+    }
+
+    private Field(Size size, AbsoluteCoordinates coordinates, Candidates candidates, FieldValue fieldValue) {
+        this.size = size;
         this.coordinates = coordinates;
         this.candidates = candidates;
-        this.valueProperty = valueProperty;
+        this.fieldValue = fieldValue;
     }
 
-    public int getX() {
-        return this.coordinates.getX();
+    /* *****************************************************************************************************************
+     * Public contract
+     **************************************************************************************************************** */
+
+    public boolean hasSameX(AbsoluteCoordinates other) {
+        return this.coordinates.hasSameX(other);
     }
 
-    public int getY() {
-        return this.coordinates.getY();
+    public boolean hasSameY(AbsoluteCoordinates other) {
+        return this.coordinates.hasSameY(other);
     }
 
-    public Set<FieldValue> getCandidates() {
-        return candidates;
+    public boolean has(AbsoluteCoordinates coordinates) {
+        return this.coordinates.equals(coordinates);
     }
 
-    public FieldValue lastCandidate() {
-        if(candidates.size() > 1) {
-            throw new IllegalStateException("More than one candidate");
-        }
-
-        return candidates.iterator().next();
+    public boolean has(WithinSubGridCoordinates coordinates) {
+        return this.coordinates.withinSubGrid(size).equals(coordinates);
     }
 
-    public ReadonlyProperty<FieldValue> getValue() {
-        return valueProperty;
-    }
-
-    void setValue(FieldValue value) {
-        throwIfAlreadySet();
-        throwIfNotInCandidates(value);
-
-        candidates.clear();
-        valueProperty.set(value);
-    }
-
-    void register(Field otherField) {
-        otherField.getValue().addListener(this);
-    }
-
-    @Override
-    public void onChange(ReadonlyProperty<FieldValue> property, FieldValue oldValue, FieldValue newValue) {
-        failIfValueAlreadyOccupied(newValue);
-
-        candidates.remove(newValue);
-    }
-
-    private void failIfValueAlreadyOccupied(FieldValue newValue) {
-        Optional<FieldValue> maybeValue = valueProperty.asOptional();
-
-        if (maybeValue.isPresent()) {
-            FieldValue fieldValue = maybeValue.get();
-
-            if (fieldValue.equals(newValue)) {
-                throw new IllegalStateException("Value '" + newValue + "' already occupied");
-            }
-        }
+    public boolean isInSubGrid(SubGridCoordinates coordinates) {
+        return this.coordinates.subGrid(size)
+                .equals(coordinates);
     }
 
     public boolean isEmpty() {
-        return valueProperty.asOptional().isEmpty();
+        return fieldValue == null;
     }
 
-    private void throwIfAlreadySet() {
-        Optional<FieldValue> maybeValue = valueProperty.asOptional();
+    public boolean isSolved() {
+        return fieldValue != null;
+    }
 
-        if (maybeValue.isPresent()) {
-            FieldValue fieldValue = maybeValue.get();
-            throw new IllegalStateException("Already contains the value '" + fieldValue.getValue() + "'");
+    public boolean canBeSolved() {
+        return this.candidates.isDefinite();
+    }
+
+    public boolean hasCandidate(FieldValue candidate) {
+        return candidates.contains(candidate);
+    }
+
+    public boolean hasCandidates() {
+        return !candidates.isEmpty();
+    }
+
+    public boolean hasValue(FieldValue value) {
+        return Objects.equals(this.fieldValue, value);
+    }
+
+    public AbsoluteCoordinates absoluteCoordinates() {
+        return coordinates;
+    }
+
+    public FieldValue getValue() {
+        return fieldValue;
+    }
+
+    public Candidates getCandidates() {
+        return candidates;
+    }
+
+    public Field solve() {
+        return new Field(size, coordinates, candidates.lastOne());
+    }
+
+    public Field withoutCandidate(FieldValue value) {
+        return new Field(size, coordinates, candidates.without(value), fieldValue);
+    }
+
+    public Field withoutCandidates(Set<FieldValue> values) {
+        Candidates changedCandidates = candidates.without(values);
+
+        if (fieldValue == null && changedCandidates.isEmpty()) {
+            throw new IllegalStateException(coordinates.toString() + ": No value and no candidates left");
         }
+
+        return new Field(size, coordinates, changedCandidates, fieldValue);
     }
 
-    private void throwIfNotInCandidates(FieldValue value) {
+    public Field withValue(FieldValue value) {
+        if (Objects.equals(this.fieldValue, value)) {
+            return this;
+        }
+
+        if (this.fieldValue != null) {
+            throw new IllegalStateException("Already contains the value '" + this.fieldValue.toString() + "'");
+        }
+
         if (!candidates.contains(value)) {
-            throw new IllegalArgumentException("Value '" + value.getValue() + "' not in candidates");
+            throw new IllegalStateException("Value '" + value.toString() + "' not in candidates");
         }
+
+        return new Field(size, coordinates, value);
     }
 
-    private static class FieldComparator implements Comparator<Field> {
-        @Override
-        public int compare(Field o1, Field o2) {
-            if (o1.isEmpty() == o2.isEmpty()) {
-                if (o1.getCandidates().size() == o2.getCandidates().size()) {
-                    if (o1.getX() == o2.getX()) {
-                        return Objects.compare(
-                                o1.getY(),
-                                o2.getY(),
-                                Integer::compareTo
-                        );
-                    } else {
-                        return Objects.compare(
-                                o1.getX(),
-                                o2.getX(),
-                                Integer::compareTo
-                        );
-                    }
-                } else {
-                    return Objects.compare(
-                            o1.getCandidates().size(),
-                            o2.getCandidates().size(),
-                            Integer::compareTo
-                    );
-                }
-            } else {
-                return Objects.compare(
-                        !o1.isEmpty(),
-                        !o2.isEmpty(),
-                        Boolean::compareTo
-                );
-            }
-        }
+    /* *****************************************************************************************************************
+     * Overrides of Object
+     **************************************************************************************************************** */
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Field that = (Field) o;
+        return Objects.equals(size, that.size) &&
+                Objects.equals(coordinates, that.coordinates) &&
+                Objects.equals(candidates, that.candidates) &&
+                Objects.equals(fieldValue, that.fieldValue);
     }
 
-    FieldWithAbsoluteCoordinates withinSubGrid(int offsetX, int offsetY) {
-        int x = this.coordinates.getX();
-        int y = this.coordinates.getY();
-
-        return new FieldWithAbsoluteCoordinates(
-                this.coordinates,
-                this.candidates,
-                this.valueProperty,
-                new Coordinates(x + offsetX, y + offsetY)
-        );
+    @Override
+    public int hashCode() {
+        return Objects.hash(size, coordinates, candidates, fieldValue);
     }
 
     @Override
     public String toString() {
-        return "Field{" +
-                "valueProperty=" + valueProperty +
-                ", x=" + this.coordinates.getX() +
-                ", y=" + this.coordinates.getY() +
-                ", candidates=" + candidates +
-                '}';
+        return "<" + coordinates + ", {" + fieldValue + "}, " + candidates + '>';
+    }
+
+    /* *****************************************************************************************************************
+     * Factory methods
+     **************************************************************************************************************** */
+
+    public static Field empty(AbsoluteCoordinates coordinates, Size size) {
+        return new Field(size, coordinates, Candidates.create(size));
     }
 }

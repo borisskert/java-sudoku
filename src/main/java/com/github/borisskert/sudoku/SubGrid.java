@@ -1,151 +1,78 @@
 package com.github.borisskert.sudoku;
 
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Stream;
 
 class SubGrid {
 
-    private final Set<FieldValue> defaultCandidates;
+    private final SubGridCoordinates coordinates;
+    private final Size size;
+    private final Fields fields;
 
-    private final List<Field> fields = new ArrayList<>();
-
-    private final int x;
-    private final int y;
-
-    private final int sizeX;
-    private final int sizeY;
-
-    public SubGrid(int x, int y, int sizeX, int sizeY) {
-        this.x = x;
-        this.y = y;
-
-        this.sizeX = sizeX;
-        this.sizeY = sizeY;
-
-        defaultCandidates = createDefaultCandidates();
-
-        fillWithFields();
-        bindAllFields();
+    private SubGrid(SubGridCoordinates coordinates, Size size, Fields fields) {
+        this.coordinates = coordinates;
+        this.size = size;
+        this.fields = fields;
     }
 
-    private Set<FieldValue> createDefaultCandidates() {
-        int candidates = sizeX * sizeY;
-
-        return IntStream.range(1, candidates + 1)
-                .mapToObj(FieldValue::of)
-                .collect(Collectors.toSet());
+    public static SubGrid create(SubGridCoordinates coordinates, Set<Field> fields, Size size) {
+        return new SubGrid(coordinates, size, Fields.of(fields));
     }
 
-    public int getX() {
-        return x;
+    public SubGrid withValueAt(WithinSubGridCoordinates coordinates, FieldValue fieldValue) {
+        Fields updatedFields = fields.withValueAt(coordinates, fieldValue);
+        return new SubGrid(this.coordinates, size, updatedFields);
     }
 
-    public int getY() {
-        return y;
+    public SubGridCoordinates getCoordinates() {
+        return coordinates;
     }
 
-    public FieldWithAbsoluteCoordinates get(int x, int y) {
-        return fields.stream()
-                .filter(field -> field.getX() == x)
-                .filter(field -> field.getY() == y)
-                .map(absoluteCoordinates())
-                .findFirst().get();
-    }
-
-    public boolean isNotSolved() {
-        return fields.stream().anyMatch(Field::isEmpty);
-    }
-
-    private void fillWithFields() {
-        for (int x = 0; x < sizeX; x++) {
-            for (int y = 0; y < sizeY; y++) {
-                Field field = new Field(new Coordinates(x, y), new HashSet<>(defaultCandidates));
-                fields.add(field);
-            }
-        }
-    }
-
-    private void bindAllFields() {
-        fields.forEach(this::bindToOthers);
-    }
-
-    private void bindToOthers(Field field) {
-        fields.forEach(otherField -> {
-            if (field != otherField) {
-                field.register(otherField);
-            }
-        });
-    }
-
-    public void registerToX(SubGrid otherSubGrid) {
-        fields.forEach(field -> {
-            int x = field.getX();
-
-            List<Field> fieldsForX = otherSubGrid.getFieldsForX(x);
-            fieldsForX.forEach(field::register);
-        });
-    }
-
-    public void registerToY(SubGrid otherSubGrid) {
-        fields.forEach(field -> {
-            int y = field.getY();
-
-            List<Field> fieldsForY = otherSubGrid.getFieldsForY(y);
-            fieldsForY.forEach(field::register);
-        });
-    }
-
-    private List<Field> getFieldsForX(int x) {
-        return fields.stream()
-                .filter(field -> field.getX() == x)
-                .collect(Collectors.toList());
-    }
-
-    private List<Field> getFieldsForY(int y) {
-        return fields.stream()
-                .filter(field -> field.getY() == y)
-                .collect(Collectors.toList());
-    }
-
-    Collection<FieldWithAbsoluteCoordinates> getUnresolvedFields() {
-        return fields.stream()
-                .filter(Field::isEmpty)
-                .filter(field -> field.getCandidates().size() > 0)
-                .map(absoluteCoordinates())
-                .collect(Collectors.toUnmodifiableList());
-    }
-
-    private Function<Field, FieldWithAbsoluteCoordinates> absoluteCoordinates() {
-        return field -> field.withinSubGrid(
-                x * sizeX,
-                y * sizeY
-        );
-    }
-
-    FieldsWithAbsoluteCoordinates getFields() {
-        return fields.stream()
-                .map(absoluteCoordinates())
-                .collect(FieldsWithAbsoluteCoordinates.collect());
-    }
-
-    Collection<FieldWithAbsoluteCoordinates> getFieldsToBeSolved() {
-        return fields.stream()
-                .filter(field -> field.getCandidates().size() == 1)
-                .map(absoluteCoordinates())
-                .collect(Collectors.toUnmodifiableList());
+    public boolean isSolved() {
+        return fields.areSolved();
     }
 
     @Override
     public String toString() {
-        return "SubGrid{" +
-                "defaultCandidates=" + defaultCandidates +
+        return "ImmutableSubGrid{" +
+                "coordinates=" + coordinates +
+                ", size=" + size +
                 ", fields=" + fields +
-                ", x=" + x +
-                ", y=" + y +
-                ", sizeX=" + sizeX +
-                ", sizeY=" + sizeY +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SubGrid that = (SubGrid) o;
+        return coordinates.equals(that.coordinates) &&
+                size.equals(that.size);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(coordinates, size);
+    }
+
+    public Field getField(WithinSubGridCoordinates coordinates) {
+        return fields.get(coordinates);
+    }
+
+    public Fields resolvedFields() {
+        return fields.resolve();
+    }
+
+    public boolean has(SubGridCoordinates other) {
+        return this.coordinates.equals(other);
+    }
+
+    public Stream<Field> stream() {
+        return fields.stream();
+    }
+
+    public Fields fields() {
+        return this.fields;
     }
 }

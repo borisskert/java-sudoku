@@ -2,7 +2,7 @@ package com.github.borisskert.sudoku;
 
 import java.util.Random;
 
-public class Coin {
+class Coin {
 
     private final Random random;
 

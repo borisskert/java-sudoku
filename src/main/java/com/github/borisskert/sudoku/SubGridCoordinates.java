@@ -2,12 +2,12 @@ package com.github.borisskert.sudoku;
 
 import java.util.Objects;
 
-class Coordinates {
+class SubGridCoordinates {
 
     private final int x;
     private final int y;
 
-    private Coordinates(int x, int y) {
+    private SubGridCoordinates(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -20,19 +20,26 @@ class Coordinates {
         return y;
     }
 
-    public SubGridCoordinates rotate() {
-        return SubGridCoordinates.from(y, x);
+    public WithinSubGridCoordinates withinSubGrid(Size size) {
+        return WithinSubGridCoordinates.from(x % size.getWidth(), y % size.getHeight());
     }
 
-    public static Coordinates from(int x, int y) {
-        return new Coordinates(x, y);
+    public AbsoluteCoordinates toAbsolute(WithinSubGridCoordinates coordinates, Size size) {
+        int x = this.x * size.getWidth() + coordinates.getX();
+        int y = this.y * size.getHeight() + coordinates.getY();
+
+        return AbsoluteCoordinates.from(x, y);
+    }
+
+    static SubGridCoordinates from(int x, int y) {
+        return new SubGridCoordinates(x, y);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Coordinates that = (Coordinates) o;
+        SubGridCoordinates that = (SubGridCoordinates) o;
         return x == that.x &&
                 y == that.y;
     }

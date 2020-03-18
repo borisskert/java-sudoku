@@ -5,8 +5,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.util.Set;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -23,11 +21,6 @@ class SudokuThreeThreeTest {
     @BeforeEach
     public void setup() throws Exception {
         sudoku = Sudoku.create(3, 3);
-    }
-
-    @Test
-    public void randomFieldShouldBeInitialized() throws Exception {
-        assertField(5, 4, allCandidates(), null);
     }
 
     @Test
@@ -95,57 +88,6 @@ class SudokuThreeThreeTest {
             assertThat(sudoku.toString(), is(equalTo(expected)));
         }
 
-        @Test
-        public void shouldUpdateCandidatesInRandomFields() throws Exception {
-            assertField(1, 1, allCandidates(), null);
-            assertField(1, 4, Set.of(
-                    FieldValue.of(1),
-                    FieldValue.of(2),
-                    FieldValue.of(4),
-                    FieldValue.of(5),
-                    FieldValue.of(6),
-                    FieldValue.of(7),
-                    FieldValue.of(9)
-            ), null);
-            assertField(1, 7, allCandidates(), null);
-            assertField(4, 1, Set.of(
-                    FieldValue.of(1),
-                    FieldValue.of(3),
-                    FieldValue.of(4),
-                    FieldValue.of(5),
-                    FieldValue.of(7),
-                    FieldValue.of(8),
-                    FieldValue.of(9)
-            ), null);
-            assertField(4, 4, Set.of(
-                    FieldValue.of(1),
-                    FieldValue.of(4),
-                    FieldValue.of(5),
-                    FieldValue.of(7),
-                    FieldValue.of(9)
-            ), null);
-            assertField(4, 7, Set.of(
-                    FieldValue.of(1),
-                    FieldValue.of(3),
-                    FieldValue.of(4),
-                    FieldValue.of(5),
-                    FieldValue.of(7),
-                    FieldValue.of(8),
-                    FieldValue.of(9)
-            ), null);
-            assertField(7, 1, allCandidates(), null);
-            assertField(7, 4, Set.of(
-                    FieldValue.of(1),
-                    FieldValue.of(2),
-                    FieldValue.of(4),
-                    FieldValue.of(5),
-                    FieldValue.of(6),
-                    FieldValue.of(7),
-                    FieldValue.of(9)
-            ), null);
-            assertField(7, 7, allCandidates(), null);
-        }
-
         @DisplayName("setup right center subgrid")
         @Nested
         class SetupRightCenterSubGrid {
@@ -181,53 +123,6 @@ class SudokuThreeThreeTest {
                         "╚═╧═╧═╩═╧═╧═╩═╧═╧═╝\n";
                 // @formatter:on
                 assertThat(sudoku.toString(), is(equalTo(expected)));
-            }
-
-            @Test
-            public void shouldUpdateCandidatesInRandomFields() throws Exception {
-                assertField(1, 1, allCandidates(), null);
-                assertField(1, 4, Set.of(
-                        FieldValue.of(2),
-                        FieldValue.of(4),
-                        FieldValue.of(5),
-                        FieldValue.of(6),
-                        FieldValue.of(7),
-                        FieldValue.of(9)
-                ), null);
-                assertField(1, 7, allCandidates(), null);
-                assertField(4, 1, Set.of(
-                        FieldValue.of(1),
-                        FieldValue.of(3),
-                        FieldValue.of(4),
-                        FieldValue.of(5),
-                        FieldValue.of(7),
-                        FieldValue.of(8),
-                        FieldValue.of(9)
-                ), null);
-                assertField(4, 4, Set.of(
-                        FieldValue.of(4),
-                        FieldValue.of(5),
-                        FieldValue.of(7),
-                        FieldValue.of(9)
-                ), null);
-                assertField(4, 7, Set.of(
-                        FieldValue.of(1),
-                        FieldValue.of(3),
-                        FieldValue.of(4),
-                        FieldValue.of(5),
-                        FieldValue.of(7),
-                        FieldValue.of(8),
-                        FieldValue.of(9)
-                ), null);
-                assertField(7, 1, allCandidates(), null);
-                assertField(7, 4, Set.of(
-                        FieldValue.of(2),
-                        FieldValue.of(4),
-                        FieldValue.of(5),
-                        FieldValue.of(7),
-                        FieldValue.of(9)
-                ), null);
-                assertField(7, 7, allCandidates(), null);
             }
 
             @DisplayName("setup bottom (middle) subgrid")
@@ -266,57 +161,6 @@ class SudokuThreeThreeTest {
                             "╚═╧═╧═╩═╧═╧═╩═╧═╧═╝\n";
                     // @formatter:on
                     assertThat(sudoku.toString(), is(equalTo(expected)));
-                }
-
-                @Test
-                public void shouldUpdateCandidatesInRandomFields() throws Exception {
-                    assertField(1, 1, allCandidates(), null);
-                    assertField(1, 4, Set.of(
-                            FieldValue.of(2),
-                            FieldValue.of(4),
-                            FieldValue.of(5),
-                            FieldValue.of(6),
-                            FieldValue.of(7),
-                            FieldValue.of(9)
-                    ), null);
-                    assertField(1, 7, Set.of(
-                            FieldValue.of(2),
-                            FieldValue.of(3),
-                            FieldValue.of(5),
-                            FieldValue.of(6),
-                            FieldValue.of(7),
-                            FieldValue.of(8)
-                    ), null);
-                    assertField(4, 1, Set.of(
-                            FieldValue.of(3),
-                            FieldValue.of(4),
-                            FieldValue.of(5),
-                            FieldValue.of(7),
-                            FieldValue.of(9)
-                    ), null);
-                    assertField(4, 4, Set.of(
-                            FieldValue.of(4),
-                            FieldValue.of(5),
-                            FieldValue.of(7),
-                            FieldValue.of(9)
-                    ), null);
-                    assertField(4, 7, Set.of(), FieldValue.of(1));
-                    assertField(7, 1, allCandidates(), null);
-                    assertField(7, 4, Set.of(
-                            FieldValue.of(2),
-                            FieldValue.of(4),
-                            FieldValue.of(5),
-                            FieldValue.of(7),
-                            FieldValue.of(9)
-                    ), null);
-                    assertField(7, 7, Set.of(
-                            FieldValue.of(2),
-                            FieldValue.of(3),
-                            FieldValue.of(5),
-                            FieldValue.of(6),
-                            FieldValue.of(7),
-                            FieldValue.of(8)
-                    ), null);
                 }
 
                 @DisplayName("setup top left subgrid")
@@ -358,69 +202,6 @@ class SudokuThreeThreeTest {
                         assertThat(sudoku.toString(), is(equalTo(expected)));
                     }
 
-                    @Test
-                    public void shouldUpdateCandidatesInRandomFields() throws Exception {
-                        assertField(1, 1, Set.of(
-                                FieldValue.of(1),
-                                FieldValue.of(2),
-                                FieldValue.of(4),
-                                FieldValue.of(7)
-                        ), null);
-                        assertField(1, 4, Set.of(
-                                FieldValue.of(2),
-                                FieldValue.of(4),
-                                FieldValue.of(5),
-                                FieldValue.of(6),
-                                FieldValue.of(7)
-                        ), null);
-                        assertField(1, 7, Set.of(
-                                FieldValue.of(2),
-                                FieldValue.of(5),
-                                FieldValue.of(6),
-                                FieldValue.of(7),
-                                FieldValue.of(8)
-                        ), null);
-                        assertField(4, 1, Set.of(
-                                FieldValue.of(3),
-                                FieldValue.of(4),
-                                FieldValue.of(5),
-                                FieldValue.of(7),
-                                FieldValue.of(9)
-                        ), null);
-                        assertField(4, 4, Set.of(
-                                FieldValue.of(4),
-                                FieldValue.of(5),
-                                FieldValue.of(7),
-                                FieldValue.of(9)
-                        ), null);
-                        assertField(4, 7, Set.of(), FieldValue.of(1));
-                        assertField(7, 1, Set.of(
-                                FieldValue.of(1),
-                                FieldValue.of(2),
-                                FieldValue.of(3),
-                                FieldValue.of(4),
-                                FieldValue.of(5),
-                                FieldValue.of(7),
-                                FieldValue.of(8),
-                                FieldValue.of(9)
-                        ), null);
-                        assertField(7, 4, Set.of(
-                                FieldValue.of(2),
-                                FieldValue.of(4),
-                                FieldValue.of(5),
-                                FieldValue.of(7),
-                                FieldValue.of(9)
-                        ), null);
-                        assertField(7, 7, Set.of(
-                                FieldValue.of(2),
-                                FieldValue.of(3),
-                                FieldValue.of(5),
-                                FieldValue.of(6),
-                                FieldValue.of(7),
-                                FieldValue.of(8)
-                        ), null);
-                    }
-
                     @DisplayName("Setup top right subgrid")
                     @Nested
                     class SetupTopRightSubGrid {
@@ -456,68 +237,6 @@ class SudokuThreeThreeTest {
                             assertThat(sudoku.toString(), is(equalTo(expected)));
                         }
 
-                        @Test
-                        public void shouldUpdateCandidatesInRandomFields() throws Exception {
-                            assertField(1, 1, Set.of(
-                                    FieldValue.of(1),
-                                    FieldValue.of(2),
-                                    FieldValue.of(4),
-                                    FieldValue.of(7)
-                            ), null);
-                            assertField(1, 4, Set.of(
-                                    FieldValue.of(2),
-                                    FieldValue.of(4),
-                                    FieldValue.of(5),
-                                    FieldValue.of(6),
-                                    FieldValue.of(7)
-                            ), null);
-                            assertField(1, 7, Set.of(
-                                    FieldValue.of(2),
-                                    FieldValue.of(5),
-                                    FieldValue.of(6),
-                                    FieldValue.of(7),
-                                    FieldValue.of(8)
-                            ), null);
-                            assertField(4, 1, Set.of(
-                                    FieldValue.of(3),
-                                    FieldValue.of(4),
-                                    FieldValue.of(5),
-                                    FieldValue.of(7),
-                                    FieldValue.of(9)
-                            ), null);
-                            assertField(4, 4, Set.of(
-                                    FieldValue.of(4),
-                                    FieldValue.of(5),
-                                    FieldValue.of(7),
-                                    FieldValue.of(9)
-                            ), null);
-                            assertField(4, 7, Set.of(), FieldValue.of(1));
-                            assertField(7, 1, Set.of(
-                                    FieldValue.of(1),
-                                    FieldValue.of(2),
-                                    FieldValue.of(3),
-                                    FieldValue.of(4),
-                                    FieldValue.of(5),
-                                    FieldValue.of(7),
-                                    FieldValue.of(8),
-                                    FieldValue.of(9)
-                            ), null);
-                            assertField(7, 4, Set.of(
-                                    FieldValue.of(2),
-                                    FieldValue.of(4),
-                                    FieldValue.of(5),
-                                    FieldValue.of(7),
-                                    FieldValue.of(9)
-                            ), null);
-                            assertField(7, 7, Set.of(
-                                    FieldValue.of(2),
-                                    FieldValue.of(3),
-                                    FieldValue.of(5),
-                                    FieldValue.of(7),
-                                    FieldValue.of(8)
-                            ), null);
-                        }
-
                         @DisplayName("setup bottom left subgrid")
                         @Nested
                         class SetupBottomLeftSubGrid {
@@ -551,66 +270,6 @@ class SudokuThreeThreeTest {
                                         "╚═╧═╧═╩═╧═╧═╩═╧═╧═╝\n";
                                 // @formatter:on
                                 assertThat(sudoku.toString(), is(equalTo(expected)));
-                            }
-
-                            @Test
-                            public void shouldUpdateCandidatesInRandomFields() throws Exception {
-                                assertField(1, 1, Set.of(
-                                        FieldValue.of(1),
-                                        FieldValue.of(2),
-                                        FieldValue.of(4),
-                                        FieldValue.of(7)
-                                ), null);
-                                assertField(1, 4, Set.of(
-                                        FieldValue.of(2),
-                                        FieldValue.of(4),
-                                        FieldValue.of(5),
-                                        FieldValue.of(7)
-                                ), null);
-                                assertField(1, 7, Set.of(
-                                        FieldValue.of(2),
-                                        FieldValue.of(5),
-                                        FieldValue.of(7),
-                                        FieldValue.of(8)
-                                ), null);
-                                assertField(4, 1, Set.of(
-                                        FieldValue.of(3),
-                                        FieldValue.of(4),
-                                        FieldValue.of(5),
-                                        FieldValue.of(7),
-                                        FieldValue.of(9)
-                                ), null);
-                                assertField(4, 4, Set.of(
-                                        FieldValue.of(4),
-                                        FieldValue.of(5),
-                                        FieldValue.of(7),
-                                        FieldValue.of(9)
-                                ), null);
-                                assertField(4, 7, Set.of(), FieldValue.of(1));
-                                assertField(7, 1, Set.of(
-                                        FieldValue.of(1),
-                                        FieldValue.of(2),
-                                        FieldValue.of(3),
-                                        FieldValue.of(4),
-                                        FieldValue.of(5),
-                                        FieldValue.of(7),
-                                        FieldValue.of(8),
-                                        FieldValue.of(9)
-                                ), null);
-                                assertField(7, 4, Set.of(
-                                        FieldValue.of(2),
-                                        FieldValue.of(4),
-                                        FieldValue.of(5),
-                                        FieldValue.of(7),
-                                        FieldValue.of(9)
-                                ), null);
-                                assertField(7, 7, Set.of(
-                                        FieldValue.of(2),
-                                        FieldValue.of(3),
-                                        FieldValue.of(5),
-                                        FieldValue.of(7),
-                                        FieldValue.of(8)
-                                ), null);
                             }
 
                             @DisplayName("Setup top (middle) subgrid")
@@ -651,54 +310,6 @@ class SudokuThreeThreeTest {
                                     assertThat(sudoku.toString(), is(equalTo(expected)));
                                 }
 
-                                @Test
-                                public void shouldUpdateCandidatesInRandomFields() throws Exception {
-                                    assertField(1, 1, Set.of(
-                                            FieldValue.of(2),
-                                            FieldValue.of(4),
-                                            FieldValue.of(7)
-                                    ), null);
-                                    assertField(1, 4, Set.of(
-                                            FieldValue.of(2),
-                                            FieldValue.of(4),
-                                            FieldValue.of(5),
-                                            FieldValue.of(7)
-                                    ), null);
-                                    assertField(1, 7, Set.of(
-                                            FieldValue.of(2),
-                                            FieldValue.of(5),
-                                            FieldValue.of(7),
-                                            FieldValue.of(8)
-                                    ), null);
-                                    assertField(4, 1, Set.of(), FieldValue.of(9));
-                                    assertField(4, 4, Set.of(
-                                            FieldValue.of(4),
-                                            FieldValue.of(5)
-                                    ), null);
-                                    assertField(4, 7, Set.of(), FieldValue.of(1));
-                                    assertField(7, 1, Set.of(
-                                            FieldValue.of(2),
-                                            FieldValue.of(3),
-                                            FieldValue.of(4),
-                                            FieldValue.of(7),
-                                            FieldValue.of(8)
-                                    ), null);
-                                    assertField(7, 4, Set.of(
-                                            FieldValue.of(2),
-                                            FieldValue.of(4),
-                                            FieldValue.of(5),
-                                            FieldValue.of(7),
-                                            FieldValue.of(9)
-                                    ), null);
-                                    assertField(7, 7, Set.of(
-                                            FieldValue.of(2),
-                                            FieldValue.of(3),
-                                            FieldValue.of(5),
-                                            FieldValue.of(7),
-                                            FieldValue.of(8)
-                                    ), null);
-                                }
-
                                 @DisplayName("Setup left center subgrid")
                                 @Nested
                                 class SetupLeftCenterSubGrid {
@@ -707,7 +318,7 @@ class SudokuThreeThreeTest {
                                         sudoku.set(0, 3, 8);
                                         sudoku.set(0, 4, 4);
                                         sudoku.set(0, 5, 7);
-                                        sudoku.detectChanges();
+                                        sudoku.resolve();
                                     }
 
                                     @Test
@@ -737,41 +348,6 @@ class SudokuThreeThreeTest {
                                         assertThat(sudoku.toString(), is(equalTo(expected)));
                                     }
 
-                                    @Test
-                                    public void shouldUpdateCandidatesInRandomFields() throws Exception {
-                                        assertField(1, 1, Set.of(
-                                                FieldValue.of(4),
-                                                FieldValue.of(7)
-                                        ), null);
-                                        assertField(1, 4, Set.of(), FieldValue.of(2));
-                                        assertField(1, 7, Set.of(
-                                                FieldValue.of(5),
-                                                FieldValue.of(7),
-                                                FieldValue.of(8)
-                                        ), null);
-                                        assertField(4, 1, Set.of(), FieldValue.of(9));
-                                        assertField(4, 4, Set.of(), FieldValue.of(5));
-                                        assertField(4, 7, Set.of(), FieldValue.of(1));
-                                        assertField(7, 1, Set.of(
-                                                FieldValue.of(2),
-                                                FieldValue.of(3),
-                                                FieldValue.of(4),
-                                                FieldValue.of(7),
-                                                FieldValue.of(8)
-                                        ), null);
-                                        assertField(7, 4, Set.of(
-                                                FieldValue.of(7),
-                                                FieldValue.of(9)
-                                        ), null);
-                                        assertField(7, 7, Set.of(
-                                                FieldValue.of(2),
-                                                FieldValue.of(3),
-                                                FieldValue.of(5),
-                                                FieldValue.of(7),
-                                                FieldValue.of(8)
-                                        ), null);
-                                    }
-
                                     @DisplayName("Setup 1st part of buttom right subgrid")
                                     @Nested
                                     class SetupBottomRightSubGrid {
@@ -781,7 +357,7 @@ class SudokuThreeThreeTest {
                                             sudoku.set(7, 6, 8);
                                             sudoku.set(7, 8, 7);
 
-                                            sudoku.detectChanges();
+                                            sudoku.resolve();
                                         }
 
                                         @Test
@@ -812,19 +388,6 @@ class SudokuThreeThreeTest {
                                         }
 
                                         @Test
-                                        public void shouldUpdateCandidatesInRandomFields() throws Exception {
-                                            assertField(1, 1, Set.of(), FieldValue.of(7));
-                                            assertField(1, 4, Set.of(), FieldValue.of(2));
-                                            assertField(1, 7, Set.of(), FieldValue.of(8));
-                                            assertField(4, 1, Set.of(), FieldValue.of(9));
-                                            assertField(4, 4, Set.of(), FieldValue.of(5));
-                                            assertField(4, 7, Set.of(), FieldValue.of(1));
-                                            assertField(7, 1, Set.of(), FieldValue.of(4));
-                                            assertField(7, 4, Set.of(), FieldValue.of(9));
-                                            assertField(7, 7, Set.of(), FieldValue.of(3));
-                                        }
-
-                                        @Test
                                         public void shouldBeSolved() throws Exception {
                                             assertThat(sudoku.isSolved(), is(equalTo(true)));
                                         }
@@ -836,24 +399,5 @@ class SudokuThreeThreeTest {
                 }
             }
         }
-    }
-
-    private Set<FieldValue> allCandidates() {
-        return Set.of(
-                FieldValue.of(1),
-                FieldValue.of(2),
-                FieldValue.of(3),
-                FieldValue.of(4),
-                FieldValue.of(5),
-                FieldValue.of(6),
-                FieldValue.of(7),
-                FieldValue.of(8),
-                FieldValue.of(9)
-        );
-    }
-
-    private void assertField(int x, int y, Set<FieldValue> expectedCandidates, FieldValue expectedValue) {
-        assertThat(sudoku.getCandidates(x, y), is(equalTo(expectedCandidates)));
-        assertThat(sudoku.get(x, y), is(equalTo(expectedValue)));
     }
 }

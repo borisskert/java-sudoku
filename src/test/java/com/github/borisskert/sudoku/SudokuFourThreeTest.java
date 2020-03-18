@@ -564,7 +564,7 @@ public class SudokuFourThreeTest {
                                                         sudoku.set(2, 7, 11);
                                                         sudoku.set(3, 7, 2);
 
-                                                        sudoku.detectChanges();
+                                                        sudoku.resolve();
                                                     }
 
                                                     @Test
@@ -606,7 +606,13 @@ public class SudokuFourThreeTest {
                                                     class Resolve {
                                                         @BeforeEach
                                                         public void setup() throws Exception {
+                                                            sudoku.set(0, 0, 10);
                                                             sudoku.solve();
+                                                        }
+
+                                                        @Test
+                                                        public void shouldBeSolved() throws Exception {
+                                                            assertThat(sudoku.isSolved(), is(equalTo(true)));
                                                         }
 
                                                         @Test

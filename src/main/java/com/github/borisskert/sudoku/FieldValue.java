@@ -2,7 +2,7 @@ package com.github.borisskert.sudoku;
 
 import java.util.Objects;
 
-public class FieldValue {
+class FieldValue {
 
     private final int value;
 
@@ -34,8 +34,6 @@ public class FieldValue {
 
     @Override
     public String toString() {
-        return "FieldValue{" +
-                "value=" + value +
-                '}';
+        return String.valueOf(value);
     }
 }

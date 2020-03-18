@@ -1,154 +1,103 @@
 package com.github.borisskert.sudoku;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 class SubGrids {
 
-    private final List<SubGrid> subGrids = new ArrayList<>();
-    private final int sizeX;
-    private final int sizeY;
+    private final Size size;
+    private final Set<SubGrid> subGrids;
 
-    public SubGrids(int sizeX, int sizeY) {
-        this.sizeX = sizeX;
-        this.sizeY = sizeY;
-
-        initSubGrids();
-        bindNeighborSubGrids();
+    private SubGrids(Size size, Set<SubGrid> subGrids) {
+        this.size = size;
+        this.subGrids = subGrids;
     }
 
-    public int getSizeX() {
-        return sizeX;
+    public Fields withValueAt(AbsoluteCoordinates coordinates, FieldValue value) {
+        SubGridCoordinates subGridCoordinates = coordinates.subGrid(size);
+        WithinSubGridCoordinates withInSubGrid = coordinates.withinSubGrid(size);
+
+        Set<Field> fields = subGrids.stream()
+                .map(subGrid -> {
+                    if (subGrid.has(subGridCoordinates)) {
+                        return subGrid.withValueAt(withInSubGrid, value);
+                    } else {
+                        return subGrid;
+                    }
+                })
+                .flatMap(SubGrid::stream)
+                .collect(Collectors.toUnmodifiableSet());
+
+        return Fields.of(fields);
     }
 
-    public int getSizeY() {
-        return sizeY;
+    public static SubGrids create(Size size, Fields fields) {
+        Set<SubGrid> subGrids = size.toSubGridCoordinates().stream()
+                .map(coordinates -> Tuple.create(coordinates).with(fields.filterSubGridOnly(coordinates)))
+                .map(t -> SubGrid.create(t.getA(), t.getB(), size))
+                .collect(Collectors.toUnmodifiableSet());
+
+        return new SubGrids(size, subGrids);
     }
 
-    private void initSubGrids() {
-        for (int x = 0; x < sizeY; x++) {
-            for (int y = 0; y < sizeX; y++) {
-                subGrids.add(new SubGrid(x, y, sizeX, sizeY));
-            }
+    public Fields resolved() {
+        Set<Field> resolvedFields = this.subGrids.stream()
+                .map(SubGrid::resolvedFields)
+                .flatMap(Fields::stream)
+                .collect(Collectors.toUnmodifiableSet());
+
+        return Fields.of(resolvedFields);
+    }
+
+    public int getWidth() {
+        return size.getWidth();
+    }
+
+    public int getHeight() {
+        return size.getHeight();
+    }
+
+    public SubGrid getSubGrid(SubGridCoordinates coordinates) {
+        Optional<SubGrid> maybeFoundSubGrid = subGrids.stream()
+                .filter(subGrid -> subGrid.getCoordinates().equals(coordinates))
+                .findFirst();
+
+        if (maybeFoundSubGrid.isEmpty()) {
+            throw new RuntimeException("Cannot find subgrid with coordinates: " + coordinates.toString());
         }
+
+        return maybeFoundSubGrid
+                .get();
     }
 
-    public FieldWithAbsoluteCoordinates getField(int x, int y) {
-        SubGrid currentSubGrid = getSubGrid(x / sizeX, y / sizeY);
-
-        int relativeX = x % sizeX;
-        int relativeY = y % sizeY;
-
-        return currentSubGrid.get(relativeX, relativeY);
+    public Size getSize() {
+        return size;
     }
 
-    private FieldsWithAbsoluteCoordinates getColumn(int x) {
+    public Set<Fields> fields() {
         return subGrids.stream()
-                .map(SubGrid::getFields)
-                .flatMap(fields -> fields.getFields().stream())
-                .filter(field -> field.getAbsoluteX() == x)
-                .collect(FieldsWithAbsoluteCoordinates.collect());
-    }
-
-    private FieldsWithAbsoluteCoordinates getLine(int y) {
-        return subGrids.stream()
-                .map(SubGrid::getFields)
-                .flatMap(fields -> fields.getFields().stream())
-                .filter(field -> field.getAbsoluteY() == y)
-                .collect(FieldsWithAbsoluteCoordinates.collect());
-    }
-
-    public boolean areSolved() {
-        return subGrids.stream().noneMatch(SubGrid::isNotSolved);
-    }
-
-    final SubGrid getSubGrid(int x, int y) {
-        return subGrids.stream()
-                .filter(subGrid -> subGrid.getX() == x)
-                .filter(subGrid -> subGrid.getY() == y)
-                .findFirst().get();
-    }
-
-    private void bindNeighborSubGrids() {
-        subGrids.forEach(subGrid -> {
-            int x = subGrid.getX();
-            int y = subGrid.getY();
-
-            List<SubGrid> neighborSubGridsX = subGridsX(x);
-
-            neighborSubGridsX.forEach(neighborSubGrid -> {
-                if (subGrid != neighborSubGrid) {
-                    subGrid.registerToX(neighborSubGrid);
-                }
-            });
-
-            List<SubGrid> neighborSubGridsY = subGridsY(y);
-
-            neighborSubGridsY.forEach(neighborSubGrid -> {
-                if (subGrid != neighborSubGrid) {
-                    subGrid.registerToY(neighborSubGrid);
-                }
-            });
-        });
-    }
-
-    private List<SubGrid> subGridsX(int x) {
-        return subGrids.stream()
-                .filter(subGrid -> subGrid.getX() == x)
-                .collect(Collectors.toList());
-    }
-
-    private List<SubGrid> subGridsY(int y) {
-        return subGrids.stream()
-                .filter(subGrid -> subGrid.getY() == y)
-                .collect(Collectors.toList());
-    }
-
-    Collection<FieldWithAbsoluteCoordinates> getUnresolvedFields() {
-        return subGrids.stream()
-                .flatMap(subGrid -> subGrid.getUnresolvedFields().stream())
-                .collect(Collectors.toUnmodifiableList());
-    }
-
-    Collection<FieldsWithAbsoluteCoordinates> getSubGridFields() {
-        return subGrids.stream()
-                .map(SubGrid::getFields)
-                .collect(Collectors.toUnmodifiableList());
-    }
-
-    Collection<FieldsWithAbsoluteCoordinates> getLines() {
-        return IntStream.range(0, sizeX * sizeY)
-                .mapToObj(this::getLine)
-                .collect(Collectors.toUnmodifiableList());
-    }
-
-    Collection<FieldsWithAbsoluteCoordinates> getColumns() {
-        return IntStream.range(0, sizeX * sizeY)
-                .mapToObj(this::getColumn)
-                .collect(Collectors.toUnmodifiableList());
-    }
-
-    Collection<FieldWithAbsoluteCoordinates> findDefiniteFields() {
-        return subGrids.stream()
-                .flatMap(subGrid -> subGrid.getFieldsToBeSolved().stream())
-                .collect(Collectors.toUnmodifiableList());
-    }
-
-    Collection<FieldWithAbsoluteCoordinates> getFields() {
-        return subGrids.stream()
-                .flatMap(subGrid -> subGrid.getFields().getFields().stream())
-                .collect(Collectors.toUnmodifiableList());
+                .map(SubGrid::fields)
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     @Override
-    public String toString() {
-        return "SubGrids{" +
-                "subGrids=" + subGrids +
-                ", sizeX=" + sizeX +
-                ", sizeY=" + sizeY +
-                '}';
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SubGrids that = (SubGrids) o;
+        return Objects.equals(size, that.size) &&
+                Objects.equals(subGrids, that.subGrids);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(size, subGrids);
+    }
+
+    public Stream<SubGrid> stream() {
+        return subGrids.stream();
     }
 }

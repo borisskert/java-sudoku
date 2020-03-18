@@ -1,156 +1,226 @@
 package com.github.borisskert.sudoku;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import java.util.function.BinaryOperator;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
+import java.util.function.Function;
 
-public class Solver {
+class Solver {
 
-    private final ChangeDetection changeDetection;
+    private final Size size;
     private final ChangeHistory changeHistory;
-    private final SubGrids subGrids;
-    private final Random random;
+    private final BinaryOperator<SubGrid> randomSubGridSelect;
+    private final BinaryOperator<FieldValue> randomCandidateSelect;
+    private final BinaryOperator<Field> randomFieldSelect;
 
-    private final RandomAccumulator<FieldValue> randomAccumulator;
+    private SolveTrial lastTrial;
+    private final Set<SolveTrial> trials = new HashSet<>();
+    private final Set<SolveTrial> illegalTrials = new HashSet<>();
 
-    Solver(ChangeDetection changeDetection, ChangeHistory changeHistory, SubGrids subGrids) {
-        this.changeDetection = changeDetection;
-        this.changeHistory = changeHistory;
-        this.subGrids = subGrids;
-        this.random = new Random();
-        this.randomAccumulator = new RandomAccumulator<>();
+    public Solver(Size size, long seed) {
+        this.size = size;
+        randomSubGridSelect = RandomAccumulator.newInstance(seed);
+        randomFieldSelect = RandomAccumulator.newInstance(seed);
+        randomCandidateSelect = RandomAccumulator.newInstance(seed);
+        changeHistory = new ChangeHistory();
     }
 
-    void solve() {
-        while (!this.subGrids.areSolved()) {
-            setupDefiniteFieldValues();
+    public Fields solve(final Fields originalFields) {
+        changeHistory.setup(originalFields);
 
-            if (!this.subGrids.areSolved()) {
-                setupRandomField();
-            }
-        }
-    }
+        Fields changedFields = originalFields;
+        Fields beforeChange;
 
-    private void setupRandomField() {
-        Optional<FieldWithAbsoluteCoordinates> maybeField = selectRandomField();
-
-        maybeField.ifPresentOrElse(selectedField -> {
-            FieldValue value = selectedField.getCandidates()
-                    .stream()
-                    .reduce(randomAccumulator)
-                    .get();
-
-            changeHistory.performTrial(selectedField.getAbsoluteX(), selectedField.getAbsoluteY(), value.getValue());
-            changeDetection.detectChanges();
-        }, () -> { throw new RuntimeException("No empty field found"); });
-    }
-
-    private void setupDefiniteFieldValues() {
-        int count = 0;
         do {
-            count = setupDefiniteFieldValues(this::getSubGridFieldsWithDefiniteFieldValues);
+            beforeChange = changedFields;
 
-            if (!this.subGrids.areSolved()) {
-                count += setupDefiniteFieldValues(this::getLinesWithDefiniteFieldValues);
+            try {
+                changedFields = tryToSolve(originalFields);
+            } catch (IllegalStateException e) {
+                illegalTrials.addAll(trials);
+                trials.clear();
+
+                changedFields = changeHistory.rollBack();
             }
+        } while (changedFields.equals(beforeChange));
 
-            if (!this.subGrids.areSolved()) {
-                count += setupDefiniteFieldValues(this::getColumnsWithDefiniteFieldValues);
-            }
-
-            changeDetection.detectChanges();
-        }
-        while (!this.subGrids.areSolved() && count > 0);
+        return changedFields;
     }
 
-    private int setupDefiniteFieldValues(Supplier<Collection<FieldsWithAbsoluteCoordinates>> fieldsSupplier) {
-        int counter = 0;
+    private Fields tryToSolve(Fields originalFields) {
+        Fields beforeChanges;
+        Fields changedFields = originalFields;
 
-        Collection<FieldsWithAbsoluteCoordinates> fieldsCollection = fieldsSupplier.get();
+        do {
+            beforeChanges = changedFields;
 
-        while (fieldsCollection.size() > 0) {
-            FieldsWithAbsoluteCoordinates selectedFields = fieldsCollection.iterator().next();
-            Collection<FieldValue> definiteFieldValues = selectedFields.getDefiniteFieldValues();
-            FieldValue selectedFieldValue = definiteFieldValues.iterator().next();
+            try {
+                changedFields = solveDefinite(changedFields);
+            } catch (IllegalStateException e) {
+                trials.add(lastTrial);
+                illegalTrials.addAll(trials);
+                trials.clear();
 
-            FieldWithAbsoluteCoordinates selectedField = selectedFields.getFields().stream()
+                changedFields = changeHistory.rollBack();
+            }
+
+            if (!changedFields.areSolved() && changedFields.equals(beforeChanges)) {
+                changedFields = tryToSolveOneRandomly(changedFields);
+            }
+        }
+        while (!changedFields.areSolved() && !changedFields.equals(beforeChanges));
+
+        return changedFields;
+    }
+
+    private Fields tryToSolveOneRandomly(Fields changedFields) {
+        Fields beforeChange;
+        do {
+            beforeChange = changedFields;
+
+            try {
+                changedFields = solveOneFieldRandomly(changedFields);
+            } catch (IllegalStateException e) {
+                illegalTrials.addAll(trials);
+                trials.clear();
+            }
+        } while (changedFields.equals(beforeChange));
+
+        return changedFields;
+    }
+
+    private Fields solveDefinite(Fields originalFields) {
+        Fields beforeChanges;
+        Fields changedFields = originalFields;
+
+        do {
+            beforeChanges = changedFields;
+
+            changedFields = SubGrids.create(size, changedFields).fields().stream()
+                    .map(this::setupOneDefinite)
+                    .collect(Fields.collect());
+
+            changedFields = Columns.of(changedFields).fields().stream()
+                    .map(this::setupOneDefinite)
+                    .collect(Fields.collect());
+
+            changedFields = Lines.of(changedFields).fields().stream()
+                    .map(this::setupOneDefinite)
+                    .collect(Fields.collect());
+
+            changeHistory.definite(changedFields);
+
+        } while (!beforeChanges.equals(changedFields));
+
+        return changedFields;
+    }
+
+    private Fields setupOneDefinite(Fields fields) {
+        Fields changedFields = fields.clearCandidates();
+
+        Candidates candidates = changedFields.definiteCandidates();
+
+        if (candidates.isEmpty()) {
+            return changedFields;
+        } else {
+            FieldValue fieldValue = candidates.any();
+
+            return changedFields.stream()
+                    .filter(field -> field.hasCandidate(fieldValue))
+                    .map(Field::absoluteCoordinates)
+                    .findAny()
+                    .map(tryToSetValue(changedFields, fieldValue))
+                    .orElseThrow(() -> {
+                        throw new RuntimeException("No field with candidate " + fieldValue + " found");
+                    }).clearCandidates();
+        }
+    }
+
+    private Function<AbsoluteCoordinates, Fields> tryToSetValue(Fields changedFields, FieldValue fieldValue) {
+        return coordinates -> {
+            lastTrial = new SolveTrial(coordinates, fieldValue);
+            return changedFields.withValueAt(coordinates, fieldValue);
+        };
+    }
+
+    private Fields solveOneFieldRandomly(Fields originalFields) {
+        SubGrids subGrids = SubGrids.create(size, originalFields);
+
+        SolveTrial trial;
+        do {
+            SubGrid randomSubGrid = subGrids.stream()
+                    .filter(subgrid -> !subgrid.isSolved())
+                    .reduce(randomSubGridSelect)
+                    .orElseThrow(() -> new RuntimeException("Cannot find unsolved Subgrid"));
+
+            Field randomField = randomSubGrid.fields().stream()
                     .filter(Field::isEmpty)
-                    .filter(field -> field.getCandidates().contains(selectedFieldValue))
-                    .findFirst().get();
+                    .filter(Field::hasCandidates)
+                    .reduce(randomFieldSelect)
+                    .orElseThrow(() -> new RuntimeException("Cannot find a empty field"));
 
-            changeHistory.performDefinite(selectedField.getAbsoluteX(), selectedField.getAbsoluteY(), selectedFieldValue.getValue());
-            counter++;
+            FieldValue randomCandidate = randomField.getCandidates().stream()
+                    .reduce(randomCandidateSelect)
+                    .orElseThrow(() -> new RuntimeException("Cannot find a candidate"));
 
-            changeDetection.detectChanges();
+            trial = new SolveTrial(randomField.absoluteCoordinates(), randomCandidate);
 
-            fieldsCollection = fieldsSupplier.get();
+        } while (illegalTrials.contains(trial));
+
+        trials.add(trial);
+
+        Fields changedFields = subGrids.withValueAt(trial.coordinates(), trial.fieldValue());
+        changeHistory.trial(changedFields);
+
+        return clearCandidates(changedFields);
+    }
+
+    private Fields clearCandidates(Fields originalFields) {
+        Fields changedFields = SubGrids.create(size, originalFields).fields().stream()
+                .map(Fields::clearCandidates)
+                .collect(Fields.collect());
+
+        changedFields = Columns.of(changedFields).fields().stream()
+                .map(Fields::clearCandidates)
+                .collect(Fields.collect());
+
+        changedFields = Lines.of(changedFields).fields().stream()
+                .map(Fields::clearCandidates)
+                .collect(Fields.collect());
+
+        return changedFields;
+    }
+
+    public static class SolveTrial {
+        private final AbsoluteCoordinates coordinates;
+        private final FieldValue value;
+
+        public SolveTrial(AbsoluteCoordinates coordinates, FieldValue fieldValue) {
+            this.coordinates = coordinates;
+            value = fieldValue;
         }
 
-        return counter;
-    }
-
-    private Collection<FieldsWithAbsoluteCoordinates> getLinesWithDefiniteFieldValues() {
-        return subGrids.getLines().stream()
-                .filter(line -> line.getDefiniteFieldValues().size() > 0)
-                .collect(Collectors.toUnmodifiableList());
-    }
-
-    private Collection<FieldsWithAbsoluteCoordinates> getColumnsWithDefiniteFieldValues() {
-        Collection<FieldsWithAbsoluteCoordinates> columns = subGrids.getColumns();
-        return columns.stream()
-                .filter(column -> column.getDefiniteFieldValues().size() > 0)
-                .collect(Collectors.toUnmodifiableList());
-    }
-
-    private Collection<FieldsWithAbsoluteCoordinates> getSubGridFieldsWithDefiniteFieldValues() {
-        return this.subGrids.getSubGridFields().stream()
-                .filter(subGrid -> subGrid.getDefiniteFieldValues().size() > 0)
-                .collect(Collectors.toUnmodifiableList());
-    }
-
-    private static class RandomAccumulator<T> implements BinaryOperator<T> {
-        private final Coin coin;
-
-        private RandomAccumulator() {
-            this.coin = new Coin();
+        public AbsoluteCoordinates coordinates() {
+            return coordinates;
         }
 
-        private RandomAccumulator(long seed) {
-            this.coin = new Coin(seed);
+        public FieldValue fieldValue() {
+            return value;
         }
 
         @Override
-        public T apply(T value, T value2) {
-            coin.flip();
-
-            if (coin.isOnHeads()) {
-                return value;
-            } else {
-                return value2;
-            }
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            SolveTrial trial = (SolveTrial) o;
+            return Objects.equals(coordinates, trial.coordinates) &&
+                    Objects.equals(value, trial.value);
         }
 
-        public static <T> BinaryOperator<T> newInstance(long seed) {
-            return new RandomAccumulator<>(seed);
+        @Override
+        public int hashCode() {
+            return Objects.hash(coordinates, value);
         }
-    }
-
-    private Optional<FieldWithAbsoluteCoordinates> selectRandomField() {
-        Collection<FieldWithAbsoluteCoordinates> unresolvedFields = subGrids.getUnresolvedFields();
-        Optional<Integer> minimumCountOfCandidates = unresolvedFields.stream()
-                .map(Field::getCandidates)
-                .map(Set::size)
-                .min(Integer::compareTo);
-
-        return minimumCountOfCandidates.map(min -> {
-            List<FieldWithAbsoluteCoordinates> collect = unresolvedFields.stream()
-                    .filter(field -> field.getCandidates().size() == min)
-                    .collect(Collectors.toList());
-
-            Collections.shuffle(collect, random);
-
-            return collect.get(0);
-        });
     }
 }
