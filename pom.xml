@@ -12,20 +12,13 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <junit.version>5.6.0</junit.version>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>com.github.borisskert</groupId>
-            <artifactId>java-observable-properties</artifactId>
-            <version>0.1.0</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit.version}</version>
+            <version>5.6.0</version>
             <scope>test</scope>
         </dependency>
 
@@ -47,12 +40,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <repositories>
-        <repository>
-            <id>github_borisskert_java-observable-properties</id>
-            <name>GitHub borisskert Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/borisskert/java-observable-properties</url>
-        </repository>
-    </repositories>
 </project>
