@@ -1,6 +1,14 @@
 package de.borisskert.sudoku.core;
 
-public class ValuedFields {
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.BinaryOperator;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collector;
+
+class ValuedFields {
 
     private final Size size;
     private final Fields fields;
@@ -19,10 +27,23 @@ public class ValuedFields {
 
         Columns columns = Columns.of(changedFields);
         changedFields = columns.withValueAt(coordinates, fieldValue);
-        
+
         return new ValuedFields(size, changedFields);
     }
-    
+
+    public ValuedFields withoutValueAt(AbsoluteCoordinates coordinates) {
+        SubGrids subGrids = SubGrids.create(size, fields);
+        Fields changedFields = subGrids.withoutValueAt(coordinates);
+
+        Lines lines = Lines.of(changedFields);
+        changedFields = lines.withoutValueAt(coordinates);
+
+        Columns columns = Columns.of(changedFields);
+        changedFields = columns.withoutValueAt(coordinates);
+
+        return new ValuedFields(size, changedFields);
+    }
+
     public Fields fields() {
         return fields;
     }
@@ -30,16 +51,62 @@ public class ValuedFields {
     public static Builder forSize(Size size) {
         return new Builder(size);
     }
-    
+
     public static class Builder {
         private final Size size;
-        
+
         public Builder(Size size) {
             this.size = size;
         }
-        
+
         public ValuedFields and(Fields fields) {
             return new ValuedFields(size, fields);
         }
+
+        public ValuedFields empty() {
+            return new ValuedFields(size, Fields.create(size));
+        }
+    }
+
+    public static Collector<Field, Set<Field>, ValuedFields> collect(Size size) {
+        return new Collector<>() {
+            @Override
+            public Supplier<Set<Field>> supplier() {
+                return HashSet::new;
+            }
+
+            @Override
+            public BiConsumer<Set<Field>, Field> accumulator() {
+                return Set::add;
+            }
+
+            @Override
+            public BinaryOperator<Set<Field>> combiner() {
+                return (fields, fields2) -> {
+                    fields.addAll(fields2);
+                    return fields;
+                };
+            }
+
+            @Override
+            public Function<Set<Field>, ValuedFields> finisher() {
+                return set -> {
+                    ValuedFields valued = ValuedFields.forSize(size).empty();
+
+                    for (Field field : set) {
+                        if (field.isSolved()) {
+                            valued = valued.withValueAt(field.absoluteCoordinates(), field.getValue());
+                        }
+                    }
+
+                    return valued;
+                };
+            }
+
+            @Override
+            public Set<Characteristics> characteristics() {
+                return Set.of();
+            }
+        };
     }
 }

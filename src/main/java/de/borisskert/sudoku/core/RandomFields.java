@@ -3,7 +3,7 @@ package de.borisskert.sudoku.core;
 import java.util.Random;
 import java.util.function.BinaryOperator;
 
-public class RandomFields {
+class RandomFields {
 
     private final Size size;
     private final BinaryOperator<SubGrid> randomSubGridSelect;
@@ -39,6 +39,7 @@ public class RandomFields {
         return randomSubGrid.fields().stream()
                 .filter(Field::isEmpty)
                 .filter(Field::hasCandidates)
+                .sorted()
                 .reduce(randomFieldSelect)
                 .orElseThrow(() -> new RuntimeException("Cannot find a empty field"));
     }

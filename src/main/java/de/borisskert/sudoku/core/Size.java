@@ -31,17 +31,8 @@ class Size {
     public Set<SubGridCoordinates> toSubGridCoordinates() {
         return IntStream.range(0, width).boxed()
                 .flatMap(x -> IntStream.range(0, height)
-                        .mapToObj(y -> Coordinates.from(x, y))
+                        .mapToObj(y -> SubGridCoordinates.from(y, x))
                 )
-                .map(Coordinates::rotate)
-                .collect(Collectors.toUnmodifiableSet());
-    }
-
-    public Set<WithinSubGridCoordinates> toWithinSubGridCoordinates() {
-        return IntStream.range(0, width).boxed()
-                .flatMap(x -> IntStream.range(0, height)
-                        .mapToObj(y -> SubGridCoordinates.from(x, y))
-                ).map(c -> c.withinSubGrid(this))
                 .collect(Collectors.toUnmodifiableSet());
     }
 
@@ -74,7 +65,7 @@ class Size {
                 '}';
     }
 
-    public static Size from(int width, int height) {
+    public static Size of(int width, int height) {
         return new Size(width, height);
     }
 }

@@ -1,9 +1,10 @@
 package de.borisskert.sudoku.core;
 
+import java.util.Comparator;
 import java.util.Objects;
 import java.util.Set;
 
-class Field {
+class Field implements Comparable<Field> {
 
     /* *****************************************************************************************************************
      * Private fields
@@ -108,6 +109,10 @@ class Field {
         return new Field(size, coordinates, candidates.without(value), fieldValue);
     }
 
+    public Field withCandidate(FieldValue value) {
+        return new Field(size, coordinates, candidates.with(value), fieldValue);
+    }
+
     public Field withoutCandidates(Set<FieldValue> values) {
         Candidates changedCandidates = candidates.without(values);
 
@@ -132,6 +137,22 @@ class Field {
         }
 
         return new Field(size, coordinates, value);
+    }
+
+    public Field forceValue(FieldValue value) {
+        if (Objects.equals(this.fieldValue, value)) {
+            return this;
+        }
+
+        return new Field(size, coordinates, value);
+    }
+
+    public Field forceEmptyValue() {
+        return new Field(size, coordinates, Candidates.empty());
+    }
+
+    public Field emptyValueWithCandidates(Candidates candidates) {
+        return new Field(size, coordinates, candidates);
     }
 
     /* *****************************************************************************************************************
@@ -165,5 +186,15 @@ class Field {
 
     public static Field empty(AbsoluteCoordinates coordinates, Size size) {
         return new Field(size, coordinates, Candidates.create(size));
+    }
+
+    public static Field filled(AbsoluteCoordinates coordinates, Size size, FieldValue value) {
+        return new Field(size, coordinates, value);
+    }
+
+    @Override
+    public int compareTo(Field o) {
+        return Comparator.<Field, AbsoluteCoordinates>comparing(field -> field.coordinates)
+                .compare(this, o);
     }
 }

@@ -1,16 +1,13 @@
 package de.borisskert.sudoku.core;
 
+import java.util.Random;
 import java.util.function.BinaryOperator;
 
 class RandomAccumulator<T> implements BinaryOperator<T> {
     private final Coin coin;
 
-    private RandomAccumulator() {
-        this.coin = new Coin();
-    }
-
-    private RandomAccumulator(long seed) {
-        this.coin = new Coin(seed);
+    private RandomAccumulator(Random random) {
+        this.coin = Coin.create(random);
     }
 
     @Override
@@ -25,10 +22,16 @@ class RandomAccumulator<T> implements BinaryOperator<T> {
     }
 
     public static <T> BinaryOperator<T> newInstance(long seed) {
-        return new RandomAccumulator<>(seed);
+        Random random = new Random(seed);
+        return new RandomAccumulator<>(random);
+    }
+
+    public static <T> BinaryOperator<T> newInstance(Random random) {
+        return new RandomAccumulator<>(random);
     }
 
     public static <T> BinaryOperator<T> newInstance() {
-        return new RandomAccumulator<>();
+        Random random = new Random();
+        return new RandomAccumulator<>(random);
     }
 }

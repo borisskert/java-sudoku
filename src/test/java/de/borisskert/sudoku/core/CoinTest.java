@@ -17,7 +17,7 @@ class CoinTest {
 
     @BeforeEach
     public void setup() throws Exception {
-        coin = new Coin(79871231232391L);
+        coin = Coin.create(79871231232391L);
     }
 
     @Test
@@ -164,7 +164,7 @@ class CoinTest {
     class FiftyFifty {
         @BeforeEach
         public void setup() throws Exception {
-            coin = new Coin(234324323413L);
+            coin = Coin.create(234324323413L);
         }
 
         @Test
@@ -196,7 +196,7 @@ class CoinTest {
     class SixtyForty {
         @BeforeEach
         public void setup() throws Exception {
-            coin = new Coin(234324323413L);
+            coin = Coin.create(234324323413L);
         }
 
         @Test

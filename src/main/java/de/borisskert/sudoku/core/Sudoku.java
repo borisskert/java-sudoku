@@ -1,8 +1,6 @@
 package de.borisskert.sudoku.core;
 
 import java.util.Random;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class Sudoku {
 
@@ -69,22 +67,21 @@ public class Sudoku {
      **************************************************************************************************************** */
 
     public static Sudoku create(int width, int height) {
-        Size size = Size.from(width, height);
+        Size size = Size.of(width, height);
         Fields fields = Fields.create(size);
 
         return new Sudoku(fields, size);
     }
 
-    public static Sudoku createRandomized(int width, int height, double percentage) {
-        Size size = Size.from(width, height);
+    public static Sudoku createPuzzle(int width, int height) {
+        Size size = Size.of(width, height);
 
-        Set<Field> createdFields = size.toAbsoluteCoordinates().stream()
-                .map(coordinates -> Field.empty(coordinates, size))
-                .collect(Collectors.toUnmodifiableSet());
+        Fields puzzle = Puzzle.with(size)
+                .andPercentage(0.3)
+                .build()
+                .newPuzzle();
 
-        Fields fields = Fields.of(createdFields);
-
-        return new Sudoku(fields, size);
+        return new Sudoku(puzzle, size);
     }
 
     /* *****************************************************************************************************************

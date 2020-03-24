@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.text.Format;
 import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -31,10 +32,10 @@ class FieldsTwoTwoTest {
         oneZero = AbsoluteCoordinates.from(1, 0);
         oneOne = AbsoluteCoordinates.from(1, 1);
 
-        fieldZeroZero = Field.empty(zeroZero, Size.from(2, 2));
-        fieldZeroOne = Field.empty(zeroOne, Size.from(2, 2));
-        fieldOneZero = Field.empty(oneZero, Size.from(2, 2));
-        fieldOneOne = Field.empty(oneOne, Size.from(2, 2));
+        fieldZeroZero = Field.empty(zeroZero, Size.of(2, 2));
+        fieldZeroOne = Field.empty(zeroOne, Size.of(2, 2));
+        fieldOneZero = Field.empty(oneZero, Size.of(2, 2));
+        fieldOneOne = Field.empty(oneOne, Size.of(2, 2));
 
         fields = Fields.of(Set.of(fieldZeroZero, fieldZeroOne, fieldOneZero, fieldOneOne));
     }
@@ -168,6 +169,36 @@ class FieldsTwoTwoTest {
                     assertThat(changedFields.resolve(), is(equalTo(expectedFields)));
                 }
             }
+        }
+    }
+
+    @Nested
+    class CreateFilledFields {
+
+        private Fields filled;
+        private Size size;
+
+        @BeforeEach
+        public void setup() throws Exception {
+            size = Size.of(2, 2);
+            filled = Fields.createFilled(size);
+        }
+
+        @Test
+        public void shouldPrintFilledFields() throws Exception {
+            // @formatter:off
+            String expected =
+                    "╔═╤═╦═╤═╗\n" +
+                    "║1│2║3│4║\n" +
+                    "╟─┼─╫─┼─╢\n" +
+                    "║3│4║1│2║\n" +
+                    "╠═╪═╬═╪═╣\n" +
+                    "║2│3║4│1║\n" +
+                    "╟─┼─╫─┼─╢\n" +
+                    "║4│1║2│3║\n" +
+                    "╚═╧═╩═╧═╝\n";
+            // @formatter:on
+            assertThat(Formatter.format(size, filled), is(equalTo(expected)));
         }
     }
 }

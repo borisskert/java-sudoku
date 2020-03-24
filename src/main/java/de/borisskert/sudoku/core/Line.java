@@ -23,6 +23,11 @@ class Line {
         return new Line(changedFields);
     }
 
+    public Line withoutValueAt(AbsoluteCoordinates coordinates) {
+        Fields changedFields = this.fields.withoutValueAt(coordinates);
+        return new Line(changedFields);
+    }
+
     public Stream<Field> stream() {
         return fields.stream();
     }

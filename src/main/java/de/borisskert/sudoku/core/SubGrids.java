@@ -34,6 +34,24 @@ class SubGrids {
         return Fields.of(fields);
     }
 
+    public Fields withoutValueAt(AbsoluteCoordinates coordinates) {
+        SubGridCoordinates subGridCoordinates = coordinates.subGrid(size);
+        WithinSubGridCoordinates withInSubGrid = coordinates.withinSubGrid(size);
+
+        Set<Field> fields = subGrids.stream()
+                .map(subGrid -> {
+                    if (subGrid.has(subGridCoordinates)) {
+                        return subGrid.withoutValueAt(withInSubGrid);
+                    } else {
+                        return subGrid;
+                    }
+                })
+                .flatMap(SubGrid::stream)
+                .collect(Collectors.toUnmodifiableSet());
+
+        return Fields.of(fields);
+    }
+
     public static SubGrids create(Size size, Fields fields) {
         Set<SubGrid> subGrids = size.toSubGridCoordinates().stream()
                 .map(coordinates -> Tuple.create(coordinates).with(fields.filterSubGridOnly(coordinates)))

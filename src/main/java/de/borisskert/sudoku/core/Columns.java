@@ -46,6 +46,21 @@ class Columns {
         return Fields.of(changedFields);
     }
 
+    public Fields withoutValueAt(AbsoluteCoordinates coordinates) {
+        Set<Field> changedFields = columns.stream()
+                .map(column -> {
+                    if (column.has(coordinates)) {
+                        return column.withoutValueAt(coordinates);
+                    } else {
+                        return column;
+                    }
+                })
+                .flatMap(Column::stream)
+                .collect(Collectors.toUnmodifiableSet());
+
+        return Fields.of(changedFields);
+    }
+
     public Set<Fields> fields() {
         return this.columns.stream()
                 .map(Column::fields)

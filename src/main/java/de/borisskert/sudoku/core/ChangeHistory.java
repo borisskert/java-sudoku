@@ -4,6 +4,7 @@ import java.util.Stack;
 
 class ChangeHistory {
 
+    private Fields originalFields;
     private final Stack<Change> changes = new Stack<>();
 
     public void trial(Fields changedFields) {
@@ -15,6 +16,7 @@ class ChangeHistory {
     }
 
     public void setup(Fields originalFields) {
+        this.originalFields = originalFields;
         performChange(originalFields, Change.ChangeType.SETUP);
     }
 
@@ -26,7 +28,11 @@ class ChangeHistory {
     public Fields rollBack() {
         do {
             changes.pop();
-        } while (changes.peek().type != Change.ChangeType.TRIAL);
+        } while (!changes.isEmpty() && changes.peek().type != Change.ChangeType.TRIAL);
+
+        if(changes.isEmpty()) {
+           return originalFields;
+        }
 
         return changes.peek().fields;
     }

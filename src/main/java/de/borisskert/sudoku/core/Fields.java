@@ -1,6 +1,11 @@
 package de.borisskert.sudoku.core;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
@@ -68,7 +73,7 @@ class Fields {
 
     public Field get(AbsoluteCoordinates coordinates) {
         return searchWith(coordinates)
-                .get();
+                .orElseThrow(() -> new RuntimeException("Cannot find field " + coordinates));
     }
 
     public Optional<Field> searchWith(AbsoluteCoordinates coordinates) {
@@ -101,6 +106,34 @@ class Fields {
                         return field.withValue(fieldValue);
                     } else {
                         return field.withoutCandidate(fieldValue);
+                    }
+                }).collect(Collectors.toUnmodifiableSet());
+
+        return new Fields(updatedFields);
+    }
+
+    public Fields withoutValueAt(AbsoluteCoordinates coordinates) {
+        Candidates candidates = Candidates.of(values());
+
+        Set<Field> updatedFields = fields.stream()
+                .map(field -> {
+                    if (field.has(coordinates)) {
+                        return field.emptyValueWithCandidates(candidates);
+                    } else {
+                        return field.withCandidate(field.getValue());
+                    }
+                }).collect(Collectors.toUnmodifiableSet());
+
+        return new Fields(updatedFields);
+    }
+
+    public Fields withoutValueAt(WithinSubGridCoordinates coordinates) {
+        Set<Field> updatedFields = fields.stream()
+                .map(field -> {
+                    if (field.has(coordinates)) {
+                        return field.forceEmptyValue();
+                    } else {
+                        return field.withCandidate(field.getValue());
                     }
                 }).collect(Collectors.toUnmodifiableSet());
 
@@ -202,6 +235,14 @@ class Fields {
 
     static Fields empty() {
         return new Fields(Set.of());
+    }
+
+    static Fields createFilled(Size size) {
+        Set<Field> createdFields = size.toAbsoluteCoordinates().stream()
+                .map(coordinates -> Field.filled(coordinates, size, DefaultValue.within(size).andFor(coordinates)))
+                .collect(Collectors.toUnmodifiableSet());
+
+        return new Fields(createdFields);
     }
 
     /* *****************************************************************************************************************

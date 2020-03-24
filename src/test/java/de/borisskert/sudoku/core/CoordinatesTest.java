@@ -40,7 +40,7 @@ class CoordinatesTest {
     @Test
     public void shouldCreateFirstQuarterSubGridCoordinates() throws Exception {
         AbsoluteCoordinates coordinates = AbsoluteCoordinates.from(1, 1);
-        WithinSubGridCoordinates withinSubGrid = coordinates.withinSubGrid(Size.from(2, 2));
+        WithinSubGridCoordinates withinSubGrid = coordinates.withinSubGrid(Size.of(2, 2));
 
         WithinSubGridCoordinates expected = WithinSubGridCoordinates.from(1, 1);
 
@@ -50,7 +50,7 @@ class CoordinatesTest {
     @Test
     public void shouldCreateForthQuarterSubGridCoordinates() throws Exception {
         AbsoluteCoordinates coordinates = AbsoluteCoordinates.from(2, 2);
-        WithinSubGridCoordinates withinSubGrid = coordinates.withinSubGrid(Size.from(2, 2));
+        WithinSubGridCoordinates withinSubGrid = coordinates.withinSubGrid(Size.of(2, 2));
 
         WithinSubGridCoordinates expected = WithinSubGridCoordinates.from(0, 0);
 
@@ -60,7 +60,7 @@ class CoordinatesTest {
     @Test
     public void shouldCreateForthQuarterNonQuadraticSubGridCoordinates() throws Exception {
         AbsoluteCoordinates coordinates = AbsoluteCoordinates.from(5, 5);
-        WithinSubGridCoordinates withinSubGrid = coordinates.withinSubGrid(Size.from(4, 3));
+        WithinSubGridCoordinates withinSubGrid = coordinates.withinSubGrid(Size.of(4, 3));
 
         WithinSubGridCoordinates expected = WithinSubGridCoordinates.from(1, 2);
 
@@ -70,7 +70,7 @@ class CoordinatesTest {
     @Test
     public void shouldCreateAbsoluteCoordinatesFromFirstQuarterSubGridCoordinates() throws Exception {
         WithinSubGridCoordinates coordinates = WithinSubGridCoordinates.from(1, 1);
-        AbsoluteCoordinates absolute = coordinates.absolute(Size.from(2, 2), SubGridCoordinates.from(0, 0));
+        AbsoluteCoordinates absolute = coordinates.absolute(Size.of(2, 2), SubGridCoordinates.from(0, 0));
 
         AbsoluteCoordinates expected = AbsoluteCoordinates.from(1, 1);
 
@@ -80,7 +80,7 @@ class CoordinatesTest {
     @Test
     public void shouldCreateAbsoluteCoordinatesFromFourthQuarterSubGridCoordinates() throws Exception {
         WithinSubGridCoordinates coordinates = WithinSubGridCoordinates.from(0, 0);
-        AbsoluteCoordinates absolute = coordinates.absolute(Size.from(2, 2), SubGridCoordinates.from(1, 1));
+        AbsoluteCoordinates absolute = coordinates.absolute(Size.of(2, 2), SubGridCoordinates.from(1, 1));
 
         AbsoluteCoordinates expected = AbsoluteCoordinates.from(2, 2);
 
@@ -90,7 +90,7 @@ class CoordinatesTest {
     @Test
     public void shouldCreateAbsoluteCoordinatesFromFourthQuarterNonQuadraticSubGridCoordinates() throws Exception {
         WithinSubGridCoordinates coordinates = WithinSubGridCoordinates.from(1, 2);
-        AbsoluteCoordinates absolute = coordinates.absolute(Size.from(4, 3), SubGridCoordinates.from(1, 1));
+        AbsoluteCoordinates absolute = coordinates.absolute(Size.of(4, 3), SubGridCoordinates.from(1, 1));
 
         AbsoluteCoordinates expected = AbsoluteCoordinates.from(5, 5);
 
@@ -100,7 +100,7 @@ class CoordinatesTest {
     @Test
     public void shouldCreateSubGridCoordinatesForFirstQuarter() throws Exception {
         AbsoluteCoordinates coordinates = AbsoluteCoordinates.from(1, 1);
-        SubGridCoordinates subGrid = coordinates.subGrid(Size.from(2, 2));
+        SubGridCoordinates subGrid = coordinates.subGrid(Size.of(2, 2));
 
         SubGridCoordinates expected = SubGridCoordinates.from(0, 0);
 
@@ -110,7 +110,7 @@ class CoordinatesTest {
     @Test
     public void shouldCreateSubGridCoordinatesForForthQuarter() throws Exception {
         AbsoluteCoordinates coordinates = AbsoluteCoordinates.from(2, 2);
-        SubGridCoordinates subGrid = coordinates.subGrid(Size.from(2, 2));
+        SubGridCoordinates subGrid = coordinates.subGrid(Size.of(2, 2));
 
         SubGridCoordinates expected = SubGridCoordinates.from(1, 1);
 
@@ -120,7 +120,7 @@ class CoordinatesTest {
     @Test
     public void shouldCreateSubGridCoordinatesForForthQuarterInNonQuadratic() throws Exception {
         AbsoluteCoordinates coordinates = AbsoluteCoordinates.from(5, 5);
-        SubGridCoordinates subGrid = coordinates.subGrid(Size.from(4, 3));
+        SubGridCoordinates subGrid = coordinates.subGrid(Size.of(4, 3));
 
         SubGridCoordinates expected = SubGridCoordinates.from(1, 1);
 
@@ -132,7 +132,7 @@ class CoordinatesTest {
         SubGridCoordinates subGrid = SubGridCoordinates.from(0, 0);
         WithinSubGridCoordinates withinSubGrid = WithinSubGridCoordinates.from(1, 1);
 
-        AbsoluteCoordinates absolute = subGrid.toAbsolute(withinSubGrid, Size.from(2, 2));
+        AbsoluteCoordinates absolute = subGrid.toAbsolute(withinSubGrid, Size.of(2, 2));
 
         AbsoluteCoordinates expected = AbsoluteCoordinates.from(1, 1);
         assertThat(absolute, is(equalTo(expected)));
@@ -143,7 +143,7 @@ class CoordinatesTest {
         SubGridCoordinates subGrid = SubGridCoordinates.from(1, 1);
         WithinSubGridCoordinates withinSubGrid = WithinSubGridCoordinates.from(0, 1);
 
-        AbsoluteCoordinates absolute = subGrid.toAbsolute(withinSubGrid, Size.from(2, 2));
+        AbsoluteCoordinates absolute = subGrid.toAbsolute(withinSubGrid, Size.of(2, 2));
 
         AbsoluteCoordinates expected = AbsoluteCoordinates.from(2, 3);
         assertThat(absolute, is(equalTo(expected)));
@@ -154,7 +154,7 @@ class CoordinatesTest {
         SubGridCoordinates subGrid = SubGridCoordinates.from(1, 1);
         WithinSubGridCoordinates withinSubGrid = WithinSubGridCoordinates.from(0, 1);
 
-        AbsoluteCoordinates absolute = subGrid.toAbsolute(withinSubGrid, Size.from(3, 3));
+        AbsoluteCoordinates absolute = subGrid.toAbsolute(withinSubGrid, Size.of(3, 3));
 
         AbsoluteCoordinates expected = AbsoluteCoordinates.from(3, 4);
         assertThat(absolute, is(equalTo(expected)));
@@ -165,7 +165,7 @@ class CoordinatesTest {
         SubGridCoordinates subGrid = SubGridCoordinates.from(1, 1);
         WithinSubGridCoordinates withinSubGrid = WithinSubGridCoordinates.from(1, 2);
 
-        AbsoluteCoordinates absolute = subGrid.toAbsolute(withinSubGrid, Size.from(4, 3));
+        AbsoluteCoordinates absolute = subGrid.toAbsolute(withinSubGrid, Size.of(4, 3));
 
         AbsoluteCoordinates expected = AbsoluteCoordinates.from(5, 5);
         assertThat(absolute, is(equalTo(expected)));

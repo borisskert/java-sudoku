@@ -23,6 +23,11 @@ class Column {
         return new Column(changedFields);
     }
 
+    public Column withoutValueAt(AbsoluteCoordinates coordinates) {
+        Fields changedFields = this.fields.withoutValueAt(coordinates);
+        return new Column(changedFields);
+    }
+
     public Stream<Field> stream() {
         return fields.stream();
     }
@@ -34,36 +39,4 @@ class Column {
     public Fields fields() {
         return fields;
     }
-
-//    public static Set<Fields> createLines(Set<ImmutableSubGrid> subGrids, Size size) {
-//        SubGridCoordinates subGridCoordinates = coordinates.subGridCoordinates(size);
-//        WithinSubGridCoordinates withinSubGrid = coordinates.withinSubGrid(size);
-//
-//        Set<ImmutableField> fieldsOfLine = subGrids.stream()
-//                .filter(subGrid -> subGrid.hasSameY(subGridCoordinates))
-//                .flatMap(subGrid -> subGrid.getFieldsForY(withinSubGrid).stream())
-//                .collect(Collectors.toUnmodifiableSet());
-//
-//        return Fields.of(fieldsOfLine);
-//    }
-//
-//    public static Set<Fields> create(Set<ImmutableField> fields, Size size) {
-//        return size.toAbsoluteCoordinates().stream()
-//                .map(AbsoluteCoordinates::yOnly)
-//                .distinct()
-//                .map(y -> getFieldsOfLine(fields, y, size))
-//                .collect(Collectors.toUnmodifiableSet());
-//    }
-//
-//    private static Fields getFieldsOfLine(Set<ImmutableField> fields, AbsoluteCoordinates coordinates, Size size) {
-//        WithinSubGridCoordinates withinSubGrid = coordinates.withinSubGrid(size);
-//
-//        Set<ImmutableField> fieldsOfLine = fields.stream()
-//                .filter(field -> field.hasSameY(withinSubGrid))
-//                .collect(Collectors.toUnmodifiableSet());
-//
-//        return Fields.of(fieldsOfLine);
-//    }
-
-
 }

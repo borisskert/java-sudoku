@@ -1,8 +1,9 @@
 package de.borisskert.sudoku.core;
 
+import java.util.Comparator;
 import java.util.Objects;
 
-class AbsoluteCoordinates {
+class AbsoluteCoordinates implements Comparable<AbsoluteCoordinates> {
 
     private final int x;
     private final int y;
@@ -10,6 +11,22 @@ class AbsoluteCoordinates {
     private AbsoluteCoordinates(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public AbsoluteCoordinates withX(AbsoluteCoordinates other) {
+        return new AbsoluteCoordinates(other.x, y);
+    }
+
+    public AbsoluteCoordinates withY(AbsoluteCoordinates other) {
+        return new AbsoluteCoordinates(x, other.y);
     }
 
     public AbsoluteCoordinates xOnly() {
@@ -54,11 +71,26 @@ class AbsoluteCoordinates {
         return new AbsoluteCoordinates(x, y);
     }
 
+    public static AbsoluteCoordinates fromLineOnly(int y) {
+        return new AbsoluteCoordinates(-1, y);
+    }
+
+    public static AbsoluteCoordinates fromColumnOnly(int x) {
+        return new AbsoluteCoordinates(x, -1);
+    }
+
     public boolean hasSameX(AbsoluteCoordinates other) {
         return this.x == other.x;
     }
 
     public boolean hasSameY(AbsoluteCoordinates other) {
         return this.y == other.y;
+    }
+
+    @Override
+    public int compareTo(AbsoluteCoordinates o) {
+        return Comparator.<AbsoluteCoordinates>comparingInt(coordinates -> coordinates.x)
+                .thenComparingInt(coordinates -> coordinates.y)
+                .compare(this, o);
     }
 }

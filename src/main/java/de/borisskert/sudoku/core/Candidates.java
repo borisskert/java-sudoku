@@ -54,6 +54,17 @@ class Candidates {
         return new Candidates(valuesWithoutSpecifiedValue);
     }
 
+    public Candidates with(FieldValue value) {
+        assert value != null;
+
+        Set<FieldValue> valuesWithSpecifiedValue = Stream.concat(
+                values.stream(),
+                Stream.of(value)
+        ).collect(Collectors.toUnmodifiableSet());
+
+        return new Candidates(valuesWithSpecifiedValue);
+    }
+
     public Candidates without(Set<FieldValue> values) {
         Set<FieldValue> changedValues = this.values.stream()
                 .filter(v -> !values.contains(v))

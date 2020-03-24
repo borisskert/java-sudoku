@@ -8,12 +8,8 @@ class Coin {
 
     private Boolean isOnHeads;
 
-    public Coin() {
-        this.random = new Random();
-    }
-
-    public Coin(long seed) {
-        this.random = new Random(seed);
+    private Coin(Random random) {
+        this.random = random;
     }
 
     public void flip() {
@@ -21,7 +17,7 @@ class Coin {
     }
 
     public void flip(double probability) {
-        if (probability > 0.0 && probability < 1.0) {
+        if (0.0 < probability && probability < 1.0) {
             isOnHeads = random.nextDouble() < probability;
         } else {
             throw new IllegalArgumentException("Parameter 'probability' must be between 0.0 and 1.0 (both exclusive)");
@@ -34,5 +30,19 @@ class Coin {
         }
 
         return isOnHeads;
+    }
+
+    public static Coin create() {
+        Random random = new Random();
+        return new Coin(random);
+    }
+
+    public static Coin create(Random random) {
+        return new Coin(random);
+    }
+
+    public static Coin create(long seed) {
+        Random random = new Random(seed);
+        return new Coin(random);
     }
 }
