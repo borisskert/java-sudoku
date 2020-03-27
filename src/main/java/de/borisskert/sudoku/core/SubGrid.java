@@ -1,10 +1,11 @@
 package de.borisskert.sudoku.core;
 
+import java.util.Comparator;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
 
-class SubGrid {
+class SubGrid implements Comparable<SubGrid> {
 
     private final SubGridCoordinates coordinates;
     private final Size size;
@@ -79,5 +80,11 @@ class SubGrid {
 
     public Fields fields() {
         return this.fields;
+    }
+
+    @Override
+    public int compareTo(SubGrid o) {
+        return Comparator.<SubGrid, SubGridCoordinates>comparing(subGrid -> subGrid.coordinates)
+                .compare(this, o);
     }
 }

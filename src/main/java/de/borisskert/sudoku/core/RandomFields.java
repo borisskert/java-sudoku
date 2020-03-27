@@ -11,6 +11,13 @@ class RandomFields {
     private final BinaryOperator<Field> randomFieldSelect;
 
 
+    private RandomFields(Size size, Random random) {
+        this.size = size;
+        randomSubGridSelect = RandomAccumulator.newInstance(random);
+        randomFieldSelect = RandomAccumulator.newInstance(random);
+        randomCandidateSelect = RandomAccumulator.newInstance(random);
+    }
+
     private RandomFields(Size size, long seed) {
         this.size = size;
         randomSubGridSelect = RandomAccumulator.newInstance(seed);
@@ -20,7 +27,7 @@ class RandomFields {
 
     public static RandomFields create(Size size) {
         Random random = new Random();
-        return new RandomFields(size, random.nextLong());
+        return new RandomFields(size, random);
     }
 
     public static RandomFields create(Size size, long seed) {
@@ -29,6 +36,7 @@ class RandomFields {
 
     public final FieldValue selectRandomCandidate(Field randomField) {
         return randomField.getCandidates().stream()
+                .sorted()
                 .reduce(randomCandidateSelect)
                 .orElseThrow(() -> new RuntimeException("Cannot find a candidate"));
     }
@@ -49,6 +57,7 @@ class RandomFields {
 
         return subGrids.stream()
                 .filter(subgrid -> !subgrid.isSolved())
+                .sorted()
                 .reduce(randomSubGridSelect)
                 .orElseThrow(() -> new RuntimeException("Cannot find unsolved Subgrid"));
     }

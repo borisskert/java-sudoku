@@ -2,7 +2,7 @@ package de.borisskert.sudoku.core;
 
 import java.util.Objects;
 
-class FieldValue {
+class FieldValue implements Comparable<FieldValue> {
 
     private final int value;
 
@@ -35,5 +35,10 @@ class FieldValue {
     @Override
     public String toString() {
         return String.valueOf(value);
+    }
+
+    @Override
+    public int compareTo(FieldValue o) {
+        return Integer.compare(this.value, o.value);
     }
 }

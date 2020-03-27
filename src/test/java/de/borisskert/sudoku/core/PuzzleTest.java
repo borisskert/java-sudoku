@@ -113,7 +113,7 @@ class PuzzleTest {
                 .build()
                 .newPuzzle();
 
-        Fields solved = new Solver(size, 123L).solve(puzzle);
+        Fields solved = Solve.withSize(size).andSeed(123L).andFields(puzzle).solve();
 
         // @formatter:off
         String expected =

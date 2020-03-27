@@ -18,12 +18,15 @@ class Candidates {
         return values.contains(value);
     }
 
-    public FieldValue any() {
-        if (values.isEmpty()) {
-            throw new IllegalStateException("More more candidates");
-        }
+    public int size() {
+        return values.size();
+    }
 
-        return values.iterator().next();
+    public FieldValue any() {
+        return values.stream()
+                .sorted()
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("More more candidates"));
     }
 
     public FieldValue lastOne() {

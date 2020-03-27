@@ -1,7 +1,5 @@
 package de.borisskert.sudoku.core;
 
-import java.util.Random;
-
 public class Sudoku {
 
     /* *****************************************************************************************************************
@@ -46,11 +44,9 @@ public class Sudoku {
     }
 
     public void solve() {
-        long seed = new Random().nextLong();
-
-        Solver solver = new Solver(size, seed);
-
-        currentFields = solver.solve(this.currentFields);
+        currentFields = Solve.withSize(size)
+                .andFields(currentFields)
+                .solve();
     }
 
     /* *****************************************************************************************************************

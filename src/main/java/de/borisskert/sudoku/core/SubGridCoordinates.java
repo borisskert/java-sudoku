@@ -1,8 +1,9 @@
 package de.borisskert.sudoku.core;
 
+import java.util.Comparator;
 import java.util.Objects;
 
-class SubGridCoordinates {
+class SubGridCoordinates implements Comparable<SubGridCoordinates> {
 
     private final int x;
     private final int y;
@@ -55,5 +56,12 @@ class SubGridCoordinates {
                 "x=" + x +
                 ", y=" + y +
                 ')';
+    }
+
+    @Override
+    public int compareTo(SubGridCoordinates o) {
+        return Comparator.<SubGridCoordinates>comparingInt(coordinates -> coordinates.x)
+                .thenComparingInt(coordinates -> coordinates.y)
+                .compare(this, o);
     }
 }
