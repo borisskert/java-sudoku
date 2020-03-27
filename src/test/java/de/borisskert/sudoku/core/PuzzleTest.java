@@ -28,7 +28,7 @@ class PuzzleTest {
                 "║ │ ║ │4║\n" +
                 "╚═╧═╩═╧═╝\n";
         // @formatter:on
-        assertThat(Formatter.format(size, puzzled), is(equalTo(expected)));
+        assertThat(Print.format(size, puzzled), is(equalTo(expected)));
     }
 
     @Test
@@ -61,7 +61,7 @@ class PuzzleTest {
                 "║ │ │ ║ │ │ ║2│ │ ║\n" +
                 "╚═╧═╧═╩═╧═╧═╩═╧═╧═╝\n";
         // @formatter:on
-        assertThat(Formatter.format(size, puzzled), is(equalTo(expected)));
+        assertThat(Print.format(size, puzzled), is(equalTo(expected)));
     }
 
     @Test
@@ -100,7 +100,7 @@ class PuzzleTest {
                 "║  │  │  │  ║12│ 3│ 2│  ║  │  │  │  ║\n" +
                 "╚══╧══╧══╧══╩══╧══╧══╧══╩══╧══╧══╧══╝\n";
         // @formatter:on
-        assertThat(Formatter.format(size, puzzled), is(equalTo(expected)));
+        assertThat(Print.format(size, puzzled), is(equalTo(expected)));
     }
 
     @Test
@@ -143,6 +143,6 @@ class PuzzleTest {
                 "║10│ 9│ 8│11║12│ 3│ 2│ 1║ 5│ 7│ 6│ 4║\n" +
                 "╚══╧══╧══╧══╩══╧══╧══╧══╩══╧══╧══╧══╝\n";
         // @formatter:on
-        assertThat(Formatter.format(size, solved), is(equalTo(expected)));
+        assertThat(Print.format(size, solved), is(equalTo(expected)));
     }
 }

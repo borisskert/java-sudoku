@@ -46,7 +46,7 @@ class FieldsThreeThreeTest {
                     "║9│1│2║3│4│5║6│7│8║\n" +
                     "╚═╧═╧═╩═╧═╧═╩═╧═╧═╝\n";
             // @formatter:on
-            assertThat(Formatter.format(size, filled), is(equalTo(expected)));
+            assertThat(Print.format(size, filled), is(equalTo(expected)));
         }
     }
 }

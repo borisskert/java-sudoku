@@ -55,7 +55,7 @@ public class Sudoku {
 
     @Override
     public String toString() {
-        return Formatter.format(size, currentFields);
+        return Print.format(size, currentFields);
     }
 
     /* *****************************************************************************************************************

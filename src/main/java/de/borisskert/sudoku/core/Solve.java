@@ -5,7 +5,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.Stack;
 
-public class Solve {
+class Solve {
 
     private final Size size;
     private final Fields fields;

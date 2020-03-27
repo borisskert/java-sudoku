@@ -30,8 +30,8 @@ class ChangeHistory {
             changes.pop();
         } while (!changes.isEmpty() && changes.peek().type != Change.ChangeType.TRIAL);
 
-        if(changes.isEmpty()) {
-           return originalFields;
+        if (changes.isEmpty()) {
+            return originalFields;
         }
 
         return changes.peek().fields;

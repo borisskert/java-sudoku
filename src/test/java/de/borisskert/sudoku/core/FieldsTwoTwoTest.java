@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.text.Format;
 import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -198,7 +197,7 @@ class FieldsTwoTwoTest {
                     "║4│1║2│3║\n" +
                     "╚═╧═╩═╧═╝\n";
             // @formatter:on
-            assertThat(Formatter.format(size, filled), is(equalTo(expected)));
+            assertThat(Print.format(size, filled), is(equalTo(expected)));
         }
     }
 }

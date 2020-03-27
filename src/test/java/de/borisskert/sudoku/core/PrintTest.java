@@ -3,10 +3,10 @@ package de.borisskert.sudoku.core;
 import org.junit.jupiter.api.Test;
 
 import static de.borisskert.sudoku.core.Fields.empty;
-import static de.borisskert.sudoku.core.Formatter.format;
+import static de.borisskert.sudoku.core.Print.format;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class FormatterTest {
+class PrintTest {
 
     @Test
     public void shouldThrowOnNullSize() throws Exception {

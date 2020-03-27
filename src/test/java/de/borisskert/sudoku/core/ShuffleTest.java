@@ -28,7 +28,7 @@ class ShuffleTest {
                 "╚═╧═╩═╧═╝\n";
         // @formatter:on
 
-        assertThat(Formatter.format(size, shuffled), is(equalTo(expected)));
+        assertThat(Print.format(size, shuffled), is(equalTo(expected)));
     }
 
     @Test
@@ -61,7 +61,7 @@ class ShuffleTest {
                 "╚═╧═╧═╩═╧═╧═╩═╧═╧═╝\n";
         // @formatter:on
 
-        assertThat(Formatter.format(size, shuffled), is(equalTo(expected)));
+        assertThat(Print.format(size, shuffled), is(equalTo(expected)));
     }
 
     @Test
@@ -99,7 +99,7 @@ class ShuffleTest {
                 "║10│ 9│ 8│11║12│ 3│ 2│ 1║ 5│ 7│ 6│ 4║\n" +
                 "╚══╧══╧══╧══╩══╧══╧══╧══╩══╧══╧══╧══╝\n";
         // @formatter:on
-        assertThat(Formatter.format(size, shuffled), is(equalTo(expected)));
+        assertThat(Print.format(size, shuffled), is(equalTo(expected)));
     }
 
     @Test
@@ -109,6 +109,6 @@ class ShuffleTest {
         Fields filled = Fields.createFilled(size);
         Fields shuffled = Shuffle.build().withSeed(123L).withSize(size).withFields(filled).shuffle();
 
-        System.out.println(Formatter.format(size, shuffled));
+        System.out.println(Print.format(size, shuffled));
     }
 }

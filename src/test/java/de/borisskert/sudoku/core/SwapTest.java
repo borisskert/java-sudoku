@@ -28,7 +28,7 @@ class SwapTest {
                 "║4│1║2│3║\n" +
                 "╚═╧═╩═╧═╝\n";
         // @formatter:on
-        assertThat(Formatter.format(size, withSwappedLines), is(equalTo(expected)));
+        assertThat(Print.format(size, withSwappedLines), is(equalTo(expected)));
     }
 
     @Test
@@ -51,7 +51,7 @@ class SwapTest {
                 "║2│3║4│1║\n" +
                 "╚═╧═╩═╧═╝\n";
         // @formatter:on
-        assertThat(Formatter.format(size, withSwappedLines), is(equalTo(expected)));
+        assertThat(Print.format(size, withSwappedLines), is(equalTo(expected)));
     }
 
     @Test
@@ -74,7 +74,7 @@ class SwapTest {
                 "║1│4║2│3║\n" +
                 "╚═╧═╩═╧═╝\n";
         // @formatter:on
-        assertThat(Formatter.format(size, withSwappedLines), is(equalTo(expected)));
+        assertThat(Print.format(size, withSwappedLines), is(equalTo(expected)));
     }
 
     @Test
@@ -97,6 +97,6 @@ class SwapTest {
                 "║4│1║3│2║\n" +
                 "╚═╧═╩═╧═╝\n";
         // @formatter:on
-        assertThat(Formatter.format(size, withSwappedLines), is(equalTo(expected)));
+        assertThat(Print.format(size, withSwappedLines), is(equalTo(expected)));
     }
 }

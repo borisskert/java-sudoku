@@ -46,7 +46,7 @@ class SolveTest {
                     "║3│2║1│4║\n" +
                     "╚═╧═╩═╧═╝\n";
             // @formatter:on
-            assertThat(Formatter.format(size, solved), is(equalTo(expected)));
+            assertThat(Print.format(size, solved), is(equalTo(expected)));
         }
 
         @Test
@@ -74,7 +74,7 @@ class SolveTest {
                     "║3│2║1│4║\n" +
                     "╚═╧═╩═╧═╝\n";
             // @formatter:on
-            assertThat(Formatter.format(size, solved), is(equalTo(expected)));
+            assertThat(Print.format(size, solved), is(equalTo(expected)));
         }
 
         @Test
@@ -102,7 +102,7 @@ class SolveTest {
                     "║3│2║1│4║\n" +
                     "╚═╧═╩═╧═╝\n";
             // @formatter:on
-            assertThat(Formatter.format(size, solved), is(equalTo(expected)));
+            assertThat(Print.format(size, solved), is(equalTo(expected)));
         }
 
         @Test
@@ -130,7 +130,7 @@ class SolveTest {
                     "║3│2║1│4║\n" +
                     "╚═╧═╩═╧═╝\n";
             // @formatter:on
-            assertThat(Formatter.format(size, solved), is(equalTo(expected)));
+            assertThat(Print.format(size, solved), is(equalTo(expected)));
         }
 
         @Test
@@ -158,7 +158,7 @@ class SolveTest {
                     "║1│2║3│4║\n" +
                     "╚═╧═╩═╧═╝\n";
             // @formatter:on
-            assertThat(Formatter.format(size, solved), is(equalTo(expected)));
+            assertThat(Print.format(size, solved), is(equalTo(expected)));
         }
     }
 
@@ -206,7 +206,7 @@ class SolveTest {
                     "║4│5│9║8│3│6║2│7│1║\n" +
                     "╚═╧═╧═╩═╧═╧═╩═╧═╧═╝\n";
             // @formatter:on
-            assertThat(Formatter.format(size, solved), is(equalTo(expected)));
+            assertThat(Print.format(size, solved), is(equalTo(expected)));
         }
 
         @Test
@@ -244,7 +244,7 @@ class SolveTest {
                     "║4│5│1║6│7│3║2│8│9║\n" +
                     "╚═╧═╧═╩═╧═╧═╩═╧═╧═╝\n";
             // @formatter:on
-            assertThat(Formatter.format(size, solved), is(equalTo(expected)));
+            assertThat(Print.format(size, solved), is(equalTo(expected)));
         }
 
         @Test
@@ -282,7 +282,7 @@ class SolveTest {
                     "║1│6│4║5│9│8║3│7│2║\n" +
                     "╚═╧═╧═╩═╧═╧═╩═╧═╧═╝\n";
             // @formatter:on
-            assertThat(Formatter.format(size, solved), is(equalTo(expected)));
+            assertThat(Print.format(size, solved), is(equalTo(expected)));
         }
 
         @Test
@@ -320,7 +320,7 @@ class SolveTest {
                     "║2│3│4║8│6│5║1│7│9║\n" +
                     "╚═╧═╧═╩═╧═╧═╩═╧═╧═╝\n";
             // @formatter:on
-            assertThat(Formatter.format(size, solved), is(equalTo(expected)));
+            assertThat(Print.format(size, solved), is(equalTo(expected)));
         }
     }
 }

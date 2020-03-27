@@ -135,9 +135,9 @@ class Shuffle {
         }
 
         public Shuffle withFields(Fields fields) {
-            if(random != null) {
+            if (random != null) {
                 return new Shuffle(size, fields, random);
-            } else if(seed == null) {
+            } else if (seed == null) {
                 return new Shuffle(size, fields);
             } else {
                 Random random = new Random(seed);

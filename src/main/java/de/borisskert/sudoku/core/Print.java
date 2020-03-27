@@ -5,23 +5,23 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-class Formatter {
+class Print {
 
     public static String format(Size size, Fields fields) {
         SubGrids subGrids = SubGrids.create(size, fields);
 
-        FormatterWorker formatter = new FormatterWorker(subGrids);
+        SubGridPrint printSubGrid = new SubGridPrint(subGrids);
 
-        return formatter.format();
+        return printSubGrid.toFormattedString();
     }
 
-    private static class FormatterWorker {
+    private static class SubGridPrint {
         private final int maxValueLength;
         private final Function<FieldValue, String> valueFormatter;
         private final String emptyValuePlaceholder;
         private final SubGrids subGrids;
 
-        public FormatterWorker(SubGrids subGrids) {
+        private SubGridPrint(SubGrids subGrids) {
             this.subGrids = subGrids;
 
             this.maxValueLength = getMaxValueLength();
@@ -29,7 +29,7 @@ class Formatter {
             this.valueFormatter = getValueFormatter();
         }
 
-        public String format() {
+        public String toFormattedString() {
             StringBuilder builder = new StringBuilder(formatHeader());
 
             StringJoiner lineJoiner = new StringJoiner(doubleVerticalDelimiter());
