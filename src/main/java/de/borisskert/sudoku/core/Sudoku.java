@@ -69,11 +69,11 @@ public class Sudoku {
         return new Sudoku(fields, size);
     }
 
-    public static Sudoku createPuzzle(int width, int height) {
+    public static Sudoku createPuzzle(int width, int height, double percentage) {
         Size size = Size.of(width, height);
 
         Fields puzzle = Puzzle.with(size)
-                .andPercentage(0.3)
+                .andPercentage(percentage)
                 .build()
                 .newPuzzle();
 
