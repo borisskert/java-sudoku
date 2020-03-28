@@ -14,6 +14,10 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Represents a set of {@link Field}s.
+ * Every {@link Fields} instance is immutable.
+ */
 class Fields {
 
     /* *****************************************************************************************************************
@@ -31,7 +35,7 @@ class Fields {
     }
 
     /* *****************************************************************************************************************
-     * Public contract
+     * Indicator methods
      **************************************************************************************************************** */
 
     public boolean areSolved() {
@@ -43,12 +47,12 @@ class Fields {
         return fields.size();
     }
 
+    /* *****************************************************************************************************************
+     * Accessor methods
+     **************************************************************************************************************** */
+
     public Stream<Field> stream() {
         return fields.stream();
-    }
-
-    public Fields resolve() {
-        return resolvedRecursively(this, Fields.empty());
     }
 
     public Fields difference(Fields other) {
@@ -68,7 +72,7 @@ class Fields {
         return fields.stream()
                 .filter(field -> field.has(coordinates))
                 .findFirst()
-                .get();
+                .orElseThrow(() -> new RuntimeException("Cannot find field with within-subgrid coordinates " + coordinates));
     }
 
     public Field get(AbsoluteCoordinates coordinates) {
@@ -80,6 +84,37 @@ class Fields {
         return fields.stream()
                 .filter(field -> field.has(coordinates))
                 .findFirst();
+    }
+
+
+    public Set<Field> filterSubGridOnly(SubGridCoordinates coordinates) {
+        return fields.stream()
+                .filter(field -> field.isInSubGrid(coordinates))
+                .collect(Collectors.toUnmodifiableSet());
+    }
+
+    public Fields filterColumnOnly(AbsoluteCoordinates coordinates) {
+        Set<Field> lineFields = fields.stream()
+                .filter(f -> f.hasSameX(coordinates))
+                .collect(Collectors.toUnmodifiableSet());
+
+        return Fields.of(lineFields);
+    }
+
+    public Fields filterLineOnly(AbsoluteCoordinates coordinates) {
+        Set<Field> lineFields = fields.stream()
+                .filter(f -> f.hasSameY(coordinates))
+                .collect(Collectors.toUnmodifiableSet());
+
+        return Fields.of(lineFields);
+    }
+
+    /* *****************************************************************************************************************
+     * Wither methods
+     **************************************************************************************************************** */
+
+    public Fields resolve() {
+        return resolvedRecursively(this, Fields.empty());
     }
 
     public Fields withValueAt(WithinSubGridCoordinates coordinates, FieldValue fieldValue) {
@@ -149,28 +184,6 @@ class Fields {
         return new Fields(changedFields);
     }
 
-    public Set<Field> filterSubGridOnly(SubGridCoordinates coordinates) {
-        return fields.stream()
-                .filter(field -> field.isInSubGrid(coordinates))
-                .collect(Collectors.toUnmodifiableSet());
-    }
-
-    public Fields filterColumnOnly(AbsoluteCoordinates coordinates) {
-        Set<Field> lineFields = fields.stream()
-                .filter(f -> f.hasSameX(coordinates))
-                .collect(Collectors.toUnmodifiableSet());
-
-        return Fields.of(lineFields);
-    }
-
-    public Fields filterLineOnly(AbsoluteCoordinates coordinates) {
-        Set<Field> lineFields = fields.stream()
-                .filter(f -> f.hasSameY(coordinates))
-                .collect(Collectors.toUnmodifiableSet());
-
-        return Fields.of(lineFields);
-    }
-
     public Candidates definiteCandidates() {
         Set<FieldValue> values = countCandidates().entrySet()
                 .stream()
@@ -179,10 +192,6 @@ class Fields {
                 .collect(Collectors.toUnmodifiableSet());
 
         return Candidates.of(values);
-    }
-
-    public static Collector<Fields, Set<Field>, Fields> collect() {
-        return new FieldsCollector();
     }
 
     public Fields clearCandidates() {
@@ -218,7 +227,7 @@ class Fields {
     }
 
     /* *****************************************************************************************************************
-     * Factory methods
+     * Factory methods and collectors
      **************************************************************************************************************** */
 
     static Fields of(Set<Field> fields) {
@@ -243,6 +252,10 @@ class Fields {
                 .collect(Collectors.toUnmodifiableSet());
 
         return new Fields(createdFields);
+    }
+
+    public static Collector<Fields, Set<Field>, Fields> collect() {
+        return new FieldsCollector();
     }
 
     /* *****************************************************************************************************************

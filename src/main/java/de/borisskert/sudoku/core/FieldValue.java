@@ -2,22 +2,46 @@ package de.borisskert.sudoku.core;
 
 import java.util.Objects;
 
+/**
+ * Represents a value of a {@link Field}.
+ * Every {@link FieldValue} instance is immutable.
+ */
 class FieldValue implements Comparable<FieldValue> {
 
+    /* *****************************************************************************************************************
+     * Readonly fields
+     **************************************************************************************************************** */
+
     private final int value;
+
+    /* *****************************************************************************************************************
+     * Constructor(s)
+     **************************************************************************************************************** */
 
     private FieldValue(int value) {
         this.value = value;
     }
 
-    public static FieldValue of(int value) {
-        assert value != 0;
-        return new FieldValue(value);
-    }
+    /* *****************************************************************************************************************
+     * Accessor methods
+     **************************************************************************************************************** */
 
     public int getValue() {
         return value;
     }
+
+    /* *****************************************************************************************************************
+     * Implementation of Comparable
+     **************************************************************************************************************** */
+
+    @Override
+    public int compareTo(FieldValue o) {
+        return Integer.compare(this.value, o.value);
+    }
+
+    /* *****************************************************************************************************************
+     * Overrides of Object
+     **************************************************************************************************************** */
 
     @Override
     public boolean equals(Object o) {
@@ -37,8 +61,12 @@ class FieldValue implements Comparable<FieldValue> {
         return String.valueOf(value);
     }
 
-    @Override
-    public int compareTo(FieldValue o) {
-        return Integer.compare(this.value, o.value);
+    /* *****************************************************************************************************************
+     * Factory methods
+     **************************************************************************************************************** */
+
+    public static FieldValue of(int value) {
+        assert value != 0;
+        return new FieldValue(value);
     }
 }

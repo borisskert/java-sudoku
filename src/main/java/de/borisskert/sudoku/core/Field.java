@@ -4,6 +4,10 @@ import java.util.Comparator;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * Represents a field.
+ * Every {@link Field} instance is immutable.
+ */
 class Field implements Comparable<Field> {
 
     /* *****************************************************************************************************************
@@ -41,7 +45,7 @@ class Field implements Comparable<Field> {
     }
 
     /* *****************************************************************************************************************
-     * Public contract
+     * Indicator methods
      **************************************************************************************************************** */
 
     public boolean hasSameX(AbsoluteCoordinates other) {
@@ -89,6 +93,10 @@ class Field implements Comparable<Field> {
         return Objects.equals(this.fieldValue, value);
     }
 
+    /* *****************************************************************************************************************
+     * Accessor methods
+     **************************************************************************************************************** */
+
     public AbsoluteCoordinates absoluteCoordinates() {
         return coordinates;
     }
@@ -100,6 +108,10 @@ class Field implements Comparable<Field> {
     public Candidates getCandidates() {
         return candidates;
     }
+
+    /* *****************************************************************************************************************
+     * Wither methods
+     **************************************************************************************************************** */
 
     public Field solve() {
         return new Field(size, coordinates, candidates.lastOne());
@@ -156,6 +168,16 @@ class Field implements Comparable<Field> {
     }
 
     /* *****************************************************************************************************************
+     * Implementation of Comparable
+     **************************************************************************************************************** */
+
+    @Override
+    public int compareTo(Field o) {
+        return Comparator.<Field, AbsoluteCoordinates>comparing(field -> field.coordinates)
+                .compare(this, o);
+    }
+
+    /* *****************************************************************************************************************
      * Overrides of Object
      **************************************************************************************************************** */
 
@@ -185,16 +207,10 @@ class Field implements Comparable<Field> {
      **************************************************************************************************************** */
 
     public static Field empty(AbsoluteCoordinates coordinates, Size size) {
-        return new Field(size, coordinates, Candidates.create(size));
+        return new Field(size, coordinates, Candidates.createFor(size));
     }
 
     public static Field filled(AbsoluteCoordinates coordinates, Size size, FieldValue value) {
         return new Field(size, coordinates, value);
-    }
-
-    @Override
-    public int compareTo(Field o) {
-        return Comparator.<Field, AbsoluteCoordinates>comparing(field -> field.coordinates)
-                .compare(this, o);
     }
 }

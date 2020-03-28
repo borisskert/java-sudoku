@@ -14,7 +14,7 @@ public class Sudoku {
      **************************************************************************************************************** */
 
     /**
-     * Prevents public instance creating
+     * Prevents a public instance creating
      */
     private Sudoku(Fields initialFields, Size size) {
         this.currentFields = initialFields;

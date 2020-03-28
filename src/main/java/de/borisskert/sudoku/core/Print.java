@@ -5,7 +5,14 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/**
+ * Prints the fields as an ASCII grid.
+ */
 class Print {
+
+    /* *****************************************************************************************************************
+     * Static methods
+     **************************************************************************************************************** */
 
     public static String format(Size size, Fields fields) {
         SubGrids subGrids = SubGrids.create(size, fields);
@@ -14,6 +21,10 @@ class Print {
 
         return printSubGrid.toFormattedString();
     }
+
+    /* *****************************************************************************************************************
+     * Inner classes
+     **************************************************************************************************************** */
 
     private static class SubGridPrint {
         private final int maxValueLength;
