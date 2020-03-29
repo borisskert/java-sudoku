@@ -21,10 +21,6 @@ class SubGridCoordinates implements Comparable<SubGridCoordinates> {
         return y;
     }
 
-    public WithinSubGridCoordinates withinSubGrid(Size size) {
-        return WithinSubGridCoordinates.from(x % size.getWidth(), y % size.getHeight());
-    }
-
     public AbsoluteCoordinates toAbsolute(WithinSubGridCoordinates coordinates, Size size) {
         int x = this.x * size.getWidth() + coordinates.getX();
         int y = this.y * size.getHeight() + coordinates.getY();

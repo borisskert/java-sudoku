@@ -139,23 +139,6 @@ class Candidates {
     }
 
     /**
-     * Wither method to add a specified {@link FieldValue} candidate.
-     *
-     * @param value the {@link FieldValue} to be added.
-     * @return a new {@link Candidates} instance containing the specified {@link FieldValue} candidate.
-     */
-    public Candidates with(FieldValue value) {
-        assert value != null;
-
-        Set<FieldValue> valuesWithSpecifiedValue = Stream.concat(
-                values.stream(),
-                Stream.of(value)
-        ).collect(Collectors.toUnmodifiableSet());
-
-        return new Candidates(valuesWithSpecifiedValue);
-    }
-
-    /**
      * Wither method to remove a specified {@link Set} of {@link FieldValue} candidates.
      *
      * @param values the {@link FieldValue} candidates to be added.

@@ -51,21 +51,6 @@ class Lines {
         return Fields.of(changedFields);
     }
 
-    public Fields withoutValueAt(AbsoluteCoordinates coordinates) {
-        Set<Field> changedFields = lines.stream()
-                .map(line -> {
-                    if (line.has(coordinates)) {
-                        return line.withoutValueAt(coordinates);
-                    } else {
-                        return line;
-                    }
-                })
-                .flatMap(Line::stream)
-                .collect(Collectors.toUnmodifiableSet());
-
-        return Fields.of(changedFields);
-    }
-
     /* *****************************************************************************************************************
      * Accessor methods
      **************************************************************************************************************** */

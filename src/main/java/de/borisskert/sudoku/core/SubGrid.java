@@ -26,11 +26,6 @@ class SubGrid implements Comparable<SubGrid> {
         return new SubGrid(this.coordinates, size, updatedFields);
     }
 
-    public SubGrid withoutValueAt(WithinSubGridCoordinates coordinates) {
-        Fields updatedFields = fields.withoutValueAt(coordinates);
-        return new SubGrid(this.coordinates, size, updatedFields);
-    }
-
     public SubGridCoordinates getCoordinates() {
         return coordinates;
     }

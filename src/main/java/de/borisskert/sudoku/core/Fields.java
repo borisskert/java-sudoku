@@ -43,10 +43,6 @@ class Fields {
                 .noneMatch(Field::isEmpty);
     }
 
-    public int size() {
-        return fields.size();
-    }
-
     /* *****************************************************************************************************************
      * Accessor methods
      **************************************************************************************************************** */
@@ -141,34 +137,6 @@ class Fields {
                         return field.withValue(fieldValue);
                     } else {
                         return field.withoutCandidate(fieldValue);
-                    }
-                }).collect(Collectors.toUnmodifiableSet());
-
-        return new Fields(updatedFields);
-    }
-
-    public Fields withoutValueAt(AbsoluteCoordinates coordinates) {
-        Candidates candidates = Candidates.of(values());
-
-        Set<Field> updatedFields = fields.stream()
-                .map(field -> {
-                    if (field.has(coordinates)) {
-                        return field.emptyValueWithCandidates(candidates);
-                    } else {
-                        return field.withCandidate(field.getValue());
-                    }
-                }).collect(Collectors.toUnmodifiableSet());
-
-        return new Fields(updatedFields);
-    }
-
-    public Fields withoutValueAt(WithinSubGridCoordinates coordinates) {
-        Set<Field> updatedFields = fields.stream()
-                .map(field -> {
-                    if (field.has(coordinates)) {
-                        return field.forceEmptyValue();
-                    } else {
-                        return field.withCandidate(field.getValue());
                     }
                 }).collect(Collectors.toUnmodifiableSet());
 

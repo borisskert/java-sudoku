@@ -43,11 +43,6 @@ class Line {
         return new Line(changedFields);
     }
 
-    public Line withoutValueAt(AbsoluteCoordinates coordinates) {
-        Fields changedFields = this.fields.withoutValueAt(coordinates);
-        return new Line(changedFields);
-    }
-
     /* *****************************************************************************************************************
      * Accessor methods
      **************************************************************************************************************** */

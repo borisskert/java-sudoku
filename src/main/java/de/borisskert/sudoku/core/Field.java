@@ -121,10 +121,6 @@ class Field implements Comparable<Field> {
         return new Field(size, coordinates, candidates.without(value), fieldValue);
     }
 
-    public Field withCandidate(FieldValue value) {
-        return new Field(size, coordinates, candidates.with(value), fieldValue);
-    }
-
     public Field withoutCandidates(Set<FieldValue> values) {
         Candidates changedCandidates = candidates.without(values);
 
@@ -161,10 +157,6 @@ class Field implements Comparable<Field> {
 
     public Field forceEmptyValue() {
         return new Field(size, coordinates, Candidates.empty());
-    }
-
-    public Field emptyValueWithCandidates(Candidates candidates) {
-        return new Field(size, coordinates, candidates);
     }
 
     /* *****************************************************************************************************************

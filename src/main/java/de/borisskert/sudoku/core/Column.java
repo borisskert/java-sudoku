@@ -43,11 +43,6 @@ class Column {
         return new Column(changedFields);
     }
 
-    public Column withoutValueAt(AbsoluteCoordinates coordinates) {
-        Fields changedFields = this.fields.withoutValueAt(coordinates);
-        return new Column(changedFields);
-    }
-
     /* *****************************************************************************************************************
      * Accessor methods
      **************************************************************************************************************** */

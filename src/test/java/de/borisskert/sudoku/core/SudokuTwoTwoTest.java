@@ -276,4 +276,20 @@ class SudokuTwoTwoTest {
             }
         }
     }
+
+    @Nested
+    class CreatePuzzle {
+
+        private Sudoku puzzle;
+
+        @BeforeEach
+        public void setup() throws Exception {
+            puzzle = Sudoku.createPuzzle(3, 3, 0.25);
+        }
+
+        @Test
+        public void shouldNotBeSolved() throws Exception {
+            assertThat(puzzle.isSolved(), is(equalTo(false)));
+        }
+    }
 }

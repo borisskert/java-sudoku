@@ -31,19 +31,6 @@ class ValuedFields {
         return new ValuedFields(size, changedFields);
     }
 
-    public ValuedFields withoutValueAt(AbsoluteCoordinates coordinates) {
-        SubGrids subGrids = SubGrids.create(size, fields);
-        Fields changedFields = subGrids.withoutValueAt(coordinates);
-
-        Lines lines = Lines.of(changedFields);
-        changedFields = lines.withoutValueAt(coordinates);
-
-        Columns columns = Columns.of(changedFields);
-        changedFields = columns.withoutValueAt(coordinates);
-
-        return new ValuedFields(size, changedFields);
-    }
-
     public Fields fields() {
         return fields;
     }

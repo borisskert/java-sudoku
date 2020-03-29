@@ -10,10 +10,6 @@ class RandomInteger {
         this.random = random;
     }
 
-    public int next() {
-        return random.nextInt();
-    }
-
     public final int nextBetween(int min, int max) {
         int range = max - min;
         int random = this.random.nextInt();
@@ -33,10 +29,6 @@ class RandomInteger {
     }
 
     private boolean contains(int[] array, int element) {
-        if (array == null) {
-            return false;
-        }
-
         for (int e : array) {
             if (e == element) {
                 return true;
@@ -48,11 +40,6 @@ class RandomInteger {
 
     public static RandomInteger instance() {
         return new RandomInteger(new Random());
-    }
-
-    public static RandomInteger withSeed(long seed) {
-        Random random = new Random(seed);
-        return new RandomInteger(random);
     }
 
     public static RandomInteger instance(Random random) {

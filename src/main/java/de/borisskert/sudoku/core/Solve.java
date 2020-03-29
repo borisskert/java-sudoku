@@ -29,7 +29,7 @@ class Solve {
                 solvedFields = solveOneFieldRandomly(solvedFields);
                 solvedFields = tryToSolveDefinite(solvedFields);
                 restorePoints.push(solvedFields);
-            } catch (IllegalDefiniteTrialException | IllegalRandomTrialException e) {
+            } catch (IllegalDefiniteTrialException e) {
                 solvedFields = restorePoints.pop();
             }
         }
@@ -37,7 +37,7 @@ class Solve {
         return solvedFields;
     }
 
-    private Fields solveOneFieldRandomly(Fields originalFields) throws IllegalRandomTrialException {
+    private Fields solveOneFieldRandomly(Fields originalFields) {
         Field randomField;
         FieldValue randomCandidate;
 
@@ -46,18 +46,15 @@ class Solve {
             randomCandidate = randomFields.selectRandomCandidate(randomField);
         } while (trials.isIllegal(randomField.absoluteCoordinates(), randomCandidate));
 
-        try {
-            Fields fieldsWithRandomValue = ValuedFields.forSize(size)
-                    .and(originalFields)
-                    .withValueAt(randomField.absoluteCoordinates(), randomCandidate)
-                    .fields();
+        Fields fieldsWithRandomValue = ValuedFields.forSize(size)
+                .and(originalFields)
+                .withValueAt(randomField.absoluteCoordinates(), randomCandidate)
+                .fields();
 
-            trials.addTrial(randomField.absoluteCoordinates(), randomCandidate);
+        trials.addTrial(randomField.absoluteCoordinates(), randomCandidate);
 
-            return fieldsWithRandomValue;
-        } catch (IllegalStateException e) {
-            throw new IllegalRandomTrialException(e);
-        }
+        return fieldsWithRandomValue;
+
     }
 
     private Fields tryToSolveDefinite(Fields originalFields) {
@@ -148,14 +145,6 @@ class Solve {
         }
 
         public Fields pop() {
-            if (stack.isEmpty()) {
-                throw new IllegalStateException("No restore points");
-            }
-
-            if (stack.size() == 1) {
-                return stack.peek();
-            }
-
             return stack.pop();
         }
     }
@@ -166,11 +155,6 @@ class Solve {
 
         public void addTrial(AbsoluteCoordinates coordinates, FieldValue value) {
             currentTrials.add(new Trial(coordinates, value));
-        }
-
-        public void illegal() {
-            illegalTrials.addAll(currentTrials);
-            currentTrials.clear();
         }
 
         public boolean isIllegal(AbsoluteCoordinates coordinates, FieldValue value) {
@@ -199,12 +183,6 @@ class Solve {
         @Override
         public int hashCode() {
             return Objects.hash(coordinates, value);
-        }
-    }
-
-    private static class IllegalRandomTrialException extends RuntimeException {
-        public IllegalRandomTrialException(Throwable cause) {
-            super(cause);
         }
     }
 

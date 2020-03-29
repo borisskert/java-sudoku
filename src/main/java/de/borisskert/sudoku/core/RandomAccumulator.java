@@ -29,9 +29,4 @@ class RandomAccumulator<T> implements BinaryOperator<T> {
     public static <T> BinaryOperator<T> newInstance(Random random) {
         return new RandomAccumulator<>(random);
     }
-
-    public static <T> BinaryOperator<T> newInstance() {
-        Random random = new Random();
-        return new RandomAccumulator<>(random);
-    }
 }
