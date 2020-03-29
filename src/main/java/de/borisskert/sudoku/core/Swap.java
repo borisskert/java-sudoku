@@ -4,13 +4,28 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+/**
+ * Implements an algorithm to swap lines and columns within {@link Fields}
+ */
 class Swap {
 
+    /* *****************************************************************************************************************
+     * Readonly fields
+     **************************************************************************************************************** */
+
     private final Fields fields;
+
+    /* *****************************************************************************************************************
+     * Constructor(s)
+     **************************************************************************************************************** */
 
     private Swap(Fields fields) {
         this.fields = fields;
     }
+
+    /* *****************************************************************************************************************
+     * Public contract
+     **************************************************************************************************************** */
 
     public Fields swapLines(int lineIndex, int otherLineIndex) {
         AbsoluteCoordinates line = AbsoluteCoordinates.fromLineOnly(lineIndex);
@@ -33,6 +48,10 @@ class Swap {
 
         return Fields.of(swapped);
     }
+
+    /* *****************************************************************************************************************
+     * Private methods
+     **************************************************************************************************************** */
 
     private Function<Field, Field> swapLine(AbsoluteCoordinates line, AbsoluteCoordinates otherLine) {
         return field -> {
@@ -69,6 +88,10 @@ class Swap {
             }
         };
     }
+
+    /* *****************************************************************************************************************
+     * Factory methods
+     **************************************************************************************************************** */
 
     public static Swap fields(Fields fields) {
         return new Swap(fields);

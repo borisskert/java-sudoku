@@ -4,15 +4,30 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Represent a set of {@link SubGrid}
+ */
 class SubGrids {
+
+    /* *****************************************************************************************************************
+     * Readonly fields
+     **************************************************************************************************************** */
 
     private final Size size;
     private final Set<SubGrid> subGrids;
+
+    /* *****************************************************************************************************************
+     * Constructor(s)
+     **************************************************************************************************************** */
 
     private SubGrids(Size size, Set<SubGrid> subGrids) {
         this.size = size;
         this.subGrids = subGrids;
     }
+
+    /* *****************************************************************************************************************
+     * Wither methods
+     **************************************************************************************************************** */
 
     public Fields withValueAt(AbsoluteCoordinates coordinates, FieldValue value) {
         SubGridCoordinates subGridCoordinates = coordinates.subGrid(size);
@@ -32,14 +47,9 @@ class SubGrids {
         return Fields.of(fields);
     }
 
-    public static SubGrids create(Size size, Fields fields) {
-        Set<SubGrid> subGrids = size.toSubGridCoordinates().stream()
-                .map(coordinates -> Tuple.create(coordinates).with(fields.filterSubGridOnly(coordinates)))
-                .map(t -> SubGrid.create(t.getA(), t.getB(), size))
-                .collect(Collectors.toUnmodifiableSet());
-
-        return new SubGrids(size, subGrids);
-    }
+    /* *****************************************************************************************************************
+     * Transfer methods
+     **************************************************************************************************************** */
 
     public Fields resolved() {
         Set<Field> resolvedFields = this.subGrids.stream()
@@ -49,6 +59,10 @@ class SubGrids {
 
         return Fields.of(resolvedFields);
     }
+
+    /* *****************************************************************************************************************
+     * Accessor methods
+     **************************************************************************************************************** */
 
     public int getWidth() {
         return size.getWidth();
@@ -73,5 +87,18 @@ class SubGrids {
 
     public Stream<SubGrid> stream() {
         return subGrids.stream();
+    }
+
+    /* *****************************************************************************************************************
+     * Factory method(s)
+     **************************************************************************************************************** */
+
+    public static SubGrids create(Size size, Fields fields) {
+        Set<SubGrid> subGrids = size.toSubGridCoordinates().stream()
+                .map(coordinates -> Tuple.create(coordinates).with(fields.filterSubGridOnly(coordinates)))
+                .map(t -> SubGrid.create(t.getA(), t.getB(), size))
+                .collect(Collectors.toUnmodifiableSet());
+
+        return new SubGrids(size, subGrids);
     }
 }

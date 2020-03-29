@@ -2,11 +2,22 @@ package de.borisskert.sudoku.core;
 
 import java.util.Random;
 
+/**
+ * Implements a shuffle algorithm to shuffle specified {@link Fields}
+ */
 class Shuffle {
+
+    /* *****************************************************************************************************************
+     * Readonly fields
+     **************************************************************************************************************** */
 
     private final RandomInteger random;
     private final Size size;
     private final Fields fields;
+
+    /* *****************************************************************************************************************
+     * Constructor(s)
+     **************************************************************************************************************** */
 
     private Shuffle(Size size, Fields fields) {
         this.size = size;
@@ -20,12 +31,20 @@ class Shuffle {
         this.random = RandomInteger.instance(random);
     }
 
+    /* *****************************************************************************************************************
+     * Public contract
+     **************************************************************************************************************** */
+
     public Fields shuffle() {
         Fields shuffled = shuffleLines(fields);
         shuffled = shuffleColumns(shuffled);
 
         return shuffled;
     }
+
+    /* *****************************************************************************************************************
+     * Private methods
+     **************************************************************************************************************** */
 
     private Fields shuffleLines(Fields fields) {
         int steps = steps();
@@ -109,6 +128,10 @@ class Shuffle {
 
         return subGrid.getX() == otherSubGrid.getX();
     }
+
+    /* *****************************************************************************************************************
+     * Factories and Builder(s)
+     **************************************************************************************************************** */
 
     public static Builder build() {
         return new Builder();

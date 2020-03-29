@@ -14,6 +14,13 @@ class Print {
      * Static methods
      **************************************************************************************************************** */
 
+    /**
+     * Formats the specified {@link Fields} into a grid with specified {@link Size}.
+     *
+     * @param size   the grid size
+     * @param fields the fields containing the values.
+     * @return a {@link String} which shows the fields as an ASCII grid.
+     */
     public static String format(Size size, Fields fields) {
         SubGrids subGrids = SubGrids.create(size, fields);
 

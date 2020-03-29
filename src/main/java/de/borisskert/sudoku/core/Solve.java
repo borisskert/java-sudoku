@@ -5,7 +5,20 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.Stack;
 
+/**
+ * Implements a solving algorithm for sudoku puzzles.
+ * <p>
+ * Steps:
+ * (1) try to solve all definite fields and candidates
+ * (2) if not solved, solve one random field with random value
+ * (3) continue with step 1 until the puzzle gets solved, or an error occurs.
+ * (4) if an error occurs continue with step 1 with backtracking
+ */
 class Solve {
+
+    /* *****************************************************************************************************************
+     * Readonly fields
+     **************************************************************************************************************** */
 
     private final Size size;
     private final Fields fields;
@@ -14,11 +27,19 @@ class Solve {
     private final RestorePoints restorePoints = new RestorePoints();
     private final Trials trials = new Trials();
 
+    /* *****************************************************************************************************************
+     * Constructor(s)
+     **************************************************************************************************************** */
+
     private Solve(Size size, Fields fields, RandomFields randomFields) {
         this.size = size;
         this.fields = fields;
         this.randomFields = randomFields;
     }
+
+    /* *****************************************************************************************************************
+     * Public contract
+     **************************************************************************************************************** */
 
     public Fields solve() {
         Fields solvedFields = solveDefinite(this.fields);
@@ -36,6 +57,10 @@ class Solve {
 
         return solvedFields;
     }
+
+    /* *****************************************************************************************************************
+     * Private methods
+     **************************************************************************************************************** */
 
     private Fields solveOneFieldRandomly(Fields originalFields) {
         Field randomField;
@@ -111,6 +136,10 @@ class Solve {
         }
     }
 
+    /* *****************************************************************************************************************
+     * Factory methods and Builder(s)
+     **************************************************************************************************************** */
+
     public static Builder withSize(Size size) {
         return new Builder(size);
     }
@@ -136,6 +165,10 @@ class Solve {
             }
         }
     }
+
+    /* *****************************************************************************************************************
+     * Inner classes
+     **************************************************************************************************************** */
 
     private static class RestorePoints {
         private final Stack<Fields> stack = new Stack<>();

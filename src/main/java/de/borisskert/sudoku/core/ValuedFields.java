@@ -8,15 +8,33 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 
+/**
+ * Implements the algorithm to change values within a sudoku puzzle considering these rules:
+ * - a {@link FieldValue} has to be unique within a {@link Line}.
+ * - a {@link FieldValue} has to be unique within a {@link Column}.
+ * - a {@link FieldValue} has to be unique within a {@link SubGrid}
+ */
 class ValuedFields {
+
+    /* *****************************************************************************************************************
+     * Readonly fields
+     **************************************************************************************************************** */
 
     private final Size size;
     private final Fields fields;
+
+    /* *****************************************************************************************************************
+     * Constructor(s)
+     **************************************************************************************************************** */
 
     private ValuedFields(Size size, Fields fields) {
         this.size = size;
         this.fields = fields;
     }
+
+    /* *****************************************************************************************************************
+     * Wither methods
+     **************************************************************************************************************** */
 
     public ValuedFields withValueAt(AbsoluteCoordinates coordinates, FieldValue fieldValue) {
         SubGrids subGrids = SubGrids.create(size, fields);
@@ -31,18 +49,34 @@ class ValuedFields {
         return new ValuedFields(size, changedFields);
     }
 
+    /* *****************************************************************************************************************
+     * Accessor methods
+     **************************************************************************************************************** */
+
     public Fields fields() {
         return fields;
     }
+
+    /* *****************************************************************************************************************
+     * Factory method(s)
+     **************************************************************************************************************** */
 
     public static Builder forSize(Size size) {
         return new Builder(size);
     }
 
+    public static Collector<Field, Set<Field>, ValuedFields> collect(Size size) {
+        return new ValuedFieldsCollector(size);
+    }
+
+    /* *****************************************************************************************************************
+     * Builder
+     **************************************************************************************************************** */
+
     public static class Builder {
         private final Size size;
 
-        public Builder(Size size) {
+        private Builder(Size size) {
             this.size = size;
         }
 
@@ -55,45 +89,53 @@ class ValuedFields {
         }
     }
 
-    public static Collector<Field, Set<Field>, ValuedFields> collect(Size size) {
-        return new Collector<>() {
-            @Override
-            public Supplier<Set<Field>> supplier() {
-                return HashSet::new;
-            }
+    /* *****************************************************************************************************************
+     * Another inner class(es)
+     **************************************************************************************************************** */
 
-            @Override
-            public BiConsumer<Set<Field>, Field> accumulator() {
-                return Set::add;
-            }
+    private static class ValuedFieldsCollector implements Collector<Field, Set<Field>, ValuedFields> {
+        private final Size size;
 
-            @Override
-            public BinaryOperator<Set<Field>> combiner() {
-                return (fields, fields2) -> {
-                    fields.addAll(fields2);
-                    return fields;
-                };
-            }
+        public ValuedFieldsCollector(Size size) {
+            this.size = size;
+        }
 
-            @Override
-            public Function<Set<Field>, ValuedFields> finisher() {
-                return set -> {
-                    ValuedFields valued = ValuedFields.forSize(size).empty();
+        @Override
+        public Supplier<Set<Field>> supplier() {
+            return HashSet::new;
+        }
 
-                    for (Field field : set) {
-                        if (field.isSolved()) {
-                            valued = valued.withValueAt(field.absoluteCoordinates(), field.getValue());
-                        }
+        @Override
+        public BiConsumer<Set<Field>, Field> accumulator() {
+            return Set::add;
+        }
+
+        @Override
+        public BinaryOperator<Set<Field>> combiner() {
+            return (fields, fields2) -> {
+                fields.addAll(fields2);
+                return fields;
+            };
+        }
+
+        @Override
+        public Function<Set<Field>, ValuedFields> finisher() {
+            return set -> {
+                ValuedFields valued = ValuedFields.forSize(size).empty();
+
+                for (Field field : set) {
+                    if (field.isSolved()) {
+                        valued = valued.withValueAt(field.absoluteCoordinates(), field.getValue());
                     }
+                }
 
-                    return valued;
-                };
-            }
+                return valued;
+            };
+        }
 
-            @Override
-            public Set<Characteristics> characteristics() {
-                return Set.of();
-            }
-        };
+        @Override
+        public Set<Characteristics> characteristics() {
+            return Set.of();
+        }
     }
 }

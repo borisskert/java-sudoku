@@ -4,12 +4,23 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Creates a sudoku puzzle with random values and empty fields.
+ */
 class Puzzle {
+
+    /* *****************************************************************************************************************
+     * Readonly fields
+     **************************************************************************************************************** */
 
     private final Coin coin;
     private final Size size;
     private final double percentage;
     private final Shuffle.Builder shuffle;
+
+    /* *****************************************************************************************************************
+     * Constructors
+     **************************************************************************************************************** */
 
     private Puzzle(Size size, double percentage) {
         this.coin = Coin.create();
@@ -24,6 +35,10 @@ class Puzzle {
         this.percentage = percentage;
         this.shuffle = Shuffle.build().withSize(size).withRandom(random);
     }
+
+    /* *****************************************************************************************************************
+     * Public contract
+     **************************************************************************************************************** */
 
     public Fields newPuzzle() {
         Fields filled = Fields.createFilled(size);
@@ -47,6 +62,10 @@ class Puzzle {
 
         return puzzle.fields();
     }
+
+    /* *****************************************************************************************************************
+     * Factory methods and Builder
+     **************************************************************************************************************** */
 
     public static Builder with(Size size) {
         return new Builder(size);
