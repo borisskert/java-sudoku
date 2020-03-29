@@ -4,8 +4,8 @@ package de.borisskert.sudoku.core;
  * Represent a tuple of values used to accumulate values within stream transfer.
  * Every instance of {@link Tuple} is immutable.
  *
- * @param <A> the first element type
- * @param <B> the second element type
+ * @param <A> the first element type.
+ * @param <B> the second element type.
  */
 class Tuple<A, B> {
 

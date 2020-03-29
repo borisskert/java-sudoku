@@ -8,7 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Game {
-
+    private static final Pattern intPattern = Pattern.compile("^[0-9]+$");
     private static final Scanner scanner = new Scanner(System.in);
 
     private final int width;
@@ -71,8 +71,6 @@ public class Game {
 
         return column;
     }
-
-    Pattern intPattern = Pattern.compile("^[0-9]+$");
 
     private int readInt() {
         Matcher matcher;

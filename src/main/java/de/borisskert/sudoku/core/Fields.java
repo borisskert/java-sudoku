@@ -68,7 +68,7 @@ class Fields {
         return fields.stream()
                 .filter(field -> field.has(coordinates))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Cannot find field with within-subgrid coordinates " + coordinates));
+                .orElseThrow(() -> new RuntimeException("Cannot find field with within-sub-grid coordinates " + coordinates));
     }
 
     public Field get(AbsoluteCoordinates coordinates) {

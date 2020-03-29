@@ -50,8 +50,8 @@ class Size {
 
     public Set<SubGridCoordinates> toSubGridCoordinates() {
         return IntStream.range(0, width).boxed()
-                .flatMap(x -> IntStream.range(0, height)
-                        .mapToObj(y -> SubGridCoordinates.from(y, x))
+                .flatMap(y -> IntStream.range(0, height)
+                        .mapToObj(x -> SubGridCoordinates.from(x, y))
                 )
                 .collect(Collectors.toUnmodifiableSet());
     }

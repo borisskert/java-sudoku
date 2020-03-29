@@ -54,17 +54,17 @@ class RandomFields {
                 .filter(Field::hasCandidates)
                 .sorted()
                 .reduce(randomFieldSelect)
-                .orElseThrow(() -> new RuntimeException("Cannot find a empty field"));
+                .orElseThrow(() -> new RuntimeException("Cannot find an empty field"));
     }
 
     public final SubGrid selectRandomSubGrid(Fields fields) {
         SubGrids subGrids = SubGrids.create(size, fields);
 
         return subGrids.stream()
-                .filter(subgrid -> !subgrid.isSolved())
+                .filter(subGrid -> !subGrid.isSolved())
                 .sorted()
                 .reduce(randomSubGridSelect)
-                .orElseThrow(() -> new RuntimeException("Cannot find unsolved Subgrid"));
+                .orElseThrow(() -> new RuntimeException("Cannot find unsolved sub-grid"));
     }
 
     /* *****************************************************************************************************************

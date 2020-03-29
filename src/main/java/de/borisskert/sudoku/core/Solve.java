@@ -1,8 +1,5 @@
 package de.borisskert.sudoku.core;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
 import java.util.Stack;
 
 /**
@@ -25,7 +22,6 @@ class Solve {
     private final RandomFields randomFields;
 
     private final RestorePoints restorePoints = new RestorePoints();
-    private final Trials trials = new Trials();
 
     /* *****************************************************************************************************************
      * Constructor(s)
@@ -63,23 +59,13 @@ class Solve {
      **************************************************************************************************************** */
 
     private Fields solveOneFieldRandomly(Fields originalFields) {
-        Field randomField;
-        FieldValue randomCandidate;
+        Field randomField = randomFields.selectRandomField(originalFields);
+        FieldValue randomCandidate = randomFields.selectRandomCandidate(randomField);
 
-        do {
-            randomField = randomFields.selectRandomField(originalFields);
-            randomCandidate = randomFields.selectRandomCandidate(randomField);
-        } while (trials.isIllegal(randomField.absoluteCoordinates(), randomCandidate));
-
-        Fields fieldsWithRandomValue = ValuedFields.forSize(size)
+        return ValuedFields.forSize(size)
                 .and(originalFields)
                 .withValueAt(randomField.absoluteCoordinates(), randomCandidate)
                 .fields();
-
-        trials.addTrial(randomField.absoluteCoordinates(), randomCandidate);
-
-        return fieldsWithRandomValue;
-
     }
 
     private Fields tryToSolveDefinite(Fields originalFields) {
@@ -179,43 +165,6 @@ class Solve {
 
         public Fields pop() {
             return stack.pop();
-        }
-    }
-
-    public static class Trials {
-        private final Set<Trial> currentTrials = new HashSet<>();
-        private final Set<Trial> illegalTrials = new HashSet<>();
-
-        public void addTrial(AbsoluteCoordinates coordinates, FieldValue value) {
-            currentTrials.add(new Trial(coordinates, value));
-        }
-
-        public boolean isIllegal(AbsoluteCoordinates coordinates, FieldValue value) {
-            return illegalTrials.contains(new Trial(coordinates, value));
-        }
-    }
-
-    public static class Trial {
-        private final AbsoluteCoordinates coordinates;
-        private final FieldValue value;
-
-        public Trial(AbsoluteCoordinates coordinates, FieldValue fieldValue) {
-            this.coordinates = coordinates;
-            value = fieldValue;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Trial trial = (Trial) o;
-            return Objects.equals(coordinates, trial.coordinates) &&
-                    Objects.equals(value, trial.value);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(coordinates, value);
         }
     }
 

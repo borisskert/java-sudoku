@@ -127,7 +127,7 @@ class CoinTest {
                                     }
 
                                     @Nested
-                                    class FlipNinethTime {
+                                    class FlipNinthTime {
                                         @BeforeEach
                                         public void setup() throws Exception {
                                             coin.flip();

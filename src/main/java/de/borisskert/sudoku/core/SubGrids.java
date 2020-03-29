@@ -76,7 +76,7 @@ class SubGrids {
         return subGrids.stream()
                 .filter(subGrid -> subGrid.getCoordinates().equals(coordinates))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Cannot find subgrid with coordinates: " + coordinates.toString()));
+                .orElseThrow(() -> new RuntimeException("Cannot find sub-grid with coordinates: " + coordinates.toString()));
     }
 
     public Set<Fields> fields() {

@@ -81,7 +81,7 @@ class Candidates {
         return values.stream()
                 .sorted()
                 .findFirst()
-                .orElseThrow(() -> new IllegalStateException("More more candidates"));
+                .orElseThrow(() -> new IllegalStateException("No more candidates"));
     }
 
     /**

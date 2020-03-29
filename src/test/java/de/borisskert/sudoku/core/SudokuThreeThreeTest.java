@@ -50,7 +50,7 @@ class SudokuThreeThreeTest {
         assertThat(sudoku.toString(), is(equalTo(expected)));
     }
 
-    @DisplayName("setup middle subgrid")
+    @DisplayName("setup middle sub-grid")
     @Nested
     class SetMiddleSubGridExampleNumbers {
         @BeforeEach
@@ -88,7 +88,7 @@ class SudokuThreeThreeTest {
             assertThat(sudoku.toString(), is(equalTo(expected)));
         }
 
-        @DisplayName("setup right center subgrid")
+        @DisplayName("setup right center sub-grid")
         @Nested
         class SetupRightCenterSubGrid {
             @BeforeEach
@@ -125,7 +125,7 @@ class SudokuThreeThreeTest {
                 assertThat(sudoku.toString(), is(equalTo(expected)));
             }
 
-            @DisplayName("setup bottom (middle) subgrid")
+            @DisplayName("setup bottom (middle) sub-grid")
             @Nested
             class SetupBottomSubGrid {
                 @BeforeEach
@@ -163,7 +163,7 @@ class SudokuThreeThreeTest {
                     assertThat(sudoku.toString(), is(equalTo(expected)));
                 }
 
-                @DisplayName("setup top left subgrid")
+                @DisplayName("setup top left sub-grid")
                 @Nested
                 class SetupTopLeftSubGrid {
                     @BeforeEach
@@ -202,7 +202,7 @@ class SudokuThreeThreeTest {
                         assertThat(sudoku.toString(), is(equalTo(expected)));
                     }
 
-                    @DisplayName("Setup top right subgrid")
+                    @DisplayName("Setup top right sub-grid")
                     @Nested
                     class SetupTopRightSubGrid {
                         @BeforeEach
@@ -237,7 +237,7 @@ class SudokuThreeThreeTest {
                             assertThat(sudoku.toString(), is(equalTo(expected)));
                         }
 
-                        @DisplayName("setup bottom left subgrid")
+                        @DisplayName("setup bottom left sub-grid")
                         @Nested
                         class SetupBottomLeftSubGrid {
                             @BeforeEach
@@ -272,7 +272,7 @@ class SudokuThreeThreeTest {
                                 assertThat(sudoku.toString(), is(equalTo(expected)));
                             }
 
-                            @DisplayName("Setup top (middle) subgrid")
+                            @DisplayName("Setup top (middle) sub-grid")
                             @Nested
                             class SetupTopSubGrid {
                                 @BeforeEach
@@ -310,7 +310,7 @@ class SudokuThreeThreeTest {
                                     assertThat(sudoku.toString(), is(equalTo(expected)));
                                 }
 
-                                @DisplayName("Setup left center subgrid")
+                                @DisplayName("Setup left center sub-grid")
                                 @Nested
                                 class SetupLeftCenterSubGrid {
                                     @BeforeEach
@@ -348,7 +348,7 @@ class SudokuThreeThreeTest {
                                         assertThat(sudoku.toString(), is(equalTo(expected)));
                                     }
 
-                                    @DisplayName("Setup 1st part of buttom right subgrid")
+                                    @DisplayName("Setup 1st part of bottom right sub-grid")
                                     @Nested
                                     class SetupBottomRightSubGrid {
                                         @BeforeEach
