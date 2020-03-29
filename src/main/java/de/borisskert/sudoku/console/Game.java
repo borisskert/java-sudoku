@@ -53,8 +53,6 @@ public class Game {
             System.out.println("Solving...");
             puzzle.solve();
         }
-
-        printPuzzle();
     }
 
     public boolean isSolved() {
