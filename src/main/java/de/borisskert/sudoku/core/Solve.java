@@ -11,7 +11,7 @@ import java.util.Stack;
  * (3) continue with step 1 until the puzzle gets solved, or an error occurs.
  * (4) if an error occurs continue with step 1 with backtracking
  */
-class Solve {
+final class Solve {
 
     /* *****************************************************************************************************************
      * Readonly fields

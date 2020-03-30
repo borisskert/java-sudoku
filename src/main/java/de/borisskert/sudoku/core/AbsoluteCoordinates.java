@@ -7,7 +7,7 @@ import java.util.Objects;
  * Represents absolute coordinates within the whole grid.
  * Every {@link AbsoluteCoordinates} instance is immutable.
  */
-class AbsoluteCoordinates implements Comparable<AbsoluteCoordinates> {
+final class AbsoluteCoordinates implements Comparable<AbsoluteCoordinates> {
 
     /* *****************************************************************************************************************
      * Readonly fields

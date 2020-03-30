@@ -14,7 +14,7 @@ import java.util.stream.Collector;
  * - a {@link FieldValue} has to be unique within a {@link Column}.
  * - a {@link FieldValue} has to be unique within a {@link SubGrid}
  */
-class ValuedFields {
+final class ValuedFields {
 
     /* *****************************************************************************************************************
      * Readonly fields

@@ -5,8 +5,9 @@ import java.util.Objects;
 
 /**
  * Represent coordinates within a sub-grid.
+ * Every {@link SubGridCoordinates} instance is immutable.
  */
-class SubGridCoordinates implements Comparable<SubGridCoordinates> {
+final class SubGridCoordinates implements Comparable<SubGridCoordinates> {
 
     /* *****************************************************************************************************************
      * Readonly fields

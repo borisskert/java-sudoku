@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 /**
  * Implements an algorithm to swap lines and columns within {@link Fields}
  */
-class Swap {
+final class Swap {
 
     /* *****************************************************************************************************************
      * Readonly fields

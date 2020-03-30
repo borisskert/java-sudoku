@@ -8,7 +8,7 @@ import java.util.Set;
  * Represents a field.
  * Every {@link Field} instance is immutable.
  */
-class Field implements Comparable<Field> {
+final class Field implements Comparable<Field> {
 
     /* *****************************************************************************************************************
      * Private fields

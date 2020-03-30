@@ -6,7 +6,7 @@ import java.util.stream.Stream;
  * Represents a column containing {@link Field}s.
  * Every {@link Column} instance is immutable.
  */
-class Column {
+final class Column {
 
     /* *****************************************************************************************************************
      * Readonly fields

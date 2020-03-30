@@ -6,7 +6,7 @@ import java.util.function.BinaryOperator;
 /**
  * Utility to select random {@link Field}s from {@link Fields}
  */
-class RandomFields {
+final class RandomFields {
 
     /* *****************************************************************************************************************
      * Readonly Fields

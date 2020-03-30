@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 /**
  * Creates a sudoku puzzle with random values and empty fields.
  */
-class Puzzle {
+final class Puzzle {
 
     /* *****************************************************************************************************************
      * Readonly fields

@@ -3,7 +3,7 @@ package de.borisskert.sudoku.core;
 /**
  * Provide public sudoku puzzle API
  */
-public class Sudoku {
+public final class Sudoku {
 
     /* *****************************************************************************************************************
      * Private fields

@@ -7,8 +7,9 @@ import java.util.stream.Stream;
 
 /**
  * Represents a sub-grid within a sudoku puzzle.
+ * Every {@link SubGrid} instance is immutable.
  */
-class SubGrid implements Comparable<SubGrid> {
+final class SubGrid implements Comparable<SubGrid> {
 
     /* *****************************************************************************************************************
      * Readonly fields

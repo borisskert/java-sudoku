@@ -6,7 +6,7 @@ import java.util.Objects;
  * Represents a value of a {@link Field}.
  * Every {@link FieldValue} instance is immutable.
  */
-class FieldValue implements Comparable<FieldValue> {
+final class FieldValue implements Comparable<FieldValue> {
 
     /* *****************************************************************************************************************
      * Readonly fields

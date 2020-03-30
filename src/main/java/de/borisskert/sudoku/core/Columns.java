@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
  * Represents a set of columns containing {@link Column}s.
  * Every {@link Columns} instance is immutable.
  */
-class Columns {
+final class Columns {
 
     /* *****************************************************************************************************************
      * Readonly fields

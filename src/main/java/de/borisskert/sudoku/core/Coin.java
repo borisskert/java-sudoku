@@ -4,8 +4,9 @@ import java.util.Random;
 
 /**
  * Represents a coin which can be flipped with pseudy-random results.
+ * Every {@link Coin} instance is NOT immutable.
  */
-class Coin {
+final class Coin {
 
     /* *****************************************************************************************************************
      * Readonly fields

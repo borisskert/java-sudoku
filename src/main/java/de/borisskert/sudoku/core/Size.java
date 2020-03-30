@@ -7,8 +7,9 @@ import java.util.stream.IntStream;
 
 /**
  * Represents a grid size.
+ * Every {@link Size} instance is immutable.
  */
-class Size {
+final class Size {
 
     /* *****************************************************************************************************************
      * Readonly fields

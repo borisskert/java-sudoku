@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
  * Represents a set of lines containing {@link Line}s.
  * Every {@link Lines} instance is immutable.
  */
-class Lines {
+final class Lines {
 
     /* *****************************************************************************************************************
      * Readonly fields

@@ -10,7 +10,7 @@ import java.util.stream.Stream;
  * Represents a set of still allowed {@link FieldValue}s in empty (unsolved) {@link Field}s.
  * Every {@link Candidates} instance is immutable.
  */
-class Candidates {
+final class Candidates {
 
     /* *****************************************************************************************************************
      * Static fields

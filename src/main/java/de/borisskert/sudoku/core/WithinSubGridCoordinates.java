@@ -6,7 +6,7 @@ import java.util.Objects;
  * Represent coordinates within a {@link SubGrid}
  * Every {@link SubGridCoordinates} is immutable.
  */
-class WithinSubGridCoordinates {
+final class WithinSubGridCoordinates {
 
     /* *****************************************************************************************************************
      * Readonly fields

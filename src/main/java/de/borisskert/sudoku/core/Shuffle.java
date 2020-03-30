@@ -5,7 +5,7 @@ import java.util.Random;
 /**
  * Implements a shuffle algorithm to shuffle specified {@link Fields}
  */
-class Shuffle {
+final class Shuffle {
 
     /* *****************************************************************************************************************
      * Readonly fields

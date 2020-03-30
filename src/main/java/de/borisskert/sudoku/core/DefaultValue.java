@@ -3,7 +3,7 @@ package de.borisskert.sudoku.core;
 /**
  * Creates default values based on {@link AbsoluteCoordinates}.
  */
-class DefaultValue {
+final class DefaultValue {
 
     /* *****************************************************************************************************************
      * Readonly fields

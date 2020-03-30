@@ -7,7 +7,7 @@ package de.borisskert.sudoku.core;
  * @param <A> the first element type.
  * @param <B> the second element type.
  */
-class Tuple<A, B> {
+final class Tuple<A, B> {
 
     /* *****************************************************************************************************************
      * Readonly fields

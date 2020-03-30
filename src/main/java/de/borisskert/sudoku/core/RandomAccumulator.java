@@ -8,7 +8,7 @@ import java.util.function.BinaryOperator;
  *
  * @param <T> the element type of the {@link java.util.stream.Stream}
  */
-class RandomAccumulator<T> implements BinaryOperator<T> {
+final class RandomAccumulator<T> implements BinaryOperator<T> {
 
     /* *****************************************************************************************************************
      * Readonly fields

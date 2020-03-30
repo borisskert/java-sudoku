@@ -8,7 +8,18 @@ import java.util.stream.IntStream;
 /**
  * Prints the fields as an ASCII grid.
  */
-class Print {
+final class Print {
+
+    /* *****************************************************************************************************************
+     * Constructor(s)
+     **************************************************************************************************************** */
+
+    /**
+     * Prevents instance creation
+     */
+    private Print() {
+        throw new IllegalStateException("Static util class");
+    }
 
     /* *****************************************************************************************************************
      * Static methods

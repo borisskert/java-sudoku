@@ -18,7 +18,7 @@ import java.util.stream.Stream;
  * Represents a set of {@link Field}s.
  * Every {@link Fields} instance is immutable.
  */
-class Fields {
+final class Fields {
 
     /* *****************************************************************************************************************
      * Private fields

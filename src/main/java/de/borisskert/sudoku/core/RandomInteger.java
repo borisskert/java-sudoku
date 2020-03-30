@@ -5,7 +5,7 @@ import java.util.Random;
 /**
  * Utility to generate random {@link Integer}s withing specific ranges.
  */
-class RandomInteger {
+final class RandomInteger {
 
     /* *****************************************************************************************************************
      * Readonly fields

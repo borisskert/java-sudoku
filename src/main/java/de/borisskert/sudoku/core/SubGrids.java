@@ -6,8 +6,9 @@ import java.util.stream.Stream;
 
 /**
  * Represent a set of {@link SubGrid}
+ * Every {@link SubGrids} instance is immutable.
  */
-class SubGrids {
+final class SubGrids {
 
     /* *****************************************************************************************************************
      * Readonly fields

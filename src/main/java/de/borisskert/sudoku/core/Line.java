@@ -6,7 +6,7 @@ import java.util.stream.Stream;
  * Represents a line containing {@link Field}s.
  * Every {@link Line} instance is immutable.
  */
-class Line {
+final class Line {
 
     /* *****************************************************************************************************************
      * Readonly fields
