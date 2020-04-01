@@ -51,19 +51,6 @@ final class Fields {
         return fields.stream();
     }
 
-    public Fields difference(Fields other) {
-        Set<Field> differingFields = fields.stream()
-                .filter(field -> {
-                    Field otherField = other.get(field.absoluteCoordinates());
-
-                    return !field.equals(otherField);
-                })
-                .map(field -> other.get(field.absoluteCoordinates()))
-                .collect(Collectors.toUnmodifiableSet());
-
-        return Fields.of(differingFields);
-    }
-
     public Field get(WithinSubGridCoordinates coordinates) {
         return fields.stream()
                 .filter(field -> field.has(coordinates))
@@ -110,7 +97,17 @@ final class Fields {
      **************************************************************************************************************** */
 
     public Fields resolve() {
-        return resolvedRecursively(this, Fields.empty());
+        Fields beforeChanges;
+        Fields changedFields = this;
+
+        do{
+            beforeChanges = changedFields;
+
+            changedFields = changedFields.solveFieldValues();
+            changedFields = changedFields.clearCandidates();
+        } while(!beforeChanges.equals(changedFields));
+
+        return changedFields;
     }
 
     public Fields withValueAt(WithinSubGridCoordinates coordinates, FieldValue fieldValue) {
@@ -141,15 +138,6 @@ final class Fields {
                 }).collect(Collectors.toUnmodifiableSet());
 
         return new Fields(updatedFields);
-    }
-
-    public Fields applyChanges(Fields changes) {
-        Set<Field> changedFields = fields.stream()
-                .map(originalField -> changes.searchWith(originalField.absoluteCoordinates())
-                        .orElse(originalField))
-                .collect(Collectors.toUnmodifiableSet());
-
-        return new Fields(changedFields);
     }
 
     public Candidates definiteCandidates() {
@@ -230,24 +218,6 @@ final class Fields {
      * Private methods
      **************************************************************************************************************** */
 
-    private static Fields resolvedRecursively(Fields originalFields, Fields alreadyChangedFields) {
-        Fields solvedFields = originalFields.solveFieldValues();
-        solvedFields = solvedFields.clearCandidates();
-
-        Fields differingFields = originalFields.difference(solvedFields);
-        Fields updatedFields = originalFields.applyChanges(differingFields);
-
-        if (!differingFields.isEmpty()) {
-            updatedFields = resolvedRecursively(updatedFields, alreadyChangedFields.merge(differingFields));
-        }
-
-        return updatedFields;
-    }
-
-    private boolean isEmpty() {
-        return fields.isEmpty();
-    }
-
     private Map<FieldValue, Integer> countCandidates() {
         Map<FieldValue, Integer> counts = new HashMap<>();
 
@@ -280,15 +250,6 @@ final class Fields {
                 .filter(Field::isSolved)
                 .map(Field::getValue)
                 .collect(Collectors.toUnmodifiableSet());
-    }
-
-    private Fields merge(Fields other) {
-        Set<Field> mergedFields = Stream.concat(
-                this.fields.stream(),
-                other.stream()
-        ).collect(Collectors.toUnmodifiableSet());
-
-        return new Fields(mergedFields);
     }
 
     private void throwIfValueTaken(AbsoluteCoordinates coordinates, FieldValue fieldValue) {

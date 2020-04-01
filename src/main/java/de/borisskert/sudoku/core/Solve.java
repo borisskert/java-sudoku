@@ -118,7 +118,7 @@ final class Solve {
                     .map(coordinates -> changedFields.withValueAt(coordinates, fieldValue))
                     .orElseThrow(() -> {
                         throw new RuntimeException("No field with candidate " + fieldValue + " found");
-                    }).clearCandidates();
+                    });
         }
     }
 
