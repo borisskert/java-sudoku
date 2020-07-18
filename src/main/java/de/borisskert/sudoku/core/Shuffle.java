@@ -1,6 +1,7 @@
 package de.borisskert.sudoku.core;
 
 import java.util.Random;
+import java.util.Set;
 
 /**
  * Implements a shuffle algorithm to shuffle specified {@link Fields}
@@ -38,6 +39,7 @@ final class Shuffle {
     public Fields shuffle() {
         Fields shuffled = shuffleLines(fields);
         shuffled = shuffleColumns(shuffled);
+        shuffled = shuffleFields(shuffled);
 
         return shuffled;
     }
@@ -78,6 +80,20 @@ final class Shuffle {
         return shuffled;
     }
 
+    private Fields shuffleFields(Fields fields) {
+        int steps = steps();
+        Fields shuffled = fields;
+
+        for (int i = 0; i < steps; i++) {
+            Tuple<FieldValue, FieldValue> randomValues = selectTwoRandomValues();
+
+            shuffled = Swap.fields(shuffled)
+                    .swapValues(randomValues.getA(), randomValues.getB());
+        }
+
+        return shuffled;
+    }
+
     private int steps() {
         int steps = size.getWidth() * size.getHeight();
         return steps * steps;
@@ -113,6 +129,15 @@ final class Shuffle {
         } while (!areColumnsInSameSubGrid(column, otherColumn));
 
         return Tuple.create(column).with(otherColumn);
+    }
+
+    private Tuple<FieldValue, FieldValue> selectTwoRandomValues() {
+        int range = size.getWidth() * size.getHeight();
+
+        FieldValue first = FieldValue.of(random.nextBetween(1, range));
+        FieldValue second = FieldValue.of(random.randomBetweenExcept(1, range, first.getValue()));
+
+        return Tuple.create(first).with(second);
     }
 
     private boolean areLinesInSameSubGrid(AbsoluteCoordinates line, AbsoluteCoordinates otherLine) {

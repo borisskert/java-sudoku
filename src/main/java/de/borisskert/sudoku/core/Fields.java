@@ -100,12 +100,12 @@ final class Fields {
         Fields beforeChanges;
         Fields changedFields = this;
 
-        do{
+        do {
             beforeChanges = changedFields;
 
             changedFields = changedFields.solveFieldValues();
             changedFields = changedFields.clearCandidates();
-        } while(!beforeChanges.equals(changedFields));
+        } while (!beforeChanges.equals(changedFields));
 
         return changedFields;
     }

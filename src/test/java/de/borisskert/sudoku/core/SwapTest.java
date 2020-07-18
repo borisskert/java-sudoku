@@ -99,4 +99,50 @@ class SwapTest {
         // @formatter:on
         assertThat(Print.format(size, withSwappedLines), is(equalTo(expected)));
     }
+
+    @Test
+    public void shouldNotSwapEqualValues() throws Exception {
+        Size size = Size.of(2, 2);
+        Fields filled = Fields.createFilled(size);
+
+        Fields withSwappedLines = Swap.fields(filled)
+                .swapValues(FieldValue.of(1), FieldValue.of(1));
+
+        // @formatter:off
+        String expected =
+                "╔═╤═╦═╤═╗\n" +
+                "║1│2║3│4║\n" +
+                "╟─┼─╫─┼─╢\n" +
+                "║3│4║1│2║\n" +
+                "╠═╪═╬═╪═╣\n" +
+                "║2│3║4│1║\n" +
+                "╟─┼─╫─┼─╢\n" +
+                "║4│1║2│3║\n" +
+                "╚═╧═╩═╧═╝\n";
+        // @formatter:on
+        assertThat(Print.format(size, withSwappedLines), is(equalTo(expected)));
+    }
+
+    @Test
+    public void shouldSwapValueOneAndTwo() throws Exception {
+        Size size = Size.of(2, 2);
+        Fields filled = Fields.createFilled(size);
+
+        Fields withSwappedLines = Swap.fields(filled)
+                .swapValues(FieldValue.of(1), FieldValue.of(2));
+
+        // @formatter:off
+        String expected =
+                "╔═╤═╦═╤═╗\n" +
+                "║2│1║3│4║\n" +
+                "╟─┼─╫─┼─╢\n" +
+                "║3│4║2│1║\n" +
+                "╠═╪═╬═╪═╣\n" +
+                "║1│3║4│2║\n" +
+                "╟─┼─╫─┼─╢\n" +
+                "║4│2║1│3║\n" +
+                "╚═╧═╩═╧═╝\n";
+        // @formatter:on
+        assertThat(Print.format(size, withSwappedLines), is(equalTo(expected)));
+    }
 }

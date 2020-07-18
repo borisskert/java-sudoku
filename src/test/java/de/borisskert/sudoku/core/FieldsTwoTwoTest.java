@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 
+import static de.borisskert.sudoku.core.AbsoluteCoordinates.from;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -26,10 +27,10 @@ class FieldsTwoTwoTest {
 
     @BeforeEach
     public void setup() throws Exception {
-        zeroZero = AbsoluteCoordinates.from(0, 0);
-        zeroOne = AbsoluteCoordinates.from(0, 1);
-        oneZero = AbsoluteCoordinates.from(1, 0);
-        oneOne = AbsoluteCoordinates.from(1, 1);
+        zeroZero = from(0, 0);
+        zeroOne = from(0, 1);
+        oneZero = from(1, 0);
+        oneOne = from(1, 1);
 
         fieldZeroZero = Field.empty(zeroZero, Size.of(2, 2));
         fieldZeroOne = Field.empty(zeroOne, Size.of(2, 2));

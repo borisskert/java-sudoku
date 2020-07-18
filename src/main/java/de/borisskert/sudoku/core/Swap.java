@@ -49,6 +49,17 @@ final class Swap {
         return Fields.of(swapped);
     }
 
+    public Fields swapValues(FieldValue first, FieldValue second) {
+        if (first.equals(second))
+            return fields;
+
+        Set<Field> swapped = fields.stream()
+                .map(swapValue(first, second))
+                .collect(Collectors.toUnmodifiableSet());
+
+        return Fields.of(swapped);
+    }
+
     /* *****************************************************************************************************************
      * Private methods
      **************************************************************************************************************** */
@@ -83,6 +94,18 @@ final class Swap {
                 Field other = fields.get(otherCoordinates);
 
                 return field.forceValue(other.getValue());
+            } else {
+                return field;
+            }
+        };
+    }
+
+    private Function<Field, Field> swapValue(FieldValue first, FieldValue second) {
+        return field -> {
+            if (field.hasValue(first)) {
+                return field.forceValue(second);
+            } else if (field.hasValue(second)) {
+                return field.forceValue(first);
             } else {
                 return field;
             }
