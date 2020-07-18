@@ -52,6 +52,8 @@ public class Game {
         } catch (GameAbortException e) {
             System.out.println("Solving...");
             puzzle.solve();
+
+            printPuzzle();
         }
     }
 
