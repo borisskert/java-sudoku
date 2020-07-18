@@ -22,7 +22,7 @@ mvn package
 # Run console game
 
 ```shell script
-java -jar target/sudoku.jar
+java -Dfile.encoding=UTF-8 -jar target/sudoku.jar
 ```
 
 Game looks like:
