@@ -1,3 +1,4 @@
+
 ```
 Welcome to
  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------. 
@@ -15,14 +16,32 @@ Welcome to
 
 # Build
 
+## With java and maven installed
+
+### Build
+
 ```shell script
 mvn package
 ```
 
-# Run console game
+### Run console game
 
 ```shell script
 java -Dfile.encoding=UTF-8 -jar target/sudoku.jar
+```
+
+## With Docker installed
+
+### Build
+
+```shell script
+docker build -t borisskert/sudoku .
+```
+
+### Run console game
+
+```shell script
+docker run -it --rm borisskert/sudoku
 ```
 
 Game looks like:
@@ -60,3 +79,4 @@ Column: _
 Line: _
 Value: _
 ```
+
